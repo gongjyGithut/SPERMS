@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">XXXXXX系统</h3>
+        <h3 class="title">SPERMS</h3>
       </div>
 
       <el-form-item prop="username">
@@ -49,8 +49,8 @@
       
       </div>
     </el-form>
-    <el-dialog class="registerForm"  :visible.sync="dialogVisible"  :fullscreen="fullscreen" :center=true :close-on-click-modal=false>
-      <el-form :model="registerForm"  style="margin:0 auto">
+    <el-dialog class="register-container"  :visible.sync="dialogVisible"  :fullscreen="fullscreen" :center=true :close-on-click-modal=false>
+      <el-form :model="registerForm"  style="margin:0 auto" class="register-form">
         <div class="title-container">
           <h4 class="title">注册</h4>
         </div>
@@ -65,11 +65,13 @@
         <el-form-item  >
           <el-input  autocomplete="off" v-model="registerForm.password2" placeholder="再次输入密码"></el-input>
         </el-form-item>
+
+        <el-form-item  >
+          <el-button type="primary" style="width:100%">确定</el-button>
+        </el-form-item>
       </el-form>
 
-      <div slot="footer">
-        <el-button type="primary" style="width:100%">确定</el-button>
-      </div>
+      
       
     </el-dialog>
   </div>
@@ -287,7 +289,7 @@ $light_gray:#eee;
 
 <style lang="scss" >
 $bg:#283443;
-.registerForm{
+.register-container{
   //background-color: $bg;
   .el-dialog{
     background-color: $bg;
@@ -295,6 +297,14 @@ $bg:#283443;
     
   }
   
+}
+.register-form{
+    position: relative;
+    //width: 520px;
+    max-width: 400px;
+    //padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
 }
 </style>
 
