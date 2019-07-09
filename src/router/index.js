@@ -25,13 +25,21 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/personal', component: () => import('@/views/personal/index'), hidden: true },
-
+  {
+    path: '/personal',
+    component: Layout,
+    redirect: '/personal/index',
+    hidden: true,
+    children: [{
+      path: 'index',
+      name: '个人中心',
+      component: () => import('@/views/personal/index')
+    }]
+  },
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: '首页',
     hidden: true,
     children: [{
       path: 'dashboard',
