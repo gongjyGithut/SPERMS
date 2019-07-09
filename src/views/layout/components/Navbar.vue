@@ -16,7 +16,7 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <router-link class="inlineBlock" to="/">
+        <router-link class="inlineBlock" to="/personal">
           <el-dropdown-item>
             个人中心
           </el-dropdown-item>
