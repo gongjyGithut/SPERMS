@@ -31,11 +31,11 @@ export default {
       let matched = this.$route.matched.filter(item => item.name)
       console.log(matched)
 
-      const first = matched[0]
-      if (first && first.name !== 'dashboard') {
+       const first = matched[0]
+      if (!first) {
         matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
       }
-
+      // matched.shift()
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
       console.log(matched.filter)
     },
