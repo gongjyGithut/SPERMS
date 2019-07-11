@@ -49,7 +49,12 @@
       
       </div>
     </el-form>
-    <el-dialog class="register-container"  :visible.sync="dialogVisible"  :fullscreen="fullscreen" :center=true :close-on-click-modal=false>
+    <el-dialog 
+    class="register-container"  
+    :visible.sync="dialogVisible"  
+    :fullscreen='fullscreen'
+    :center=true 
+    :close-on-click-modal=false>
       <el-form :model="registerForm"  style="margin:0 auto" class="register-form">
         <div class="title-container">
           <h4 class="title">注册</h4>
@@ -80,9 +85,14 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'Login',
+  computed: {
+    ...mapGetters([
+      'device'
+    ])
+  },
   data() {
     let regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\] ]/im,
         regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im 
@@ -141,13 +151,14 @@ export default {
     }
   },
   mounted() {
-    if(this.screenWidth < 768){
+    if(this.screenWidth < 992){
       this.fullscreen = true
     }
     
   },
   methods: {
     showPwd() {
+      console.log(this.device)
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -221,6 +232,24 @@ $cursor: #fff;
     color: #454545;
   }
 }
+
+.register-container{
+  //background-color: $bg;
+  .el-dialog{
+    background-color: $bg;
+    
+    
+  }
+  
+}
+.register-form{
+    position: relative;
+    //width: 520px;
+    max-width: 400px;
+    //padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -287,24 +316,4 @@ $light_gray:#eee;
 }
 </style>
 
-<style lang="scss" >
-$bg:#283443;
-.register-container{
-  //background-color: $bg;
-  .el-dialog{
-    background-color: $bg;
-    
-    
-  }
-  
-}
-.register-form{
-    position: relative;
-    //width: 520px;
-    max-width: 400px;
-    //padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-}
-</style>
 

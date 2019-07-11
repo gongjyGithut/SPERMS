@@ -23,13 +23,17 @@
             </el-table-column>
 
             <el-table-column label="状态" prop="state">
-
+                <template slot-scope="scope">
+                    <span v-if='scope.row.state == 1' style="color:#5daf34">开启</span>
+                    <span v-else style="color:#e6a23c">关闭</span>
+                    <!-- {{scope.row.state == 1?'开启':'关闭'}} -->
+                </template>
             </el-table-column>
 
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                   <el-button>开启</el-button>
-                   <el-button>关闭</el-button>
+                   <el-button v-if="scope.row.state == 0" type="success" size="mini">开启</el-button>
+                   <el-button v-else type="warning" size="mini">关闭</el-button>
                 </template>
 
             </el-table-column>
@@ -43,7 +47,12 @@ export default {
     component:{},
     data() {
         return {
-            devData:[]
+            devData:[
+                {
+                    name:'设备1',
+                    state:0,
+                }
+            ]
         }
     },
 }
