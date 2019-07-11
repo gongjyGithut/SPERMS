@@ -1,7 +1,8 @@
 <template>
     <div class="app-container">
         <el-table 
-        :data="devData">
+        :data="devData"
+        style="width:100%">
             <el-table-column label="设备名称" prop="name">
 
             </el-table-column>
