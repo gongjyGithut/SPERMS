@@ -51,6 +51,10 @@ export default {
                 {
                     name:'设备1',
                     state:0,
+                },
+                {
+                    name:'设备2',
+                    state:1,
                 }
             ]
         }
