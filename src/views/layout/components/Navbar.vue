@@ -2,13 +2,18 @@
   <div class="navbar">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
     <breadcrumb />
-    <el-dropdown class="avatar-container" trigger="click">
+    <div class="right-menu">
+      <template v-if="device!=='mobile'">
+        <screenfull class="right-menu-item hover-effect" />
+      </template>
+
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
       <div class="avatar-wrapper">
         
-        <span class="user-avatar">
+        <span class="user-avatar ">
           您好,{{name}}
         </span>
-        <i class="el-icon-caret-bottom"/>
+        <i class="el-icon-caret-bottom "/>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
@@ -26,6 +31,9 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    </div>
+    
+    
   </div>
 </template>
 
@@ -33,18 +41,20 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import Screenfull from '@/components/Screenfull'
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    Screenfull
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
       'name',
-      'roles'
+      'roles',
+      'device'
     ])
   },
   methods: {
@@ -85,20 +95,45 @@ export default {
     top: 16px;
     color: red;
   }
-  .avatar-container {
-    height: 50px;
-    display: inline-block;
-    position: absolute;
-    right: 35px;
-    .avatar-wrapper {
-      cursor: pointer;
-      margin-top: 5px;
-      position: relative;
-      line-height: initial;
-      .user-avatar {
+  
+    .right-menu {
+      float: right;
+      height: 100%;
+      line-height: 50px;
+
+      &:focus {
+        outline: none;
+      }
+      .right-menu-item {
         display: inline-block;
-        font-size: 14px;
-        line-height: 50px;
+        padding: 0 8px;
+        height: 100%;
+        font-size: 18px;
+        color: #5a5e66;
+        vertical-align: text-bottom;
+
+         &.hover-effect {
+          cursor: pointer;
+          transition: background .3s;
+
+          &:hover {
+            background: rgba(0, 0, 0, .025)
+          }
+         }
+      }
+      
+    }
+
+    .avatar-container {
+      margin-right: 30px;
+
+    .avatar-wrapper {
+      margin-bottom: 5px;
+      position: relative;
+      cursor: pointer;
+      .user-avatar {
+        width: 40px;
+        height: 40px;
         margin-left: 10px;
       }
       .el-icon-caret-bottom {
