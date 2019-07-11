@@ -3,6 +3,7 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
+@import './tableCell.scss';
 
 body {
   height: 100%;
@@ -65,10 +66,3 @@ div:focus {
 }
 
 
-// @function cellText($color){
-//   color:$color
-// }
-
-// .successCell{
-//   :cellText("#67C23A")
-// }

@@ -1,0 +1,22 @@
+@import './variables.scss';
+
+
+.infoText{
+    color: $infoText;
+}
+
+.successText{
+    color: $successText
+}
+
+.warningText{
+    color: $warningText
+}
+
+.dangerText{
+    color: $dangerText;
+}
+
+.primaryText{
+    color: $primaryText
+}

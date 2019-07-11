@@ -25,9 +25,9 @@
 
             <el-table-column label="状态" prop="state">
                 <template slot-scope="scope">
-                    <span v-if='scope.row.state == 1' style="color:#5daf34">开启</span>
-                    <span v-else style="color:#e6a23c">关闭</span>
-                    <!-- {{scope.row.state == 1?'开启':'关闭'}} -->
+                    <span :class="scope.row.state == 1?'successText':'warningText'">
+                        {{scope.row.state == 1?'开启':'关闭'}}
+                    </span>
                 </template>
             </el-table-column>
 
