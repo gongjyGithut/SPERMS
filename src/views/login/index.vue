@@ -151,9 +151,11 @@ export default {
     }
   },
   mounted() {
-    if(this.screenWidth < 992){
-      this.fullscreen = true
-    }
+    this.$nextTick(() =>{
+      if(this.screenWidth < 992){
+        this.fullscreen = true
+      }
+    })
     
   },
   methods: {
@@ -173,6 +175,8 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
+            this.$store.dispatch('GetInfo',this.loginForm.username)
+            
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {

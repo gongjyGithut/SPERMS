@@ -5,12 +5,12 @@
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
   "author": "gjy",
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
-    "build": "node build/build.js",
-    "build:report": "npm_config_report=true npm run build",
+    "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
+    "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
+    "precommit": "lint-staged",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "chalk": "2.4.1",
     "compression-webpack-plugin": "2.0.0",
     "copy-webpack-plugin": "4.5.2",
+    "cross-env": "^5.2.0",
     "css-loader": "1.0.0",
     "echarts": "^4.2.1",
     "eslint": "4.19.1",
@@ -58,6 +59,7 @@
     "postcss-import": "12.0.0",
     "postcss-loader": "2.1.6",
     "postcss-url": "7.3.2",
+    "qs": "^6.7.0",
     "rimraf": "2.6.2",
     "sass-loader": "7.0.3",
     "screenfull": "^4.2.0",

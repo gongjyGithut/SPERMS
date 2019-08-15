@@ -1,26 +1,22 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, getInfo } from '@/api/login'
+
 
 const user = {
   state: {
-    token: getToken(),
     name: '',
-    avatar: '',
-    roles: []
+    roleid: ''
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
+    
     SET_NAME: (state, name) => {
       state.name = name
     },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
+    SET_ROLES: (state, roleid) => {
+      state.roleid = roleid
     },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
+    SET_SESSION: (state, recordId) =>{
+      sessionStorage.setItem('username', JSON.stringify(recordId))
     }
   },
 
@@ -29,10 +25,9 @@ const user = {
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
-          const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
+        login(userInfo).then(response => {
+          //this.$store.dispatch('GetInfo',this.loginForm.username)
+          commit('SET_SESSION', userInfo.username)//保存到session中
           resolve()
         }).catch(error => {
           reject(error)
@@ -41,31 +36,18 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({ commit, state },username) {
+      const recordId = username
+      let parmas = {}
+      parmas.recordId = recordId
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-
-    // 登出
-    LogOut({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
+        getInfo(parmas).then(response => {
+          console.log(response)
+          let data = response.record
+          
+          commit('SET_NAME', data.uName)
+          commit('SET_ROLES', data.roleId)
+          //commit('SET_AVATAR', data.avatar)
           resolve()
         }).catch(error => {
           reject(error)
@@ -73,11 +55,13 @@ const user = {
       })
     },
 
+
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
-        removeToken()
+        // commit('SET_TOKEN', '')
+        // removeToken()
+        sessionStorage.removeItem('username')
         resolve()
       })
     }

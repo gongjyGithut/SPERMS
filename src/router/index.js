@@ -52,13 +52,20 @@ export const constantRouterMap = [
   {
     path: '/dev-manage',
     component: Layout,
-    //redirect: '/dev-manage/index',
+    redirect: '/dev-manage/index',
+    meta: { title: '设备管理', icon: 'dev-manage' },
     children: [
       {
-        path: 'index',
-        name: '设备管理',
-        component: () => import('@/views//dev-manage/index'),
-        meta: { title: '设备管理', icon: 'dev-manage' },
+        path: 'message',
+        name: '设备信息',
+        component: () => import('@/views//dev-manage/message/index'),
+        meta: { title: '设备信息' },
+      },
+      {
+        path: 'deploy',
+        name: '设备配置',
+        component: () => import('@/views//dev-manage/deploy/index'),
+        meta: { title: '设备配置'},
       }
     ]
   },
@@ -78,13 +85,25 @@ export const constantRouterMap = [
 
   {
     path: '/setting',
+    redirect: '/setting/index',
     component: Layout,
+    meta:{title:'系统管理',icon: 'setting'},
     children: [
       {
-        path: 'index',
-        name: '系统设置',
-        component: () => import('@/views/setting/index'),
-        meta: { title: '系统设置', icon: 'setting' }
+        path: 'customer',
+        name: '客户信息',
+        component: () => import('@/views/setting/customer/index'),
+        meta: { title: '客户信息'}
+      },{
+        path:'caculation',
+        name:'计费方式',
+        component:() => import('@/views/setting/caculation/index'),
+        meta: { title: '计费方式'}
+      },{
+        path:'rentmanager',
+        name:'租赁信息',
+        component:() => import('@/views/setting/rentmanager/index'),
+        meta: { title: '租赁信息'}
       }
     ]
   },

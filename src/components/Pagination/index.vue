@@ -8,8 +8,7 @@
       :page-sizes="pageSizes"
       :total="total"
       v-bind="$attrs"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
+     
     />
   </div>
 </template>
@@ -72,6 +71,14 @@ export default {
       }
     }
   },
+  watch: {
+    pageSize(newValue){
+      this.$emit('pagination', { page: this.currentPage, limit: newValue })
+    },
+    currentPage(newValue){
+      this.$emit('pagination', { page: newValue, limit: this.pageSize })
+    }
+  },
   methods: {
     handleSizeChange(val) {
       this.$emit('pagination', { page: this.currentPage, limit: val })
@@ -85,7 +92,7 @@ export default {
 
 <style scoped>
 .pagination-container {
-  background: #fff;
+  /* background: #fff; */
   padding: 32px 16px;
 }
 .pagination-container.hidden {

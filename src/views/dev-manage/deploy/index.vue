@@ -1,5 +1,5 @@
 <template>
     <div class="app-container">
-        setting
+        设备配置
     </div>
 </template>
