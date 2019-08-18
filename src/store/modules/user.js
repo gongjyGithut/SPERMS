@@ -42,7 +42,7 @@ const user = {
       parmas.recordId = recordId
       return new Promise((resolve, reject) => {
         getInfo(parmas).then(response => {
-          console.log(response)
+          
           let data = response.record
           
           commit('SET_NAME', data.uName)

@@ -63,9 +63,9 @@ export const constantRouterMap = [
       },
       {
         path: 'deploy',
-        name: '设备配置',
+        name: '设备应用信息',
         component: () => import('@/views//dev-manage/deploy/index'),
-        meta: { title: '设备配置'},
+        meta: { title: '设备应用信息'},
       }
     ]
   },

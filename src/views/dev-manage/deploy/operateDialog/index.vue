@@ -9,65 +9,62 @@
                 <el-form-item label="设备编号">
                     
                     <el-input 
-                    style="" 
                     v-model="dialogFormData.eId"
                     placeholder="">
 
                     </el-input>
                     
                 </el-form-item>
-                
+
                 <el-form-item label="设备名称">
                     
                     <el-input 
-                    v-model="dialogFormData.eName" 
+                    style="" 
+                    v-model="dialogFormData.eName"
                     placeholder="">
 
                     </el-input>
                     
-                    
                 </el-form-item>
-
-                <el-form-item label="生产厂家">
-                    
-                    <el-input 
-                    v-model="dialogFormData.eManufacturer"  
-                    placeholder="">
-
-                    </el-input>
-                     
-                </el-form-item>
-
-                <el-form-item label="生产日期">
                 
-                    <el-date-picker
-                    v-model="dialogFormData.eDate" 
-                    style="width:100%"
-                    type="datetime"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    :picker-options="pickerOptions">
-                    </el-date-picker>
-                    
-                    
-                </el-form-item>
-
-                <el-form-item label="规格">
+                <el-form-item label="设备状况">
                     
                     <el-input 
-                    v-model="dialogFormData.eStandard"  
+                    v-model="dialogFormData.eeCondition" 
                     placeholder="">
 
                     </el-input>
-                        
+                    
+                    
                 </el-form-item>
 
-                <el-form-item label="类型">
+                <el-form-item label="GPS经度">
                     
-                        
-                    <el-radio-group v-model="dialogFormData.eType">
-                        <el-radio label='1' style="color:#FFF">类型1</el-radio>
-                        <el-radio label='2' style="color:#FFF">类型2</el-radio>
+                    <el-input 
+                    v-model="dialogFormData.eeLongitude" 
+                    placeholder="">
+
+                    </el-input>
+                    
+                    
+                </el-form-item>
+
+                <el-form-item label="GPS纬度">
+                    
+                    <el-input 
+                    v-model="dialogFormData.eeLatitude" 
+                    placeholder="">
+
+                    </el-input>
+                    
+                    
+                </el-form-item>
+
+                <el-form-item label="应用授权">
+                    
+                    <el-radio-group v-model="dialogFormData.eeEnable">
+                        <el-radio :label='0' style="color:#FFF">关停</el-radio>
+                        <el-radio :label='1' style="color:#FFF">正常使用</el-radio>
                     </el-radio-group>
                         
                     
@@ -83,9 +80,9 @@
 </template>
 
 <script>
-import {addEq,updateEq} from '@/api/dev-manage/message'
+import {addEq,updateEq} from '@/api/dev-manage/deploy'
 export default {
-    name:'formDialog',
+    name:'operateDialog',
     props:{
         isdialogShow:{
             default:false,
@@ -116,11 +113,7 @@ export default {
     },
     data() {
         return {
-            pickerOptions :{
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                },
-            },
+            
         }
     },
     methods: {
