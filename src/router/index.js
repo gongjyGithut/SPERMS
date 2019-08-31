@@ -104,6 +104,22 @@ export const constantRouterMap = [
         name:'租赁信息',
         component:() => import('@/views/setting/rentmanager/index'),
         meta: { title: '租赁信息'}
+      },{
+        path:'sysmenu',
+        name:'菜单信息',
+        component:() => import('@/views/setting/sysmenu/index'),
+        meta: { title: '菜单信息'}
+      },{
+        path:'users',
+        name:'用户管理',
+        component:() => import('@/views/setting/users/index'),
+        meta: { title: '用户管理'}
+      }
+      ,{
+        path:'sysrole',
+        name:'角色管理',
+        component:() => import('@/views/setting/sysrole/index'),
+        meta: { title: '角色管理'}
       }
     ]
   },

@@ -12,6 +12,17 @@ export function getEqList(data){//查询设备列表
     })
 }
 
+export function getEqListById(data){//根据ID查询设备列表
+    return request({
+        url:'/equipment_enable/find_by_id',
+        method:'POST',
+        data:qs.stringify(data),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8;',
+        }
+    })
+}
+
 export function addEq(data){//添加设备
     return request({
         url:'/equipment_enable/add',

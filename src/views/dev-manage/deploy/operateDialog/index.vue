@@ -10,7 +10,8 @@
                     
                     <el-input 
                     v-model="dialogFormData.eId"
-                    placeholder="">
+                    placeholder=""
+                    :disabled="submitStatus == 'update'">
 
                     </el-input>
                     
@@ -119,17 +120,18 @@ export default {
     methods: {
         handleSubmit(){
             let parmas = Object.assign({},this.dialogFormData)
+
             if(this.submitStatus === 'add'){
                 addEq(parmas).then((res) =>{
-                    this.$message.success('添加成功')
+                    this.$message.info(res.resultMsg)
                 })
             }else{
                 updateEq(parmas).then((res) =>{
                     this.$message.success('修改成功')
                 })
             }
-            this.dialogVisible = false
             this.$emit('reload')
+            this.dialogVisible = false
         }
     },
 }

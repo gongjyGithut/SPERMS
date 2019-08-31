@@ -23,12 +23,12 @@
                     </el-form-item>
 
                     <el-form-item >
-                            <el-button type="primary" size="mini" @click="handleUpdata(scope.row)" icon="el-icon-search"></el-button>
+                        <el-button type="primary" size="mini" @click="handleSearch" icon="el-icon-search"></el-button>
                     </el-form-item>
                 </el-form>
             </el-row>
             <el-table 
-            :data="listData"
+            :data="eqDatalist"
             highlight-current-row 
             height="400px"
             size="mini">
@@ -45,8 +45,8 @@
 
               <el-table-column min-width="120px">
                   <template slot-scope="scope">
-                    <el-link icon="el-icon-edit" type="warning" @click="handleUpdata(scope.row)">修改</el-link>
-                    <el-link icon="el-icon-delete"  type="danger" >删除</el-link>
+                    <el-link icon="el-icon-edit" type="warning" @click="handleUpdate(scope.row)">修改</el-link>
+                    <el-link icon="el-icon-delete"  type="danger" @click="handleDelete(scope.row)">删除</el-link>
                   </template>
               </el-table-column>
             </el-table>
@@ -72,9 +72,17 @@ export default {
             type:Array
         }
     },
+    watch: {
+        listData(newVal){
+            console.log(newVal)
+        }
+    },
     computed: {
         device() {
             return this.$store.state.app.device
+        },
+        eqDatalist(){
+            return this.listData
         },
         dialogVisible:{
             get(){
@@ -93,8 +101,22 @@ export default {
         }
     },
     methods: {
-        handleUpdata(row){
-            this.$emit('updata',row)
+        handleSearch(){
+            let parmas = {}
+            if(!!this.eId){
+                parmas.recordId = this.eId
+                this.$emit('search',parmas)
+            }else{
+                parmas.eName = this.eName
+                parmas.e_enable = this.e_enable
+                this.$emit('search',parmas)
+            }
+        },
+        handleUpdate(row){
+            this.$emit('update',row)
+        },
+        handleDelete(row){
+            this.$emit('delete',row)
         }
     },
 }
