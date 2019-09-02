@@ -1,6 +1,6 @@
 <template>
     <div>
-        <bmap-container :listData="mapData" v-if="listData.length > 0"/>
+        <bmap-container :listData="mapData" v-if="mapData.length > 0"/>
 
         <el-dropdown class="bmapMenu"  @command="handleCommand" trigger="click">
             <el-button type="primary" icon="el-icon-menu" ></el-button>
