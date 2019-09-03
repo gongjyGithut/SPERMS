@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import {addEq,updateEq} from '@/api/dev-manage/deploy'
+import {addEqEnable,updateEqEnable} from '@/api/dev-manage/deploy'
 export default {
     name:'operateDialog',
     props:{
@@ -105,6 +105,7 @@ export default {
                 return this.isdialogShow
             },
             set(val){
+                console.log(val)
                 this.$emit('update:isdialogShow', val)
             }
         },
@@ -122,11 +123,11 @@ export default {
             let parmas = Object.assign({},this.dialogFormData)
 
             if(this.submitStatus === 'add'){
-                addEq(parmas).then((res) =>{
+                addEqEnable(parmas).then((res) =>{
                     this.$message.info(res.resultMsg)
                 })
             }else{
-                updateEq(parmas).then((res) =>{
+                updateEqEnable(parmas).then((res) =>{
                     this.$message.success('修改成功')
                 })
             }

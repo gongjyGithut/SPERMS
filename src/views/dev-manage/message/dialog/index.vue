@@ -42,7 +42,7 @@
                 
                     <el-date-picker
                     v-model="dialogFormData.eDate" 
-                    style="width:100%"
+                    style="width:250px;"
                     type="datetime"
                     placeholder="选择日期"
                     value-format="yyyy-MM-dd HH:mm:ss"

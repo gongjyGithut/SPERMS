@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getEqList,deleteEq,getEqListById} from '@/api/dev-manage/deploy'
+import {getEqEnableList,deleteEqEnable,getEqEnableListById} from '@/api/dev-manage/deploy'
 import bmapContainer from '@/components/BMapContainer'
 import operateDialog from './operateDialog'
 import listDialog from './listDialog'
@@ -63,13 +63,13 @@ export default {
             let parmas = {}
             parmas.pageNo = 1
             parmas.pageSize = 100
-            getEqList(parmas).then(res =>{
+            getEqEnableList(parmas).then(res =>{
                 this.listData = res.records
                 this.mapData = res.records
             })
         },
         fecthEqListById(parmas){
-            getEqListById(parmas).then(res =>{
+            getEqEnableListById(parmas).then(res =>{
                 this.listData = []
                 if(!!res.record){
                     this.listData.push(res.record)
@@ -88,7 +88,7 @@ export default {
             }else{
                 parmas.pageNo = 1
                 parmas.pageSize = 100
-                getEqList(parmas).then(res =>{
+                getEqEnableList(parmas).then(res =>{
                     this.listData = res.records
                 })
             }
@@ -115,7 +115,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                deleteEq(parmas).then((res) =>{
+                deleteEqEnable(parmas).then((res) =>{
                     this.$message.success('删除成功')
                     this.fecthEqList()
                 })

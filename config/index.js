@@ -11,8 +11,14 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'https://119.23.24.72:8085/api', //后端接口地址
-                changeOrigin: true, //是否允许跨越
+                target: 'https://119.23.24.72:8081', //后端接口地址
+                changeOrigin: true, //是否允许跨越,
+                ws: true,
+                pathRewrite: {
+                    '^/api': ''
+                },
+                secure: false,
+
             }
         },
         // Various Dev Server settings
