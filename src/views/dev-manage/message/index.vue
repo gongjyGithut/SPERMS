@@ -68,50 +68,34 @@
         <el-table 
         ref="equipmentTable"
         :data="equipmentList"
-        v-loading="loading"
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-        height="calc(100vh - 260px)"
+        tooltip-effect="light"
+        border 
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column label="设备编号" prop="eId"></el-table-column>
+            <el-table-column label="设备编号" :show-overflow-tooltip="true" prop="eId"></el-table-column>
             
-            <el-table-column label="设备名称" prop="eName">
+            <el-table-column label="设备名称" prop="eName"></el-table-column>
 
-            </el-table-column>
+            <el-table-column label="生产厂家" prop="eManufacturer"></el-table-column>
 
-            <el-table-column label="生产厂家" prop="eManufacturer">
+            <el-table-column label="生产日期" prop="eDate" :formatter="formatTime"></el-table-column>
 
-            </el-table-column>
+            <el-table-column label="规格" prop="eStandard"></el-table-column>
 
-            <el-table-column label="生产日期" prop="eDate" :formatter="formatTime">
+            <el-table-column label="类型" prop="eType"></el-table-column>
 
-            </el-table-column>
+            <el-table-column label="状态" prop="eState" :formatter="formatState"></el-table-column>
 
-            <el-table-column label="规格" prop="eStandard">
-
-            </el-table-column>
-
-            <el-table-column label="类型" prop="eType">
-
-            </el-table-column>
-
-            <el-table-column label="状态" prop="eState">
-                <template slot-scope="scope">
-                    <span :class="scope.row.state == 1?'successText':'warningText'">
-                        {{scope.row.state == 1?'开启':'关闭'}}
-                    </span>
-                </template>
-            </el-table-column>
-
-            <el-table-column label="操作">
+            <!-- <el-table-column label="操作">
                 <template slot-scope="scope">
                    <el-button v-if="scope.row.state == 1" type="warning " size="mini">关闭</el-button>
                    <el-button v-else type="success" size="mini">开启</el-button>
                 </template>
 
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         
         <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getEqList"/>
@@ -147,6 +131,7 @@ export default {
             dialogForm:{
                 eDate: '',
                 eId: '',
+                eState:0,
                 eManufacturer: '',
                 eName: '',
                 eStandard: '',
@@ -228,17 +213,28 @@ export default {
             
         },
         selChang(row){
-            console.log(row)
+            
             this.selectData=row
         },
         rowClick(row){
-            console.log(row)
+            
             this.$refs.equipmentTable.clearSelection()
             this.$refs.equipmentTable.toggleRowSelection(row)
 
         },
         formatTime(row){
             return parseTime(row.eDate)
+        },
+        formatState(row){
+            switch(row.eState){
+                case '0':return '在线';break;
+                case '1':return '离线';break;
+                case '2':return '停机';break;
+                case '3':return '故障';break;
+                case '4':return '报废';break;
+                case '5':return '其他';break;
+                default:return '未知'
+            }
         }
     },
 }

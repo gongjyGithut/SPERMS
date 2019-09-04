@@ -30,11 +30,14 @@
             <el-table 
             :data="eqDatalist"
             highlight-current-row 
-            height="400px"
+            height="300px"
+            style="width:100%"
+            border
+            tooltip-effect="light"
             size="mini">
-              <el-table-column label="设备编号" prop="eId"></el-table-column>
+              <el-table-column label="设备编号" :show-overflow-tooltip="true" prop="eId"></el-table-column>
               <el-table-column label="设备名称" prop="eName"></el-table-column>
-              <el-table-column label="设备状况" prop="eeCondition"></el-table-column>
+              <el-table-column label="设备状况" :show-overflow-tooltip="true" prop="eeCondition"></el-table-column>
               <el-table-column label="授权状态" prop="eeEnable">
                   <template slot-scope="scope">
                     {{scope.row.eeEnable == 1?'正常使用':'关闭'}}

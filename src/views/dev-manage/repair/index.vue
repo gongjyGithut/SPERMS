@@ -2,7 +2,7 @@
     <div class="app-container">
         <el-row  class="toolbar">
             <el-form :inline="true">
-                <el-form-item>
+              <el-form-item label="">
                     <el-date-picker
                         type="datetime"
                         placeholder="开始时间"
@@ -10,9 +10,9 @@
                         value-format="yyyy-MM-dd HH:mm:ss"
                         :picker-options="pickerOptions">
                     </el-date-picker>
-                </el-form-item>
+              </el-form-item>
 
-                <el-form-item>
+              <el-form-item>
                     <el-date-picker
                         type="datetime"
                         placeholder="结束时间"
@@ -20,9 +20,9 @@
                         value-format="yyyy-MM-dd HH:mm:ss"
                         :picker-options="pickerOptions">
                     </el-date-picker>
-                </el-form-item>
+              </el-form-item>
 
-                <el-form-item>
+              <el-form-item>
                     <el-input 
                         style="min-width:220px"
                         v-model="keywords"
@@ -30,10 +30,9 @@
                         prefix-icon="el-icon-search">
                         
                     </el-input>
-                </el-form-item>
+              </el-form-item>
 
-                <el-form-item>
-
+              <el-form-item>
                     <el-button 
                         type="primary" 
                         icon="el-icon-search"
@@ -61,48 +60,57 @@
                             @click.stop="handleDelete">
                         </el-button>
                     </el-button-group>
-                </el-form-item>
+              </el-form-item>
             </el-form>
+             
         </el-row>
         
         <el-table 
-        ref="usersTable"
-        :data="userList"
-        border
+        ref="equipmentTable"
+        :data="equipmentList"
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-         
+        border
+        tooltip-effect="light"
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column label="用户账号" prop="uId"></el-table-column>
-            
-            <el-table-column label="用户名称" prop="uName">
 
-            </el-table-column>
+            <el-table-column label="设备编号" :show-overflow-tooltip="true" prop="eId"></el-table-column>
 
-            <!-- <el-table-column label="用户密码" prop="uPassword">
+            <el-table-column label="维修厂家" prop="rManufacturer"></el-table-column>
 
-            </el-table-column> -->
+            <el-table-column label="维修费用" prop="rCost"></el-table-column>
 
-            <el-table-column label="角色" prop="roleName">
+            <el-table-column label="维修厂家" prop="rPerson"></el-table-column>
+
+            <el-table-column label="生产日期" prop="rTime" :formatter="formatTime"></el-table-column>
+
+            <el-table-column label="状态" prop="rState">
                 <template slot-scope="scope">
-                    {{!!scope.row.roleName?scope.row.roleName:'未配置'}}
+                    <span :class="scope.row.state == 1?'successText':'warningText'">
+                        {{scope.row.state == 1?'维修完成':'未维修'}}
+                    </span>
                 </template>
             </el-table-column>
-            
 
+            <!-- <el-table-column label="操作">
+                <template slot-scope="scope">
+                   <el-button v-if="scope.row.state == 1" type="warning" size="mini">关闭</el-button>
+                   <el-button v-else type="success" size="mini">开启</el-button>
+                </template>
+
+            </el-table-column> -->
         </el-table>
         
-        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getUsersList"/>
+        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRepairList"/>
         
-        <form-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="reload"/>
+        <form-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="getRepairList"/>
     </div>
 </template>
 
 <script>
-import {getUsersList,deleteUsers} from '@/api/setting/users'
-import {getRoleList} from '@/api/setting/sysrole'
+import {getRepairList,deleteRepair} from '@/api/dev-manage/repair'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -112,7 +120,7 @@ export default {
     data() {
         let me = this
         return {
-            userList:[],
+            equipmentList:[],
             startTime:new Date(new Date().getTime() - 3600 * 1000 * 24 * 7),
             endTime:new Date(),
             keywords:'',
@@ -126,11 +134,12 @@ export default {
             isdialogShow:false,
             dialogTitle:'',
             dialogForm:{
-                uId: '',
-                uName: '',
-                uPassword: '',
-                roleId:'',
-                roleList:[],
+                eDate: '',
+                eId: '',
+                eManufacturer: '',
+                eName: '',
+                eStandard: '',
+                eType: ''
             },
             dialogFormData:{},
             pickerOptions :{
@@ -143,12 +152,12 @@ export default {
     },
     mounted() {
         this.$nextTick(() =>{
-            this.getUsersList()
+            this.getRepairList()
             this.dialogFormData = Object.assign({},this.dialogForm)
         })
     },
     methods: {
-        getUsersList(){
+        getRepairList(){
             let parmas = Object.assign({},this.page)
             
             if(!!this.startTime && !!this.endTime){
@@ -167,16 +176,15 @@ export default {
 
             parmas.keywords = this.keywords
             this.loading = true
-            getUsersList(parmas).then((res)=>{
-                this.userList = res.records
+            getRepairList(parmas).then((res)=>{
+                this.equipmentList = res.records
                 this.total = res.totalCount
-
                 this.loading = false
             })
         },
         handleSearch(){
             this.page.pageNo = 1
-            this.getUsersList()
+            this.getRepairList()
         },
         handleAdd(){
             this.isdialogShow = true
@@ -189,31 +197,24 @@ export default {
             this.dialogFormData = Object.assign({},this.selectData[0])
         },
         handleDelete(){
-            let userParmas = {}
-            let uIds = []
+            let parmas = {}
+            let eIds = []
             this.selectData.forEach(v=>{
-                uIds.push(v.uId)
+                eIds.push(v.eId)
             })
-            userParmas.uIds = uIds
-            
-            this.$confirm('将删除选中信息, 是否继续?', '提示', {
+            parmas.eIds = eIds
+            console.log(parmas)
+            this.$confirm('将删除选中设备, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                deleteUsers(userParmas).then((res)=>{
+                deleteRepair(parmas).then((res) =>{
                     this.$message.success('删除成功')
-                    this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-                    this.endTime = new Date()
-                    this.getUsersList()
+                    this.getRepairList()
                 })
             })
             
-        },
-        reload(){
-            this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-            this.endTime = new Date()
-            this.getUsersList()
         },
         selChang(row){
             console.log(row)
@@ -221,8 +222,8 @@ export default {
         },
         rowClick(row){
             console.log(row)
-            this.$refs.usersTable.clearSelection()
-            this.$refs.usersTable.toggleRowSelection(row)
+            this.$refs.equipmentTable.clearSelection()
+            this.$refs.equipmentTable.toggleRowSelection(row)
 
         },
         formatTime(row){
@@ -232,5 +233,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+// .test{
+//     background-color: 
+// }
 </style>

@@ -63,26 +63,15 @@
                 </el-form-item>
 
                 <el-form-item label="类型">
-                    <el-input 
-                    v-model="dialogFormData.eType"  
-                    placeholder="">
-
-                    </el-input>
-                </el-form-item>
-                <!-- <el-form-item label="状态">
                     
                         
-                    <el-radio-group v-model="dialogFormData.eState">
-                        <el-radio label='0' style="color:#FFF">在线</el-radio>
-                        <el-radio label='1' style="color:#FFF">离线</el-radio>
-                        <el-radio label='2' style="color:#FFF">停机</el-radio>
-                        <el-radio label='3' style="color:#FFF">故障</el-radio>
-                        <el-radio label='4' style="color:#FFF">报废</el-radio>
-                        <el-radio label='5' style="color:#FFF">其他</el-radio>
+                    <el-radio-group v-model="dialogFormData.eType">
+                        <el-radio label='1' style="color:#FFF">类型1</el-radio>
+                        <el-radio label='2' style="color:#FFF">类型2</el-radio>
                     </el-radio-group>
                         
                     
-                </el-form-item> -->
+                </el-form-item>
             </el-form>
 
             <div slot="footer">

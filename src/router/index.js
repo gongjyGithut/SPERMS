@@ -80,17 +80,17 @@ export const constantRouterMap = [{
                 meta: { title: '设备应用信息' },
             },
             {
-                path: 'deploy',
+                path: 'repair',
                 name: '设备维修',
                 component: () =>
-                    import ('@/views//dev-manage/deploy/index'),
+                    import ('@/views//dev-manage/repair/index'),
                 meta: { title: '设备维修' },
             },
             {
-                path: 'deploy',
+                path: 'scrapped',
                 name: '设备报废',
                 component: () =>
-                    import ('@/views//dev-manage/deploy/index'),
+                    import ('@/views//dev-manage/scrapped/index'),
                 meta: { title: '设备报废' },
             }
         ]

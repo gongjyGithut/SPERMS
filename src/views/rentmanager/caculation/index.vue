@@ -47,11 +47,11 @@
         <el-table 
         ref="caculationTable"
         :data="caculationList"
-        v-loading="loading"
+        border
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-        height="calc(100vh - 260px)"
+         
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
             <el-table-column label="计费编号" prop="cmNo"></el-table-column>

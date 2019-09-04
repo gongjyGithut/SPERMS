@@ -68,11 +68,11 @@
         <el-table 
         ref="customerTable"
         :data="customerList"
-        v-loading="loading"
+        border
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-        height="calc(100vh - 260px)"
+         
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
             <el-table-column label="客户编号" prop="customerNo"></el-table-column>
