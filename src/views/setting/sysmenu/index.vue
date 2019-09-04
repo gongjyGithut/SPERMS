@@ -74,7 +74,7 @@
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-        height="calc(100vh - 260px)"
+        
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
             

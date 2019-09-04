@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import JsEncrypt from 'jsencrypt'
 import { parseTime } from './index'
-// import store from '../store'
+import store from '../store'
 // import { getToken } from '@/utils/auth'
 // import qs from 'qs'
 // 创建axios实例
@@ -22,7 +22,7 @@ service.interceptors.request.use(
         let explain = 'sperms:' + parseTime(new Date(), '{y}{m}{d}{h}{i}{s}')
         let token = jse.encrypt(explain)
         config.headers['token'] = token
-        console.log(token)
+            // console.log(token)
             // if (store.getters.token) {
             //   config.headers['token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
             // }
@@ -30,7 +30,8 @@ service.interceptors.request.use(
             //config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8;'  
             //config.headers['Content-Type'] = 'application/json;'
         config.headers['Access-Control-Allow-Origin'] = '*'
-        console.log(config.headers)
+        store.commit('showLoading')
+            // console.log(config.headers)
             // config.transformRequest = [function (data) { 
             //   // 在请求之前对data传参进行格式转换​
             //   data = qs.stringify(data)
@@ -43,6 +44,7 @@ service.interceptors.request.use(
         // Do something with request error
         console.log(error) // for debug
         Promise.reject(error)
+        store.commit('forceClose')
     }
 )
 
@@ -52,6 +54,7 @@ service.interceptors.response.use(
         /**
          * code为非100是抛错
          */
+        store.commit('hideLoading')
         const res = response.data
             //console.log(res)
         if (res.resultCode !== 100) {
