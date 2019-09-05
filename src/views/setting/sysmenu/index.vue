@@ -70,11 +70,11 @@
     <el-table 
         ref="menuTable"
         :data="menuList"
-        v-loading="loading"
+        border
         @selection-change="selChang"
         @row-click="rowClick"
         highlight-current-row
-        
+         
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
             

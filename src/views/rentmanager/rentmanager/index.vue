@@ -2,7 +2,7 @@
     <div class="app-container">
         <el-row  class="toolbar">
             <el-form :inline="true">
-                <el-form-item>
+                <el-form-item label="">
                     <el-date-picker
                         type="datetime"
                         placeholder="开始时间"
@@ -11,8 +11,10 @@
                         :picker-options="pickerOptions">
                     </el-date-picker>
                 </el-form-item>
+                
+            
 
-                <el-form-item>
+                <el-form-item label="">
                     <el-date-picker
                         type="datetime"
                         placeholder="结束时间"
@@ -22,18 +24,36 @@
                     </el-date-picker>
                 </el-form-item>
 
-                <el-form-item>
+                <el-form-item label="">
                     <el-input 
                         style="min-width:220px"
-                        v-model="keywords"
-                        placeholder="关键字查询" 
-                        prefix-icon="el-icon-search">
+                        v-model="tradeNo"
+                        placeholder="交易编号" >
                         
                     </el-input>
                 </el-form-item>
 
-                <el-form-item>
 
+
+                <el-form-item label="">
+                    <el-input 
+                        style="min-width:220px"
+                        v-model="customerName"
+                        placeholder="客户名称" >
+                        
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="">
+                    <el-input 
+                        style="min-width:220px"
+                        v-model="equipmentName"
+                        placeholder="设备名称" >
+                        
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="">
                     <el-button 
                         type="primary" 
                         icon="el-icon-search"
@@ -66,8 +86,8 @@
         </el-row>
         
         <el-table 
-        ref="usersTable"
-        :data="userList"
+        ref="rentmanagerTable"
+        :data="rentmanagerList"
         border
         @selection-change="selChang"
         @row-click="rowClick"
@@ -75,34 +95,40 @@
          
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column label="用户账号" prop="uId"></el-table-column>
+            <el-table-column label="交易编号" prop="tradeNo"></el-table-column>
             
-            <el-table-column label="用户名称" prop="uName">
+            <el-table-column label="计费方式" prop="cmNo">
 
             </el-table-column>
 
-            <!-- <el-table-column label="用户密码" prop="uPassword">
+            <el-table-column label="客户编号" prop="customerNo">
 
-            </el-table-column> -->
-
-            <el-table-column label="角色" prop="roleName">
-                <template slot-scope="scope">
-                    {{!!scope.row.roleName?scope.row.roleName:'未配置'}}
-                </template>
             </el-table-column>
+
+            <el-table-column label="设备编号" prop="eId">
+
+            </el-table-column>
+
+            <el-table-column label="租借时间" prop="rentDate"></el-table-column>
             
+            <el-table-column label="租借结束时间" prop="rentEndDate">
+
+            </el-table-column>
+
+            <el-table-column label="使用地点" prop="rentPlace">
+
+            </el-table-column>
 
         </el-table>
         
-        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getUsersList"/>
+        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRentmanagerList"/>
         
         <form-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="reload"/>
     </div>
 </template>
 
 <script>
-import {getUsersList,deleteUsers} from '@/api/setting/users'
-import {getRoleList} from '@/api/setting/sysrole'
+import {getRentmanagerList,deleteRentmanager} from '@/api/setting/rentmanager'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -112,10 +138,12 @@ export default {
     data() {
         let me = this
         return {
-            userList:[],
+            rentmanagerList:[],
             startTime:new Date(new Date().getTime() - 3600 * 1000 * 24 * 7),
             endTime:new Date(),
-            keywords:'',
+            tradeNo:'',
+            customerName:'',
+            equipmentName:'',
             total:0,
             page:{
                 pageNo:1,
@@ -126,11 +154,9 @@ export default {
             isdialogShow:false,
             dialogTitle:'',
             dialogForm:{
-                uId: '',
-                uName: '',
-                uPassword: '',
-                roleId:'',
-                roleList:[],
+                cmNo: '',
+                cmFee: '',
+                cmDay: '0',
             },
             dialogFormData:{},
             pickerOptions :{
@@ -143,14 +169,18 @@ export default {
     },
     mounted() {
         this.$nextTick(() =>{
-            this.getUsersList()
+            this.getRentmanagerList()
             this.dialogFormData = Object.assign({},this.dialogForm)
         })
     },
     methods: {
-        getUsersList(){
+        getRentmanagerList(){
             let parmas = Object.assign({},this.page)
-            
+
+            parmas.tradeNo = this.tradeNo
+            parmas.customerName = this.customerName
+            parmas.equipmentName = this.equipmentName
+
             if(!!this.startTime && !!this.endTime){
                 
                 parmas.startTime = parseTime(this.startTime)
@@ -164,19 +194,16 @@ export default {
                 this.$message.error('请检查是否选择时间')
                 return
             }
-
-            parmas.keywords = this.keywords
             this.loading = true
-            getUsersList(parmas).then((res)=>{
-                this.userList = res.records
+            getRentmanagerList(parmas).then((res)=>{
+                this.rentmanagerList = res.records
                 this.total = res.totalCount
-
                 this.loading = false
             })
         },
         handleSearch(){
             this.page.pageNo = 1
-            this.getUsersList()
+            this.getRentmanagerList()
         },
         handleAdd(){
             this.isdialogShow = true
@@ -189,23 +216,24 @@ export default {
             this.dialogFormData = Object.assign({},this.selectData[0])
         },
         handleDelete(){
-            let userParmas = {}
-            let uIds = []
+            let rentmanagerParmas = {}
+            let tradeNos = []
             this.selectData.forEach(v=>{
-                uIds.push(v.uId)
+                tradeNos.push(v.tradeNo)
             })
-            userParmas.uIds = uIds
-            
+            rentmanagerParmas.tradeNos = tradeNos
+
             this.$confirm('将删除选中信息, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                deleteUsers(userParmas).then((res)=>{
+                
+                deleteRentmanager(rentmanagerParmas).then(() =>{
                     this.$message.success('删除成功')
                     this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
                     this.endTime = new Date()
-                    this.getUsersList()
+                    this.getRentmanagerList()
                 })
             })
             
@@ -213,7 +241,7 @@ export default {
         reload(){
             this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
             this.endTime = new Date()
-            this.getUsersList()
+            this.getRentmanagerList()
         },
         selChang(row){
             console.log(row)
@@ -221,8 +249,8 @@ export default {
         },
         rowClick(row){
             console.log(row)
-            this.$refs.usersTable.clearSelection()
-            this.$refs.usersTable.toggleRowSelection(row)
+            this.$refs.rentmanagerTable.clearSelection()
+            this.$refs.rentmanagerTable.toggleRowSelection(row)
 
         },
         formatTime(row){

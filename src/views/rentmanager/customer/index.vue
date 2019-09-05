@@ -66,8 +66,8 @@
         </el-row>
         
         <el-table 
-        ref="usersTable"
-        :data="userList"
+        ref="customerTable"
+        :data="customerList"
         border
         @selection-change="selChang"
         @row-click="rowClick"
@@ -75,34 +75,46 @@
          
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column label="用户账号" prop="uId"></el-table-column>
+            <el-table-column label="客户编号" prop="customerNo"></el-table-column>
             
-            <el-table-column label="用户名称" prop="uName">
+            <el-table-column label="姓名" prop="customerName">
 
             </el-table-column>
 
-            <!-- <el-table-column label="用户密码" prop="uPassword">
+            <el-table-column label="年龄" prop="customerAge">
 
-            </el-table-column> -->
+            </el-table-column>
 
-            <el-table-column label="角色" prop="roleName">
+            <el-table-column label="性别" prop="customerSex">
                 <template slot-scope="scope">
-                    {{!!scope.row.roleName?scope.row.roleName:'未配置'}}
+                    {{scope.row.customerSex == 0?'女':'男'}}
                 </template>
             </el-table-column>
-            
 
+            <el-table-column label="手机号" prop="customerPhone">
+
+            </el-table-column>
+
+            <el-table-column label="邮箱" prop="customerEmail">
+
+            </el-table-column>
+
+            <el-table-column label="单位" prop="customerCompany">
+                
+            </el-table-column>
+
+            <el-table-column label="地址" prop="customerAddr">
+            </el-table-column>
         </el-table>
         
-        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getUsersList"/>
+        <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCustomerList"/>
         
         <form-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="reload"/>
     </div>
 </template>
 
 <script>
-import {getUsersList,deleteUsers} from '@/api/setting/users'
-import {getRoleList} from '@/api/setting/sysrole'
+import {getCustomerList,deleteCustomer,deleteUserRelation} from '@/api/setting/customer'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -112,7 +124,7 @@ export default {
     data() {
         let me = this
         return {
-            userList:[],
+            customerList:[],
             startTime:new Date(new Date().getTime() - 3600 * 1000 * 24 * 7),
             endTime:new Date(),
             keywords:'',
@@ -126,11 +138,14 @@ export default {
             isdialogShow:false,
             dialogTitle:'',
             dialogForm:{
-                uId: '',
-                uName: '',
-                uPassword: '',
-                roleId:'',
-                roleList:[],
+                customerNo: '',
+                customerName: '',
+                customerSex: '0',
+                customerAge :'',
+                customerPhone: '',
+                customerEmail: '',
+                customerAddr :'',
+                customerCompany: ''
             },
             dialogFormData:{},
             pickerOptions :{
@@ -143,12 +158,12 @@ export default {
     },
     mounted() {
         this.$nextTick(() =>{
-            this.getUsersList()
+            this.getCustomerList()
             this.dialogFormData = Object.assign({},this.dialogForm)
         })
     },
     methods: {
-        getUsersList(){
+        getCustomerList(){
             let parmas = Object.assign({},this.page)
             
             if(!!this.startTime && !!this.endTime){
@@ -167,16 +182,15 @@ export default {
 
             parmas.keywords = this.keywords
             this.loading = true
-            getUsersList(parmas).then((res)=>{
-                this.userList = res.records
+            getCustomerList(parmas).then((res)=>{
+                this.customerList = res.records
                 this.total = res.totalCount
-
                 this.loading = false
             })
         },
         handleSearch(){
             this.page.pageNo = 1
-            this.getUsersList()
+            this.getCustomerList()
         },
         handleAdd(){
             this.isdialogShow = true
@@ -189,23 +203,27 @@ export default {
             this.dialogFormData = Object.assign({},this.selectData[0])
         },
         handleDelete(){
-            let userParmas = {}
-            let uIds = []
+            let customerParmas = {}
+            let customerNos = []
             this.selectData.forEach(v=>{
-                uIds.push(v.uId)
+                customerNos.push(v.customerNo)
             })
-            userParmas.uIds = uIds
+            customerParmas.customerNos = customerNos
             
+            let relationParmas = {}
+            relationParmas.customerNos = customerNos.join(',')
+
             this.$confirm('将删除选中信息, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                deleteUsers(userParmas).then((res)=>{
+                
+                Promise.all([deleteCustomer(customerParmas),deleteUserRelation(relationParmas)]).then(()=>{
                     this.$message.success('删除成功')
                     this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
                     this.endTime = new Date()
-                    this.getUsersList()
+                    this.getCustomerList()
                 })
             })
             
@@ -213,7 +231,7 @@ export default {
         reload(){
             this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
             this.endTime = new Date()
-            this.getUsersList()
+            this.getCustomerList()
         },
         selChang(row){
             console.log(row)
@@ -221,8 +239,8 @@ export default {
         },
         rowClick(row){
             console.log(row)
-            this.$refs.usersTable.clearSelection()
-            this.$refs.usersTable.toggleRowSelection(row)
+            this.$refs.customerTable.clearSelection()
+            this.$refs.customerTable.toggleRowSelection(row)
 
         },
         formatTime(row){
