@@ -89,7 +89,7 @@
         ref="rentmanagerTable"
         :data="rentmanagerList"
         border
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
          
@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import {getRentmanagerList,deleteRentmanager} from '@/api/setting/rentmanager'
+import {getRentmanagerList,deleteRentmanager} from '@/api/rentmanager/rentmanager'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -243,7 +243,7 @@ export default {
             this.endTime = new Date()
             this.getRentmanagerList()
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },

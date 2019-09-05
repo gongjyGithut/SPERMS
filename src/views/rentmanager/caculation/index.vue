@@ -48,7 +48,7 @@
         ref="caculationTable"
         :data="caculationList"
         border
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
          
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {getCaculationList,deleteCaculation} from '@/api/setting/caculation'
+import {getCaculationList,deleteCaculation} from '@/api/rentmanager/caculation'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -155,7 +155,7 @@ export default {
             })
             
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },

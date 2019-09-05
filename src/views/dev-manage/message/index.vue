@@ -68,15 +68,16 @@
         <el-table 
         ref="equipmentTable"
         :data="equipmentList"
-        v-loading="loading"
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
-        style="width:100%">
+        style="width:100%"
+        border 
+        tooltip-effect="light">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column label="设备编号" prop="eId"></el-table-column>
+            <el-table-column label="设备编号" prop="eId" show-overflow-tooltip ></el-table-column>
             
-            <el-table-column label="设备名称" prop="eName">
+            <el-table-column label="设备名称" prop="eName" show-overflow-tooltip >
 
             </el-table-column>
 
@@ -226,7 +227,7 @@ export default {
             })
             
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },

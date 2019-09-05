@@ -4,17 +4,18 @@
         :title="dialogTitle"
         :visible.sync="dialogVisible"
         :fullscreen="device === 'mobile'"
-        :close-on-click-modal="false">
+        :close-on-click-modal="false"
+        width="500px">
             <el-form  label-width="80px" label-position="left" :model="dialogFormData">
                 <el-form-item label="设备编号">
                     
                     <el-input 
                     v-model="dialogFormData.eId"
-                    placeholder=""
-                    :disabled="submitStatus == 'update'">
+                    placeholder="请选择设备"
+                    :disabled='true'>
 
                     </el-input>
-                    
+                    <el-button @click="getDevList" v-show="dialogTitle === '添加'">选择</el-button>
                 </el-form-item>
 
                 <el-form-item label="设备名称">
@@ -22,7 +23,8 @@
                     <el-input 
                     style="" 
                     v-model="dialogFormData.eName"
-                    placeholder="">
+                    placeholder="请选择设备"
+                    :disabled='true'>
 
                     </el-input>
                     
@@ -64,8 +66,8 @@
                 <el-form-item label="应用授权">
                     
                     <el-radio-group v-model="dialogFormData.eeEnable">
-                        <el-radio :label='0' style="color:#FFF">关停</el-radio>
-                        <el-radio :label='1' style="color:#FFF">正常使用</el-radio>
+                        <el-radio :label='0' >关停</el-radio>
+                        <el-radio :label='1' >正常使用</el-radio>
                     </el-radio-group>
                         
                     
@@ -77,13 +79,17 @@
                 <el-button>重置</el-button>
             </div>
         </el-dialog>
+
+        <dev-list-dialog :devListDialogShow.sync="devListDialogShow" v-if="devListDialogShow" @back="devListDialogBack"/>
     </div>
 </template>
 
 <script>
+import devListDialog from '../devListDialog'
 import {addEqEnable,updateEqEnable} from '@/api/dev-manage/deploy'
 export default {
     name:'operateDialog',
+    components:{devListDialog},
     props:{
         isdialogShow:{
             default:false,
@@ -115,10 +121,13 @@ export default {
     },
     data() {
         return {
-            
+            devListDialogShow:false
         }
     },
     methods: {
+        getDevList(){
+            this.devListDialogShow = true
+        },
         handleSubmit(){
             let parmas = Object.assign({},this.dialogFormData)
 
@@ -133,6 +142,10 @@ export default {
             }
             this.$emit('reload')
             this.dialogVisible = false
+        },
+        devListDialogBack(){
+            this.dialogVisible = true
+            this.devListDialogShow = false
         }
     },
 }

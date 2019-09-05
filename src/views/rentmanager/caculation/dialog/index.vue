@@ -29,8 +29,8 @@
                 <el-form-item label="计费方式" prop="cmDay">
                     
                     <el-radio-group v-model="dialogFormData.cmDay">
-                        <el-radio label='0' style="color:#FFF">按天</el-radio>
-                        <el-radio label='1' style="color:#FFF">按量</el-radio>
+                        <el-radio label='0' >按天</el-radio>
+                        <el-radio label='1' >按量</el-radio>
                     </el-radio-group>
                         
                 </el-form-item>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {addCaculation,updateCaculation} from '@/api/setting/caculation'
+import {addCaculation,updateCaculation} from '@/api/rentmanager/caculation'
 export default {
     name:'formDialog',
     props:{

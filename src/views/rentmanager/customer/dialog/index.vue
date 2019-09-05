@@ -32,8 +32,8 @@
                 <el-form-item label="性别" prop="customerSex">
                       
                     <el-radio-group v-model="dialogFormData.customerSex">
-                        <el-radio label='0' style="color:#FFF">女</el-radio>
-                        <el-radio label='1' style="color:#FFF">男</el-radio>
+                        <el-radio label='0' >女</el-radio>
+                        <el-radio label='1' >男</el-radio>
                     </el-radio-group>
                         
                 </el-form-item>
@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import {addCustomer,addUserRelation,updateCustomer} from '@/api/setting/customer'
+import {addCustomer,addUserRelation,updateCustomer} from '@/api/rentmanager/customer'
 export default {
     name:'formDialog',
     props:{

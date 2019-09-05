@@ -19,8 +19,8 @@
                 <el-form-item label="状态" prop="roleStatus">
                       
                     <el-radio-group v-model="dialogFormData.roleStatus">
-                        <el-radio :label='0' style="color:#FFF">停用</el-radio>
-                        <el-radio :label='1' style="color:#FFF">启用</el-radio>
+                        <el-radio :label='0' >停用</el-radio>
+                        <el-radio :label='1' >启用</el-radio>
                     </el-radio-group>
                         
                 </el-form-item>

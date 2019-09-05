@@ -69,7 +69,7 @@
         ref="usersTable"
         :data="userList"
         border
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
          
@@ -215,7 +215,7 @@ export default {
             this.endTime = new Date()
             this.getUsersList()
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },

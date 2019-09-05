@@ -70,7 +70,7 @@
                 ref="menuTable"
                 :data="roleList"
                 border
-                @selection-change="selChang"
+                @selection-change="selChange"
                 @row-click="rowClick"
                 highlight-current-row
                  
@@ -235,7 +235,7 @@ export default {
             this.endTime = new Date()
             this.getRoleList()
         },
-        selChang(row){
+        selChange(row){
             this.selectData=row
         },
         rowClick(row){

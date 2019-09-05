@@ -4,74 +4,43 @@
         :title="dialogTitle"
         :visible.sync="dialogVisible"
         :fullscreen="device === 'mobile'"
-        :close-on-click-modal="false">
+        :close-on-click-modal="false"
+        width="500px">
             <el-form  label-width="80px" label-position="left" :model="dialogFormData">
                 <el-form-item label="设备编号">
                     
                     <el-input 
-                    style="" 
                     v-model="dialogFormData.eId"
-                    placeholder="">
+                    placeholder="请选择设备"
+                    :disabled='true'>
 
                     </el-input>
-                    
+                    <el-button @click="getDevList" v-show="dialogTitle === '添加'">选择</el-button>
                 </el-form-item>
-                
+
                 <el-form-item label="设备名称">
                     
                     <el-input 
-                    v-model="dialogFormData.eName" 
-                    placeholder="">
+                    style="" 
+                    v-model="dialogFormData.eName"
+                    placeholder="请选择设备"
+                    :disabled='true'>
 
                     </el-input>
                     
-                    
                 </el-form-item>
-
-                <el-form-item label="生产厂家">
-                    
-                    <el-input 
-                    v-model="dialogFormData.eManufacturer"  
-                    placeholder="">
-
-                    </el-input>
-                     
-                </el-form-item>
-
-                <el-form-item label="生产日期">
                 
-                    <el-date-picker
-                    v-model="dialogFormData.eDate" 
-                    style="width:250px;"
-                    type="datetime"
-                    placeholder="选择日期"
-                    value-format="yyyy-MM-dd HH:mm:ss"
-                    :picker-options="pickerOptions">
-                    </el-date-picker>
-                    
-                    
-                </el-form-item>
-
-                <el-form-item label="规格">
+                <el-form-item label="报废原因">
                     
                     <el-input 
-                    v-model="dialogFormData.eStandard"  
+                    v-model="dialogFormData.scReason" 
                     placeholder="">
 
                     </el-input>
-                        
+                    
+                    
                 </el-form-item>
 
-                <el-form-item label="类型">
-                    
-                        
-                    <el-radio-group v-model="dialogFormData.eType">
-                        <el-radio label='1' >类型1</el-radio>
-                        <el-radio label='2' >类型2</el-radio>
-                    </el-radio-group>
-                        
-                    
-                </el-form-item>
             </el-form>
 
             <div slot="footer">
@@ -79,13 +48,17 @@
                 <el-button>重置</el-button>
             </div>
         </el-dialog>
+
+        <dev-list-dialog :devListDialogShow.sync="devListDialogShow" v-if="devListDialogShow" @back="devListDialogBack"/>
     </div>
 </template>
 
 <script>
-import {addEq,updateEq} from '@/api/dev-manage/message'
+import devListDialog from '../devListDialog'
+import {addEqEnable,updateEqEnable} from '@/api/dev-manage/deploy'
 export default {
-    name:'formDialog',
+    name:'operateDialog',
+    components:{devListDialog},
     props:{
         isdialogShow:{
             default:false,
@@ -107,6 +80,7 @@ export default {
                 return this.isdialogShow
             },
             set(val){
+                console.log(val)
                 this.$emit('update:isdialogShow', val)
             }
         },
@@ -116,27 +90,31 @@ export default {
     },
     data() {
         return {
-            pickerOptions :{
-                disabledDate(time) {
-                    return time.getTime() > Date.now();
-                },
-            },
+            devListDialogShow:false
         }
     },
     methods: {
+        getDevList(){
+            this.devListDialogShow = true
+        },
         handleSubmit(){
             let parmas = Object.assign({},this.dialogFormData)
+
             if(this.submitStatus === 'add'){
-                addEq(parmas).then((res) =>{
-                    this.$message.success('添加成功')
+                addEqEnable(parmas).then((res) =>{
+                    this.$message.info(res.resultMsg)
                 })
             }else{
-                updateEq(parmas).then((res) =>{
+                updateEqEnable(parmas).then((res) =>{
                     this.$message.success('修改成功')
                 })
             }
-            this.dialogVisible = false
             this.$emit('reload')
+            this.dialogVisible = false
+        },
+        devListDialogBack(){
+            this.dialogVisible = true
+            this.devListDialogShow = false
         }
     },
 }

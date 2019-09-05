@@ -69,7 +69,7 @@
         ref="customerTable"
         :data="customerList"
         border
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
          
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import {getCustomerList,deleteCustomer,deleteUserRelation} from '@/api/setting/customer'
+import {getCustomerList,deleteCustomer,deleteUserRelation} from '@/api/rentmanager/customer'
 import Pagination from '@/components/Pagination'
 import formDialog from './dialog'
 import {parseTime} from '@/utils/index'
@@ -233,7 +233,7 @@ export default {
             this.endTime = new Date()
             this.getCustomerList()
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },

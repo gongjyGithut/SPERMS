@@ -66,9 +66,9 @@
         </el-row>
         
         <el-table 
-        ref="equipmentTable"
+        ref="repairTable"
         :data="equipmentList"
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
         border
@@ -105,18 +105,18 @@
         
         <pagination :total="total" :currentPage.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRepairList"/>
         
-        <form-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="getRepairList"/>
+        <operate-dialog :isdialogShow.sync="isdialogShow" :dialogTitle="dialogTitle" :dialogFormData="dialogFormData" @reload="getRepairList"/>
     </div>
 </template>
 
 <script>
 import {getRepairList,deleteRepair} from '@/api/dev-manage/repair'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import operateDialog from './operateDialog'
 import {parseTime} from '@/utils/index'
 export default {
     name:'',
-    components:{Pagination,formDialog},
+    components:{Pagination,operateDialog},
     data() {
         let me = this
         return {
@@ -134,12 +134,13 @@ export default {
             isdialogShow:false,
             dialogTitle:'',
             dialogForm:{
-                eDate: '',
+                rCost: '',
                 eId: '',
-                eManufacturer: '',
+                rManufacturer: '',
                 eName: '',
-                eStandard: '',
-                eType: ''
+                rState: '',
+                rPerson: '',
+                rTime:''
             },
             dialogFormData:{},
             pickerOptions :{
@@ -216,14 +217,14 @@ export default {
             })
             
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },
         rowClick(row){
             console.log(row)
-            this.$refs.equipmentTable.clearSelection()
-            this.$refs.equipmentTable.toggleRowSelection(row)
+            this.$refs.repairTable.clearSelection()
+            this.$refs.repairTable.toggleRowSelection(row)
 
         },
         formatTime(row){

@@ -6,14 +6,14 @@
             <el-button type="primary" icon="el-icon-menu" ></el-button>
 
              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="equitmentList">设备列表</el-dropdown-item>
-                <el-dropdown-item command="addEquitment">新增设备</el-dropdown-item>
+                <el-dropdown-item command="equitmentList">设备应用信息列表</el-dropdown-item>
+                <el-dropdown-item command="addEquitment">新增设备应用信息</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
 
         <operate-dialog :dialogFormData="operateFormData" :isdialogShow.sync="isOperateShow" :dialogTitle="operateFormTitle" @reload="fecthEqList"/>
 
-        <list-dialog :isdialogShow.sync="isListShow" :listData="listData" @update="handleUpdate" @delete="handleDelete" @search="handleSearch"/>
+        <deploy-list-dialog :isdialogShow.sync="isListShow" :listData="listData" @update="handleUpdate" @delete="handleDelete" @search="handleSearch"/>
     </div>
 </template>
 
@@ -21,9 +21,9 @@
 import {getEqEnableList,deleteEqEnable,getEqEnableListById} from '@/api/dev-manage/deploy'
 import bmapContainer from '@/components/BMapContainer'
 import operateDialog from './operateDialog'
-import listDialog from './listDialog'
+import deployListDialog from './deployListDialog'
 export default {
-    components:{bmapContainer,operateDialog,listDialog},
+    components:{bmapContainer,operateDialog,deployListDialog},
     data() {
         return {
             operateForm:{

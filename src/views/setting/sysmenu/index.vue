@@ -71,7 +71,7 @@
         ref="menuTable"
         :data="menuList"
         border
-        @selection-change="selChang"
+        @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
          
@@ -216,7 +216,7 @@ export default {
             this.endTime = new Date()
             this.getMenuList()
         },
-        selChang(row){
+        selChange(row){
             console.log(row)
             this.selectData=row
         },
