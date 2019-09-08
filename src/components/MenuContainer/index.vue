@@ -1,91 +1,89 @@
 <template>
-    <div class="menu-container">
-        
-        <el-tree
-        class="menu-tree"
-        :data="menuData"
-        show-checkbox
-        default-expand-all
-        node-key="menuId"
-        ref="menutree"
-        :props="defaultProps"
-        check-on-click-node
-        @check="checkChange">
-        </el-tree>
-    </div>
+  <div class="menu-container">
+
+    <el-tree
+      ref="menutree"
+      :data="menuData"
+      :props="defaultProps"
+      class="menu-tree"
+      show-checkbox
+      default-expand-all
+      node-key="menuId"
+      check-on-click-node
+      @check="checkChange"/>
+  </div>
 </template>
 <script>
-import {getSysmenuAllList} from '@/api/setting/sysmenu'
+import { getSysmenuAllList } from '@/api/setting/sysmenu'
 export default {
-    name:'MenuContainer',
-    computed: {
-        checkNodes:{
-            get(){
-                return this.$store.state.menu.checkNodes
-            },
-            set(val){
-                this.$emit('updata:checkNodes',val)
-            }
-            
-        }
-    },
-    data() {
-        return {
-            menuData:[],
-            defaultProps:{
-                children: 'children',
-                label: 'menuName'
-            }
-        }
-    },
-    created() {
-        this.getAllMenuList()
-        
-    },
-    watch: {
-        checkNodes(newVal){
-            this.setCheckNodes(newVal)
-        }
-    },
-    mounted() {
+  name: 'MenuContainer',
+  data() {
+    return {
+      menuData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'menuName'
+      }
+    }
+  },
+  computed: {
+    checkNodes: {
+      get() {
+        return this.$store.state.menu.checkNodes
+      },
+      set(val) {
+        this.$emit('updata:checkNodes', val)
+      }
 
+    }
+  },
+  watch: {
+    checkNodes(newVal) {
+      this.setCheckNodes(newVal)
+    }
+  },
+  created() {
+    this.getAllMenuList()
+  },
+  mounted() {
+
+  },
+  methods: {
+    getAllMenuList() {
+      getSysmenuAllList().then(res => {
+        this.menuData = this.toTree(res.records)
+      })
     },
-    methods: {
-        getAllMenuList(){
-            getSysmenuAllList().then(res =>{
-                this.menuData = this.toTree(res.records)
-            })
-        },
-        setCheckNodes(checkNodes){
-            this.$refs.menutree.setCheckedKeys(checkNodes)
-            
-        },
-        checkChange(clickNode,{checkedKeys,checkedNodes}){
-            this.$store.dispatch('setCheckNodes',this.$refs.menutree.getCheckedKeys())
-        },
-        toTree(data) {
-            let result = []
-            if(!Array.isArray(data)) {
-                return result
-            }
-            data.forEach(item => {
-                delete item.children;
-            });
-            let map = {};
-            data.forEach(item => {
-                map[item.menuId] = item;
-            });
-            data.forEach(item => {
-                let parent = map[item.parentId];
-                if(parent) {
-                    (parent.children || (parent.children = [])).push(item);
-                } else {
-                    result.push(item);
-                }
-            });
-            return result;
+    setCheckNodes(checkNodes) {
+      this.$refs.menutree.setCheckedKeys(checkNodes)
+    },
+    checkChange(clickNode, { checkedKeys, checkedNodes }) {
+      this.$store.dispatch('setCheckNodes', this.$refs.menutree.getCheckedKeys())
+    },
+    toTree(data) {
+      const result = []
+      if (!Array.isArray(data)) {
+        return result
+      }
+      data.push({ menuId: 0, menuName: '根目录', children: [], parentId: null })
+      data.forEach(item => {
+        delete item.children
+      })
+      const map = {}
+      data.forEach(item => {
+        map[item.menuId] = item
+      })
+      data.forEach(item => {
+        const parent = map[item.parentId]
+        if (parent) {
+          (parent.children || (parent.children = [])).push(item)
+        } else {
+          result.push(item)
         }
-    },
+      })
+      return result
+    }
+  }
 }
 </script>
 

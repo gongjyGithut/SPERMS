@@ -125,8 +125,8 @@ export default {
         let me = this
         return {
             customerList:[],
-            startTime:new Date(new Date().getTime() - 3600 * 1000 * 24 * 7),
-            endTime:new Date(),
+            startTime:'',
+            endTime:'',
             keywords:'',
             total:0,
             page:{
@@ -134,7 +134,6 @@ export default {
                 pageSize:50,
             },
             selectData:[],
-            loading:false,
             isdialogShow:false,
             dialogTitle:'',
             dialogForm:{
@@ -175,17 +174,14 @@ export default {
                     this.$message.error('开始时间不能大于结束时间')
                     return
                 }
-            }else{
-                this.$message.error('请检查是否选择时间')
-                return
             }
 
             parmas.keywords = this.keywords
-            this.loading = true
+            
             getCustomerList(parmas).then((res)=>{
                 this.customerList = res.records
                 this.total = res.totalCount
-                this.loading = false
+                
             })
         },
         handleSearch(){
@@ -221,16 +217,14 @@ export default {
                 
                 Promise.all([deleteCustomer(customerParmas),deleteUserRelation(relationParmas)]).then(()=>{
                     this.$message.success('删除成功')
-                    this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-                    this.endTime = new Date()
                     this.getCustomerList()
                 })
             })
             
         },
         reload(){
-            this.startTime = new Date(new Date().getTime() - 3600 * 1000 * 24 * 7)
-            this.endTime = new Date()
+            
+            
             this.getCustomerList()
         },
         selChange(row){

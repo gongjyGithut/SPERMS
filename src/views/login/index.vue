@@ -26,8 +26,8 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          :key="passwordType"
           ref="password"
+          :key="passwordType"
           v-model="loginForm.password"
           :type="passwordType"
           placeholder="密码"
@@ -41,50 +41,47 @@
         </span>
       </el-form-item>
 
-      
       <div style="display:flex;display:-webkit-flex;justify-content:space-around">
 
         <el-button :loading="loading" type="primary" style="width:50%" @click.native.prevent="handleLogin" >登录</el-button>
         <el-button style="width:50%" @click.native.prevent="dialogVisible = true">注册</el-button>
-      
+
       </div>
     </el-form>
-    <el-dialog 
-    class="register-container"  
-    :visible.sync="dialogVisible"  
-    :fullscreen='fullscreen'
-    :center=true 
-    :close-on-click-modal=false>
-      <el-form :model="registerForm"  style="margin:0 auto" class="register-form">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :fullscreen="fullscreen"
+      :center="true"
+      :close-on-click-modal="false"
+      class="register-container">
+      <el-form :model="registerForm" style="margin:0 auto" class="register-form">
         <div class="title-container">
           <h4 class="title">注册</h4>
         </div>
-        <el-form-item  >
-          <el-input  autocomplete="off" v-model="registerForm.username" placeholder="用户名"></el-input>
+        <el-form-item >
+          <el-input v-model="registerForm.username" autocomplete="off" placeholder="用户名"/>
         </el-form-item>
 
-        <el-form-item  >
-          <el-input  autocomplete="off" type="password" v-model="registerForm.password" placeholder="密码"></el-input>
+        <el-form-item >
+          <el-input v-model="registerForm.password" autocomplete="off" type="password" placeholder="密码"/>
         </el-form-item>
 
-        <el-form-item  >
-          <el-input  autocomplete="off" v-model="registerForm.password2" placeholder="再次输入密码"></el-input>
+        <el-form-item >
+          <el-input v-model="registerForm.password2" autocomplete="off" placeholder="再次输入密码"/>
         </el-form-item>
 
-        <el-form-item  >
+        <el-form-item >
           <el-button type="primary" style="width:100%">确定</el-button>
         </el-form-item>
       </el-form>
 
-      
-      
     </el-dialog>
   </div>
-  
+
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Login',
@@ -94,27 +91,25 @@ export default {
     ])
   },
   data() {
-    let regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\] ]/im,
-        regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im 
+    const regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\] ]/im
+    const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im
     const validateUsername = (rule, value, callback) => {
-      
-
-      if (value.length<=0) {
+      if (value.length <= 0) {
         callback(new Error('请输入用户名'))
-      }else if(regEn.test(value) || regCn.test(value)){
+      } else if (regEn.test(value) || regCn.test(value)) {
         callback(new Error('用户名中不允许输入特殊字符'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if(value.length <= 0){
+      if (value.length <= 0) {
         callback(new Error('密码不能为空'))
-      }else if (value.length < 6) {
+      } else if (value.length < 6) {
         callback(new Error('密码不能少于6位'))
-      }else if (value.length > 20) {
+      } else if (value.length > 20) {
         callback(new Error('密码不能大于20位'))
-      }else if(regEn.test(value) || regCn.test(value)){
+      } else if (regEn.test(value) || regCn.test(value)) {
         callback(new Error('用户名中不允许输入特殊字符'))
       } else {
         callback()
@@ -125,10 +120,10 @@ export default {
         username: '',
         password: ''
       },
-      registerForm:{
+      registerForm: {
         username: '',
         password: '',
-        password2: '',
+        password2: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -137,9 +132,9 @@ export default {
       loading: false,
       passwordType: 'password',
       redirect: undefined,
-      dialogVisible:false,
-      fullscreen:false,
-      screenWidth:document.body.clientWidth,
+      dialogVisible: false,
+      fullscreen: false,
+      screenWidth: document.body.clientWidth
     }
   },
   watch: {
@@ -151,12 +146,11 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() =>{
-      if(this.screenWidth < 992){
+    this.$nextTick(() => {
+      if (this.screenWidth < 992) {
         this.fullscreen = true
       }
     })
-    
   },
   methods: {
     showPwd() {
@@ -173,14 +167,11 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
-            this.$store.dispatch('GetInfo',this.loginForm.username)
-            
+            this.$store.dispatch('GetInfo', this.loginForm.username)
+
             this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
           }).catch(() => {
-            this.loading = false
           })
         } else {
           console.log('error submit!!')
@@ -193,7 +184,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 
 $bg:#283443;
 $light_gray:#fff;
@@ -241,10 +231,9 @@ $cursor: #fff;
   //background-color: $bg;
   .el-dialog{
     background-color: $bg;
-    
-    
+
   }
-  
+
 }
 .register-form{
     position: relative;
@@ -319,5 +308,4 @@ $light_gray:#eee;
   }
 }
 </style>
-
 

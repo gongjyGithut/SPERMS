@@ -22,17 +22,27 @@ export default {
         // this.addMarker()
         this.$nextTick(()=>{
             this.initBMap()
-            this.addMarker()
-            console.log(this.listData)
+            this.addMarker(this.listData)
+            //console.log(this.listData)
         })
+    },
+    watch: {
+        listData:{
+            deep: true,
+            handler(newVal) {
+                //console.log(newVal);
+                this.map.clearOverlays()
+                this.addMarker(newVal)
+            },
+        }
     },
     beforeDestroy() {
         this.map = null
     },
     methods: {
-        addMarker(){
+        addMarker(listData){
             
-            this.listData.forEach(item =>{
+                listData.forEach(item =>{
                 let point = new BMap.Point(item.eeLongitude,item.eeLatitude)
                 console.log(point)
                 let marker = new BMap.Marker(point)

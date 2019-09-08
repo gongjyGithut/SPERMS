@@ -11,13 +11,13 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'https://119.23.24.72:8081', //后端接口地址
-                changeOrigin: true, //是否允许跨越,
+                target: 'https://119.23.24.72:8081', // 后端接口地址
+                changeOrigin: true, // 是否允许跨越,
                 ws: true,
                 pathRewrite: {
                     '^/api': ''
                 },
-                secure: false,
+                secure: false
 
             }
         },
@@ -32,7 +32,7 @@ module.exports = {
         // Use Eslint Loader?
         // If true, your code will be linted during bundling and
         // linting errors and warnings will be shown in the console.
-        useEslint: false,
+        useEslint: true,
         // If true, eslint errors and warnings will also be shown in the error overlay
         // in the browser.
         showEslintErrorsInOverlay: false,
@@ -49,7 +49,7 @@ module.exports = {
         // (https://github.com/webpack/css-loader#sourcemaps)
         // In our experience, they generally work as expected,
         // just be aware of this issue when enabling this option.
-        cssSourceMap: false,
+        cssSourceMap: false
 
     },
 
@@ -82,7 +82,7 @@ module.exports = {
         // Surge or Netlify already gzip all static assets for you.
         // Before setting to `true`, make sure to:
         // npm install --save-dev compression-webpack-plugin
-        productionGzip: false,
+        productionGzip: true,
         productionGzipExtensions: ['js', 'css'],
 
         // Run the build command with an extra argument to

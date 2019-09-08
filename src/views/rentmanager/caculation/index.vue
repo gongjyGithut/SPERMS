@@ -51,12 +51,11 @@
         @selection-change="selChange"
         @row-click="rowClick"
         highlight-current-row
-         
         style="width:100%">
             <el-table-column type="selection"></el-table-column>
             <el-table-column label="计费编号" prop="cmNo"></el-table-column>
             
-            <el-table-column label="计费方式" prop="cmDay">
+            <el-table-column label="计费方式" prop="cmDay" :formatter="formatDay">
 
             </el-table-column>
 
@@ -114,11 +113,9 @@ export default {
             let parmas = Object.assign({},this.page)
 
             parmas.cmNo = this.cmNo
-            this.loading = true
             getCaculationList(parmas).then((res)=>{
                 this.caculationList = res.records
                 this.total = res.totalCount
-                this.loading = false
             })
         },
         handleSearch(){
@@ -156,17 +153,26 @@ export default {
             
         },
         selChange(row){
-            console.log(row)
+            
             this.selectData=row
         },
         rowClick(row){
-            console.log(row)
+            
             this.$refs.caculationTable.clearSelection()
             this.$refs.caculationTable.toggleRowSelection(row)
 
         },
-        formatTime(row){
-            return parseTime(row.eDate)
+        formatDay(row){
+            switch (row.cmDay) {
+                case 1:
+                    return '按天'
+                    break;
+                case 2:
+                    return '按量'
+                    break;
+                default: return '其他'
+                    break;
+            }
         }
     },
 }

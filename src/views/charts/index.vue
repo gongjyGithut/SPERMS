@@ -1,6 +1,7 @@
 <template>
     <div class="app-container">
         <div class="chart" style="height:500px;width:100%;margin:0 auto"></div>
+        <!-- 图表统计 -->
     </div>
 </template>
 <script>
