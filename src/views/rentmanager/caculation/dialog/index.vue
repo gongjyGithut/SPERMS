@@ -15,7 +15,7 @@
 
         </el-form-item>
 
-        <el-form-item label="费用" prop="cmFee">
+        <el-form-item label="单价" prop="cmFee">
           <el-input
             v-model="dialogFormData.cmFee"
             placeholder=""/>
@@ -29,6 +29,12 @@
             <el-radio :label="3" >其他</el-radio>
           </el-radio-group>
 
+        </el-form-item>
+
+        <el-form-item label="计量单位" prop="cmUnit">
+          <el-input
+            v-model="dialogFormData.cmUnit"
+            placeholder=""/>
         </el-form-item>
 
       </el-form>

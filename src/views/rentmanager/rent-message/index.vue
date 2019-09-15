@@ -75,39 +75,55 @@
       border
       highlight-current-row
       style="width:100%"
+      tooltip-effect="light"
       @selection-change="selChange"
       @row-click="rowClick">
       <el-table-column type="selection"/>
       <el-table-column label="交易编号" prop="tradeNo"/>
 
-      <el-table-column label="计费方式" prop="cmNo"/>
+      <el-table-column label="计费编号" prop="cmNo"/>
 
-      <el-table-column label="客户编号" prop="customerNo"/>
+      <el-table-column label="客户名称" prop="customerName"/>
 
-      <el-table-column label="设备编号" prop="eId"/>
+      <el-table-column label="设备名称" prop="eName"/>
 
-      <el-table-column label="租借时间" prop="rentDate"/>
+      <el-table-column label="租借开始时间" show-overflow-tooltip >
+        <template slot-scope="{row}">
+          {{ row.rentBeginDate | formatDate }}
+        </template>
+      </el-table-column>
 
-      <el-table-column label="租借结束时间" prop="rentEndDate"/>
+      <el-table-column label="租借结束时间" show-overflow-tooltip>
+        <template slot-scope="{row}">
+          {{ row.rentEndDate | formatDate }}
+        </template>
+      </el-table-column>
 
       <el-table-column label="使用地点" prop="rentPlace"/>
 
     </el-table>
 
-    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRentmanagerList"/>
+    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="_getRentmessageList"/>
 
-    <form-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <rent-msg-Edit :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
-import { getRentmanagerList, deleteRentmanager } from '@/api/rentmanager/rentmanager'
+import { getRentMessageList, deleteRentMessage } from '@/api/rentmanager/rent-message'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import RentMsgEdit from './component/Edit'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog },
+  components: { Pagination, RentMsgEdit },
+  filters: {
+    formatDate(val) {
+      const date = val ? parseTime(val, '{y}-{m}-{d}') : ''
+      return date
+      // return parseTime(val, '{y}-{m}-{d}') || ''
+    }
+  },
   data() {
     return {
       rentmanagerList: [],
@@ -125,9 +141,6 @@ export default {
       isdialogShow: false,
       dialogTitle: '',
       dialogForm: {
-        cmNo: '',
-        cmFee: '',
-        cmDay: '0'
       },
       dialogFormData: {},
       pickerOptions: {
@@ -140,12 +153,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.getRentmanagerList()
+      this._getRentmessageList()
       this.dialogFormData = Object.assign({}, this.dialogForm)
     })
   },
   methods: {
-    getRentmanagerList() {
+    _getRentmessageList() {
       const parmas = Object.assign({}, this.page)
 
       parmas.tradeNo = this.tradeNo
@@ -161,14 +174,14 @@ export default {
           return
         }
       }
-      getRentmanagerList(parmas).then((res) => {
+      getRentMessageList(parmas).then((res) => {
         this.rentmanagerList = res.records
         this.total = res.totalCount
       })
     },
     handleSearch() {
       this.page.pageNo = 1
-      this.getRentmanagerList()
+      this._getRentmessageList()
     },
     handleAdd() {
       this.isdialogShow = true
@@ -193,15 +206,15 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteRentmanager(rentmanagerParmas).then(() => {
+        deleteRentMessage(rentmanagerParmas).then(() => {
           this.$message.success('删除成功')
 
-          this.getRentmanagerList()
+          this._getRentmessageList()
         })
       })
     },
     reload() {
-      this.getRentmanagerList()
+      this._getRentmessageList()
     },
     selChange(row) {
       console.log(row)
@@ -211,9 +224,6 @@ export default {
       console.log(row)
       this.$refs.rentmanagerTable.clearSelection()
       this.$refs.rentmanagerTable.toggleRowSelection(row)
-    },
-    formatTime(row) {
-      return parseTime(row.eDate)
     }
   }
 }

@@ -23,146 +23,158 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [{
-  path: '/login',
-  component: () =>
-            import('@/views/login/index'),
-  hidden: true
-},
-{
-  path: '/404',
-  component: () =>
-            import('@/views/404'),
-  hidden: true
-},
-{
-  path: '/personal',
-  component: Layout,
-  redirect: '/personal/index',
-  hidden: true,
-  children: [{
-    path: 'index',
-    name: '个人中心',
-    component: () =>
-                import('@/views/personal/index'),
-    meta: { title: '个人中心' }
-  }]
-},
-{
-  path: '/',
-  component: Layout,
-  redirect: '/dashboard',
-  hidden: true,
-  children: [{
-    path: 'dashboard',
-    component: () =>
-                import('@/views/dashboard/index')
+        path: '/login',
+        component: () =>
+            import ('@/views/login/index'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () =>
+            import ('@/views/404'),
+        hidden: true
+    },
+    {
+        path: '/personal',
+        component: Layout,
+        redirect: '/personal/index',
+        hidden: true,
+        children: [{
+            path: 'index',
+            name: '个人中心',
+            component: () =>
+                import ('@/views/personal/index'),
+            meta: { title: '个人中心' }
+        }]
+    },
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/dashboard',
+        hidden: true,
+        children: [{
+            path: 'dashboard',
+            component: () =>
+                import ('@/views/dashboard/index')
                 // meta: { title: '首页'},
-  }]
-},
+        }]
+    },
 
-{
-  path: '/dev-manage',
-  component: Layout,
-  redirect: '/dev-manage/index',
-  meta: { title: '设备管理', icon: 'dev-manage' },
-  children: [{
-    path: 'message',
-    name: '设备信息',
-    component: () =>
-                    import('@/views//dev-manage/message/index'),
-    meta: { title: '设备信息' }
-  },
-  {
-    path: 'deploy',
-    name: '设备应用信息',
-    component: () =>
-                    import('@/views//dev-manage/deploy/index'),
-    meta: { title: '设备应用信息' }
-  },
-  {
-    path: 'repair',
-    name: '设备维修',
-    component: () =>
-                    import('@/views//dev-manage/repair/index'),
-    meta: { title: '设备维修' }
-  },
-  {
-    path: 'scrapped',
-    name: '设备报废',
-    component: () =>
-                    import('@/views//dev-manage/scrapped/index'),
-    meta: { title: '设备报废' }
-  }
-  ]
-},
+    {
+        path: '/dev-manage',
+        component: Layout,
+        redirect: '/dev-manage/index',
+        meta: { title: '设备管理', icon: 'dev-manage' },
+        children: [{
+                path: 'message',
+                name: '设备信息',
+                component: () =>
+                    import ('@/views//dev-manage/message/index'),
+                meta: { title: '设备信息' }
+            },
+            {
+                path: 'deploy',
+                name: '设备应用信息',
+                component: () =>
+                    import ('@/views//dev-manage/deploy/index'),
+                meta: { title: '设备应用信息' }
+            },
+            {
+                path: 'repair',
+                name: '设备维修',
+                component: () =>
+                    import ('@/views//dev-manage/repair/index'),
+                meta: { title: '设备维修' }
+            },
+            {
+                path: 'scrapped',
+                name: '设备报废',
+                component: () =>
+                    import ('@/views//dev-manage/scrapped/index'),
+                meta: { title: '设备报废' }
+            }
+        ]
+    },
 
-{
-  path: '/charts',
-  component: Layout,
-  children: [{
-    path: 'index',
-    name: '统计报表',
-    component: () =>
-                import('@/views/charts/index'),
-    meta: { title: '统计报表', icon: 'charts' }
-  }]
-},
-{
-  path: '/rentmanager',
-  redirect: '/rentmanager/index',
-  component: Layout,
-  meta: { title: '租赁管理', icon: 'rentmanager' },
-  children: [{
-    path: 'customer',
-    name: '客户信息',
-    component: () =>
-                import('@/views/rentmanager/customer/index'),
-    meta: { title: '客户信息' }
-  }, {
-    path: 'caculation',
-    name: '计费方式',
-    component: () =>
-                import('@/views/rentmanager/caculation/index'),
-    meta: { title: '计费方式' }
-  }, {
-    path: 'rentmanager',
-    name: '租赁信息',
-    component: () =>
-                import('@/views/rentmanager/rentmanager/index'),
-    meta: { title: '租赁信息' }
-  }]
-},
-{
-  path: '/setting',
-  redirect: '/setting/index',
-  component: Layout,
-  meta: { title: '系统管理', icon: 'setting' },
-  children: [{
-    path: 'sysmenu',
-    name: '菜单信息',
-    component: () =>
-                import('@/views/setting/sysmenu/index'),
-    meta: { title: '菜单信息' }
-  }, {
-    path: 'users',
-    name: '用户管理',
-    component: () =>
-                import('@/views/setting/users/index'),
-    meta: { title: '用户管理' }
-  }, {
-    path: 'sysrole',
-    name: '角色管理',
-    component: () =>
-                import('@/views/setting/sysrole/index'),
-    meta: { title: '角色管理' }
-  }]
-},
+    {
+        path: '/charts',
+        component: Layout,
+        children: [{
+            path: 'index',
+            name: '统计报表',
+            component: () =>
+                import ('@/views/charts/index'),
+            meta: { title: '统计报表', icon: 'charts' }
+        }]
+    },
+    {
+        path: '/rentmanager',
+        redirect: '/rentmanager/index',
+        component: Layout,
+        meta: { title: '租赁管理', icon: 'rentmanager' },
+        children: [{
+            path: 'customer',
+            name: '客户信息',
+            component: () =>
+                import ('@/views/rentmanager/customer/index'),
+            meta: { title: '客户信息' }
+        }, {
+            path: 'caculation',
+            name: '计费方式',
+            component: () =>
+                import ('@/views/rentmanager/caculation/index'),
+            meta: { title: '计费方式' }
+        }, {
+            path: 'rent-message',
+            name: '租赁信息',
+            component: () =>
+                import ('@/views/rentmanager/rent-message/index'),
+            meta: { title: '租赁信息' }
+        }, {
+            path: 'store-message',
+            name: '仓库信息',
+            component: () =>
+                import ('@/views/rentmanager/store-message/index'),
+            meta: { title: '仓库信息' }
+        }, {
+            path: 'lock-rule',
+            name: '锁机策略',
+            component: () =>
+                import ('@/views/rentmanager/lock-rule/index'),
+            meta: { title: '锁机策略' }
+        }]
+    },
+    {
+        path: '/setting',
+        redirect: '/setting/index',
+        component: Layout,
+        meta: { title: '系统管理', icon: 'setting' },
+        children: [{
+            path: 'sysmenu',
+            name: '菜单信息',
+            component: () =>
+                import ('@/views/setting/sysmenu/index'),
+            meta: { title: '菜单信息' }
+        }, {
+            path: 'users',
+            name: '用户管理',
+            component: () =>
+                import ('@/views/setting/users/index'),
+            meta: { title: '用户管理' }
+        }, {
+            path: 'sysrole',
+            name: '角色管理',
+            component: () =>
+                import ('@/views/setting/sysrole/index'),
+            meta: { title: '角色管理' }
+        }]
+    },
 
-{ path: '*', redirect: '/404', hidden: true }
+    { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+    // mode: 'history', //后端支持可开
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRouterMap
 })

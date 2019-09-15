@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { addRoleRelation } from '@/api/setting/sysrole'
 import MenuContainer from '@/components/MenuContainer'
 export default {
   name: 'FormDialog',

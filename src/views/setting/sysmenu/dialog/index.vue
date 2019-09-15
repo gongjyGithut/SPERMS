@@ -121,15 +121,11 @@ export default {
         return this.getPathByKey(this.dialogFormData.parentId, 'menuId', this.options)
       },
       set(val) {}
-    },
-    oldParentId() {
-      return this.dialogFormData.parentId
     }
 
   },
   created() {
     this.getAllMenuList()
-    console.log(this.dialogFormData)
   },
   methods: {
     getAllMenuList() {
@@ -141,11 +137,10 @@ export default {
       const Parmas = Object.assign({}, this.dialogFormData)
       delete Parmas.parentId
       Parmas.parentId = this.$refs.cascaderTree.getCheckedNodes(true)[0].value
-      // if (Parmas.parentId === +this.oldParentId) {
-      //   this.$message.error('不能选择自己为父节点菜单')
-      //   return false
-      // }
-      console.log(Parmas)
+      if (Parmas.parentId === Parmas.menuId) {
+        this.$message.error('不能选择自己作为父节点菜单')
+        return false
+      }
       if (this.submitStatus === 'add') {
         addSysmenu(Parmas).then(res => {
           this.$message.success('添加成功')
