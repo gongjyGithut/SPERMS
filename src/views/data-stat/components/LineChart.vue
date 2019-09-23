@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div v-if="chartData.length > 0" :class="className" :style="{height:height,width:width}"/>
 </template>
 
 <script>
@@ -33,7 +33,12 @@ export default {
   data() {
     return {
       chart: null,
-      sidebarElm: null
+      sidebarElm: null,
+      yCondition: {
+        type: 'bar',
+        stack: 'vistors',
+        barWidth: '30%'
+      }
     }
   },
   watch: {
@@ -79,25 +84,28 @@ export default {
       }
     },
     setOptions(dataArr) {
-      console.log(dataArr)
-      const legend = []
-      const series = dataArr.map(item => {
-        const temp = {}
-        const data = []
-        temp.name = item.customerName
-        data.push(item.normalCount)
-        data.push(item.repairCount)
-        data.push(item.scrappCount)
-        temp.data = data
-        temp.smooth = true
-        temp.type = 'bar'
-        temp.animationEasing = 'cubicInOut'
-        legend.push(item.customerName)
-        return temp
+      const xData = []
+      const yData = []
+      const productCount = {}
+      dataArr.forEach(item => {
+        if (!productCount[item.eId]) {
+          productCount[item.eId] = item.psMount
+          xData.push(item.eId)
+        } else {
+          productCount[item.eId] += item.psMount
+        }
       })
+      for (const item in productCount) {
+        const data = []
+        const temp = Object.assign({}, this.yCondition)
+        data.push(productCount[item])
+        temp.data = data
+        yData.push(temp)
+      }
+      console.log(yData)
       this.chart.setOption({
         xAxis: {
-          data: ['正常', '报废', '维修'],
+          data: xData,
           boundaryGap: true,
           axisTick: {
             show: true
@@ -122,10 +130,10 @@ export default {
             show: false
           }
         },
-        legend: {
-          data: legend
-        },
-        series: series
+        // legend: {
+        //   data: legend
+        // },
+        series: yData
       })
     },
     initChart() {

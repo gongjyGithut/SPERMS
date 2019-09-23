@@ -100,9 +100,6 @@ export default {
       .icon-saleStat {
         background: #f4516c;
       }
-      .icon-shopping {
-        background: #34bfa3
-      }
     }
     .icon-equitmentStat {
       color: #40c9c6;
@@ -112,9 +109,6 @@ export default {
     }
     .icon-saleStat {
       color: #f4516c;
-    }
-    .icon-shopping {
-      color: #34bfa3
     }
     .card-panel-icon-wrapper {
       float: left;
