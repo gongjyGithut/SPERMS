@@ -11,6 +11,7 @@
           <el-col :span="12">
             <el-form-item label="设备编号" prop="eId">
               <el-input
+                :disabled="dialogTitle === '修改'"
                 v-model="dialogFormData.eId"
                 placeholder=""/>
             </el-form-item>
