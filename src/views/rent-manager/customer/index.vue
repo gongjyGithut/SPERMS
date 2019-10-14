@@ -34,27 +34,30 @@
             type="primary"
             icon="el-icon-search"
             @click="handleSearch"/>
-
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
+    </el-row>
+
+    <el-row class="btn-group">
+
+      <el-button
+        type="success"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="warning"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
+
     </el-row>
 
     <el-table
@@ -81,6 +84,10 @@
 
       <el-table-column label="手机号" prop="customerPhone"/>
 
+      <el-table-column label="QQ" prop="customerQq"/>
+
+      <el-table-column label="微信" prop="customerWx"/>
+
       <el-table-column label="邮箱" prop="customerEmail" show-overflow-tooltip />
 
       <el-table-column label="单位" prop="customerCompany"/>
@@ -90,18 +97,18 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCustomerList"/>
 
-    <form-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <customer-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
 import { getCustomerList, deleteCustomer, deleteUserRelation } from '@/api/rentmanager/customer'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import CustomerForm from './components/customer-form'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog },
+  components: { Pagination, CustomerForm },
   data() {
     return {
       customerList: [],
@@ -172,11 +179,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        this.$message.error('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
       this.dialogTitle = '修改'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        this.$message.error('请选择待删除记录')
+        return
+      }
       const customerParmas = {}
       const customerNos = []
       this.selectData.forEach(v => {
@@ -200,6 +215,7 @@ export default {
     },
     reload() {
       this.getCustomerList()
+      this.selectData = []
     },
     selChange(row) {
       console.log(row)

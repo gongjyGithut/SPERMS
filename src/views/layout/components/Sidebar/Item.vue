@@ -22,9 +22,14 @@ export default {
     }
 
     if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+      vnodes.push(<span slot='title' class="menu-title">{(title)}</span>)
     }
     return vnodes
   }
 }
 </script>
+<style lang="scss" scoped>
+// .menu-title{
+//   color: yellowgreen
+// }
+</style>

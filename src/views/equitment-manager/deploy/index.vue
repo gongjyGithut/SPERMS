@@ -2,18 +2,18 @@
   <div>
     <bmap-container v-if="mapData.length > 0" :list-data="mapData"/>
 
-    <el-dropdown class="bmapMenu" trigger="click" @command="handleCommand">
+    <!-- <el-dropdown class="bmapMenu" trigger="click" @command="handleCommand">
       <el-button type="primary" icon="el-icon-menu" />
 
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="equitmentList">设备应用信息列表</el-dropdown-item>
         <el-dropdown-item command="addEquitment">新增设备应用信息</el-dropdown-item>
       </el-dropdown-menu>
-    </el-dropdown>
+    </el-dropdown> -->
 
-    <operate-dialog :dialog-form-data="operateFormData" :isdialog-show.sync="isOperateShow" :dialog-title="operateFormTitle" @reload="fecthEqList"/>
+    <!-- <operate-dialog :dialog-form-data="operateFormData" :isdialog-show.sync="isOperateShow" :dialog-title="operateFormTitle" @reload="fecthEqList"/>
 
-    <deploy-list-dialog :isdialog-show.sync="isListShow" :list-data="listData" @update="handleUpdate" @delete="handleDelete" @search="handleSearch"/>
+    <deploy-list-dialog :isdialog-show.sync="isListShow" :list-data="listData" @update="handleUpdate" @delete="handleDelete" @search="handleSearch"/> -->
   </div>
 </template>
 

@@ -61,6 +61,7 @@
             <el-form-item label="类型" prop="eType">
               <el-input
                 v-model="dialogFormData.eType"
+                style="width:100%"
                 placeholder=""/>
             </el-form-item>
           </el-col>

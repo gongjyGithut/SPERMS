@@ -50,7 +50,7 @@
       <el-button
         type="warning"
         icon="el-icon-edit"
-        @click.stop="handleUpdate">修改
+        @click.stop="handleUpdate">编辑
       </el-button>
 
       <el-button
@@ -104,18 +104,18 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getEqList"/>
 
-    <form-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getEqList"/>
+    <equitment-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getEqList"/>
   </div>
 </template>
 
 <script>
 import { getEqList, deleteEq } from '@/api/equitment-manager/message'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import EquitmentForm from './components/equitment-form'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog },
+  components: { Pagination, EquitmentForm },
   filters: {
     filterState(val) {
       switch (+val) {
