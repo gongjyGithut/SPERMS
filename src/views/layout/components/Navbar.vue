@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
-    <breadcrumb />
+    <!-- <breadcrumb /> -->
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <screenfull class="right-menu-item hover-effect" />

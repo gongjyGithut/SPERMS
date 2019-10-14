@@ -169,8 +169,8 @@ export default {
         if (valid) {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.$store.dispatch('GetInfo', this.loginForm.username)
-
-            this.$router.push({ path: this.redirect || '/' })
+            console.log(this.redirect)
+            this.$router.push({ path: this.redirect || '/data-stat' })
           }).catch(() => {
           })
         } else {

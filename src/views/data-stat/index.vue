@@ -2,25 +2,23 @@
   <div class="dashboard-editor-container">
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
     <el-row class="chart-wrapper">
-      <bar-chart v-if="equitmentStatData.length > 0 && showType === 'equitmentStat'" :chart-data="equitmentStatData" />
-      <line-chart v-if="productStatData.length > 0 && showType === 'productStat'" :chart-data="productStatData"/>
-      <pie-chart v-if="saleStatData.length > 0 && showType === 'saleStat'" :chart-data="saleStatData"/>
-      <div v-if="equitmentStatData.length === 0|| productStatData.length === 0|| saleStatData.length === 0" class="isEmpty">
-        暂无统计信息
-      </div>
+      <status-chart
+        v-if="showType === 'equitmentStat'"/>
+      <!-- <line-chart v-if="showType === 'productStat'"/> -->
+      <sale-chart v-if="showType === 'saleStat'" />
     </el-row>
 
   </div>
 </template>
 <script>
 import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import BarChart from './components/BarChart'
+import SaleChart from './components/SaleChart'
+import StatusChart from './components/StatusChart'
 import PieChart from './components/PieChart'
 import { getEquitmentStat, getProductStat, getSaleStat } from '@/api/data-stat'
 export default {
   name: 'Chart',
-  components: { PanelGroup, LineChart, BarChart, PieChart },
+  components: { PanelGroup, SaleChart, StatusChart},
   data() {
     return {
       showType: 'equitmentStat',
@@ -33,7 +31,7 @@ export default {
 
   },
   created() {
-    this._getEquitmentStat()
+    // this._getEquitmentStat()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -48,13 +46,23 @@ export default {
         case 'saleStat':
           this._getSaleStat()
           break
-        default:
-          break
       }
     },
-    _getEquitmentStat() {
+    handleSearch(obj) {
+      const { type, condition } = obj
+      if (type === 'status') {
+        const params = {}
+        if (condition.dateArr) {
+          params.startTime = condition.dateArr[0]
+          params.endTime = condition.dateArr[1]
+        }
+        this._getEquitmentStat(params)
+      }
+    },
+    _getEquitmentStat(paramsData) {
+      const params = paramsData | {}
       this.equitmentStatData = []
-      getEquitmentStat().then(res => {
+      getEquitmentStat(params).then(res => {
         this.equitmentStatData = res.records
       })
     },

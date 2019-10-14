@@ -1,32 +1,102 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name:{{ name }}</div>
-    <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
+  <div class="dashboard-editor-container">
+    <div class="header">
+      <panel-group/>
+    </div>
+    <!-- <div class="main">
+
+      <div class="left-container">
+        <left-container></left-container>
+      </div>
+      <div class="right-container">
+        <right-container></right-container>
+      </div>
+      <div class="center-container">
+        <center-container></center-container>
+      </div>
+    </div> -->
+
+    <div class="main">
+      <div class="center-container">
+        <center-container></center-container>
+      </div>
+      <div class="left-container">
+        <left-container></left-container>
+      </div>
+      <div class="right-container">
+        <right-container></right-container>
+      </div>
+    </div>
+
   </div>
 </template>
-
 <script>
-import { mapGetters } from 'vuex'
-
+import PanelGroup from './components/PanelGroup'
+import LeftContainer from './components/LeftContainer'
+import RightContainer from './components/RightContainer'
+import CenterContainer from './components/CenterContainer'
 export default {
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
-  }
+  name:'dashboard',
+  components:{PanelGroup,LeftContainer,RightContainer,CenterContainer}
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
+<style lang="scss" scoped>
+.dashboard-editor-container {
+  // background-color: rgb(240, 242, 245);
+  // height: calc(100vh - 50px);
+  padding: 20px;
+  .header{
+    height:120px;
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
+  // .main{
+  //   width: 100%;
+  //   .left-container{
+  //     float: left;
+  //     width: 350px;
+  //     height: 700px;
+  //   }
+  //   .center-container{
+  //     width: calc(100% - 700px);
+  //     height: 700px;
+  //     background-color: antiquewhite;
+  //     margin:0 350px;
+  //   }
+  //   .right-container{
+  //     float: right;
+  //     height: 700px;
+  //     width: 350px;
+  //   }
+  // }
+  .main{
+    display: flex;
+    width: 100%;
+    .left-container{
+      order: -1;
+      flex-basis: 350px;
+      // height: 700px;
+      // width: 350px;
+      // margin-left: -100%;
+      // left: -350px;
+    }
+    .center-container{
+      order: 0;
+      flex-basis: calc(100% - 700px);
+
+      // width: 100%;
+      // height: 700px;
+      // background-color: antiquewhite;
+      // padding: 0 350px;
+    }
+    .right-container{
+      order: 1;
+      flex-basis: 350px;
+      // width: 350px;
+      // height: 700px;
+      // margin-left: -350px;
+      // right: -350px;
+      
+    }
   }
 }
 </style>

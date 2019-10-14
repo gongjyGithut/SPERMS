@@ -79,11 +79,11 @@
 
       <el-table-column label="类型" prop="eType"/>
 
-      <el-table-column label="状态" prop="eState">
+      <!-- <el-table-column label="状态" prop="eState">
         <template slot-scope="{row}">
           {{ row.eState | filterState }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <!-- <el-table-column label="操作">
                 <template slot-scope="scope">
