@@ -1,3 +1,4 @@
+@import './variables.scss';
 // cover some element-ui styles
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
@@ -42,30 +43,23 @@
 
 .el-dialog {
     position: relative;
-    margin: 0 auto 50px;
+    // margin: 0 auto 50px;
     // background: #4c6788;
     // border-radius: 10px;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    width: 500px;
+    width: 600px;
     .el-dialog__header {
         .el-dialog__title {
-            color: #303133;
-            font-size: 24px;
-            &::after {
-                content: ' ';
-                height: 1px;
-                width: 100%;
-                display: block;
-                background-color: #909399;
-                margin-top: 10px
-            }
+            color: #212B36;
+            font-size: 22px;
         }
     }
     .el-dialog__body {
         // text-align: center;
+		padding-top: 0;
         .el-form {
             &.el-form-item__label {
                 color: #606266;
@@ -76,4 +70,130 @@
             }
         }
     }
+}
+//表格样式重写
+.el-table {
+	color: $btn-text-main-color;
+
+	td,
+	th {
+		padding: 0;
+
+		.cell {
+			line-height: 44px;
+		}
+	}
+
+	th {
+		height: 45px;
+		background: rgba(245, 245, 245, 1);
+		color: #637381;
+		font-size: 14px;
+		font-family: PingFang SC;
+		font-weight: 700;
+	}
+
+	.el-table__row {
+		&.hover-row {
+			cursor: pointer;
+
+			td {
+				background-color: $table-row-hover-color !important;
+			}
+		}
+	}
+}
+
+//分页样式重写
+.el-pagination {
+
+	.pagination__total,
+	.pagination__jump {
+		color: $btn-text-main-color;
+	}
+
+	.el-select .el-input .el-input__inner:hover {
+		border-color: $btn-main-color;
+	}
+
+	&.is-background {
+
+		.btn-next,
+		.btn-prev {
+			border: 1px solid #c6cbd4;
+			border-radius: 4px;
+			background-color: #fff;
+			color: $btn-text-main-color;
+			font-size: 14px;
+			font-weight: 400;
+
+			&:hover {
+				background: $btn-main-color;
+				border: none;
+				color: #ffffff;
+			}
+
+			&:disabled:hover {
+				background-color: #fff;
+				color: #C0C4CC;
+				border: 1px solid #c6cbd4;
+			}
+		}
+
+		.el-pager {
+			li {
+				min-width: 30px;
+				color: $btn-text-main-color;
+				font-size: 14px;
+				font-weight: 400;
+				height: 28px;
+				border: 1px solid #c6cbd4;
+				border-radius: 4px;
+				background-color: #fff;
+				box-sizing: border-box;
+
+				&:not(.disabled).active,
+				&:not(.disabled):hover {
+					background: $btn-main-color;
+					color: #ffffff;
+					border: 0;
+				}
+			}
+		}
+	}
+}
+// 复选框样式重写
+.el-checkbox,
+.el-checkbox.is-checked {
+	.el-checkbox__label {
+		color: #212B36;
+	}
+
+	.el-checkbox__input.is-checked .el-checkbox__inner {
+		background-color: #fff;
+
+		&:hover {
+			border: 1px solid #007AEB;
+		}
+	}
+}
+
+.el-checkbox__inner {
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	box-sizing: border-box;
+	border: 1px solid #c4cdd5;
+
+
+	&::after {
+		border-color: #007AEB;
+		border-width: 3px;
+		top: 1px;
+		left: 4px;
+	}
+
+	&:hover {
+		border: 2px solid #007AEB;
+	}
 }

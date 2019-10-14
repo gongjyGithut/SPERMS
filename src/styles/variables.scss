@@ -17,6 +17,42 @@ $warningText:#E6A23C;
 $dangerText:#F56C6C;
 $primaryText:#409EFF;
 
+// 普通按钮
+$btn-main-color:#007AEB; // 按钮主色调
+$btn-hover-color: #2697F4; // 按钮hover色调
+$btn-active-color: #0071D9;//按钮active色调
+$btn-disabled-color: #92CEFF; // 按钮diaabled的色调
+
+// 警告按钮
+$btn-main-warning-color: #EE5D39;
+$btn-hover-warning-color: #FF6E4B;
+$btn-active-warning-color: #E15735;
+$btn-disabled-warning-color: #F9C1B5;
+
+// 文字按钮
+$btn-text-main-color:#212B36; // 文字按钮主色调
+$btn-text-hover-color: #084E8A; // 文字按钮hover & focus色调
+
+// 表格行hover颜色
+$table-row-hover-color: #F5F7FA;
+
+$line-split-color:#C5C8CA; // 分割线
+$disc-gray-color:#E2E2E2;	// 灰色色块
+$main-bg-color:rgba(248,248,250,1);	// 背景主色调
+$default-bg-color:#FFFFFF;// 白色背景色
+
+// 字体相关
+$level1-font-color:#0D1C28;
+$level2-font-color:#45484B;
+$level3-font-color:#727475;
+
+
+// 消息提示颜色规范
+$message-success: #04844B;
+$message-warning: #FFB75D;
+$message-error: #C23934;
+$message-info: #54698D;
+
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {

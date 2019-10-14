@@ -60,17 +60,20 @@ div:focus {
 }
 
 // main-container global css
+::-webkit-scrollbar {
+    display: none;
+} 
 .app-container {
     padding: 20px;
-    padding-bottom: 0px;
 }
 
 .toolbar {
-    background-color: #f6f6f6;
+    // background-color: #f6f6f6;
     // padding: 10px;
-    padding: 10px 0 0 5px;
+    // padding: 10px 0 0 5px;
 }
 
+/*隐藏百度地图logo*/
 .anchorBL {
     display: none;
 }

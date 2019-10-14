@@ -4,60 +4,66 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
-      <el-form :model="dialogFormData" label-width="80px" label-position="left">
-        <el-form-item label="设备编号">
+      :close-on-click-modal="false"
+      width="720px">
+      <el-form :model="dialogFormData" :rules="formRule" label-position="left" label-width="80px">
+        <el-row :gutter="27">
+          <el-col :span="12">
+            <el-form-item label="设备编号" prop="eId">
+              <el-input
+                v-model="dialogFormData.eId"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
 
-          <el-input
-            v-model="dialogFormData.eId"
-            style=""
-            placeholder=""/>
+          <el-col :span="12">
+            <el-form-item label="设备名称" prop="eName">
+              <el-input
+                v-model="dialogFormData.eName"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-        </el-form-item>
+        <el-row :gutter="27">
+          <el-col :span="12">
+            <el-form-item label="生产厂家" prop="eManufacturer">
+              <el-input
+                v-model="dialogFormData.eManufacturer"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
 
-        <el-form-item label="设备名称">
+          <el-col :span="12">
+            <el-form-item label="生产日期" prop="eDate">
+              <el-date-picker
+                v-model="dialogFormData.eDate"
+                :picker-options="pickerOptions"
+                style="width:250px;"
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd HH:mm:ss"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-          <el-input
-            v-model="dialogFormData.eName"
-            placeholder=""/>
+        <el-row :gutter="27">
+          <el-col :span="12">
+            <el-form-item label="规格" prop="eStandard">
+              <el-input
+                v-model="dialogFormData.eStandard"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
 
-        </el-form-item>
-
-        <el-form-item label="生产厂家">
-
-          <el-input
-            v-model="dialogFormData.eManufacturer"
-            placeholder=""/>
-
-        </el-form-item>
-
-        <el-form-item label="生产日期">
-
-          <el-date-picker
-            v-model="dialogFormData.eDate"
-            :picker-options="pickerOptions"
-            style="width:250px;"
-            type="datetime"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd HH:mm:ss"/>
-
-        </el-form-item>
-
-        <el-form-item label="规格">
-
-          <el-input
-            v-model="dialogFormData.eStandard"
-            placeholder=""/>
-
-        </el-form-item>
-
-        <el-form-item label="类型">
-
-          <el-input
-            v-model="dialogFormData.eType"
-            placeholder=""/>
-        </el-form-item>
-
+          <el-col :span="12">
+            <el-form-item label="类型" prop="eType">
+              <el-input
+                v-model="dialogFormData.eType"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
 
       <div slot="footer">
@@ -94,6 +100,9 @@ export default {
         disabledDate(time) {
           return time.getTime() > Date.now()
         }
+      },
+      formRule: {
+        eId: [{ required: true, message: '请输入设备编号', trigger: 'blur' }]
       }
     }
   },
