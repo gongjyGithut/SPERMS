@@ -89,3 +89,16 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.menu-wrapper{
+
+  /deep/.svg-icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: -0.15em;
+    fill: #fff;
+    overflow: hidden;
+  }
+}
+</style>

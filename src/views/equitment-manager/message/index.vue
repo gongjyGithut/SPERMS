@@ -6,7 +6,7 @@
           <el-date-picker
             v-model="startTime"
             :picker-options="pickerOptions"
-            type="datetime"
+            type="date"
             placeholder="开始时间"
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
@@ -15,7 +15,7 @@
           <el-date-picker
             v-model="endTime"
             :picker-options="pickerOptions"
-            type="datetime"
+            type="date"
             placeholder="结束时间"
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
@@ -34,26 +34,30 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
+
+    </el-row>
+
+    <el-row class="btn-group">
+
+      <el-button
+        type="success"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="warning"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">修改
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
 
     </el-row>
 
@@ -79,19 +83,23 @@
 
       <el-table-column label="类型" prop="eType"/>
 
-      <!-- <el-table-column label="状态" prop="eState">
+      <el-table-column label="经度" prop="eLongitude"/>
+
+      <el-table-column label="纬度" prop="eLatitude"/>
+
+      <el-table-column label="状态" prop="eState">
         <template slot-scope="{row}">
           {{ row.eState | filterState }}
         </template>
       </el-table-column> -->
 
-      <!-- <el-table-column label="操作">
-                <template slot-scope="scope">
-                   <el-button v-if="scope.row.state == 1" type="warning " size="mini">关闭</el-button>
-                   <el-button v-else type="success" size="mini">开启</el-button>
-                </template>
-
-            </el-table-column> -->
+      <el-table-column label="操作">
+        <template slot-scope="{row}">
+          <el-button v-if="row.state === 1" type="text" size="mini">关闭</el-button>
+          <el-button v-if="row.state === 2 || row.state === 3" type="text" size="mini">开启</el-button>
+          <el-button type="text" size="mini">拍摄</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getEqList"/>
@@ -113,18 +121,23 @@ export default {
       switch (+val) {
         case 0:
           return '在线'
+          // eslint-disable-next-line no-unreachable
           break
         case 1:
           return '离线'
+          // eslint-disable-next-line no-unreachable
           break
         case 2:
           return '故障'
+          // eslint-disable-next-line no-unreachable
           break
         case 3:
           return '报废'
+          // eslint-disable-next-line no-unreachable
           break
         default:
           return '其他'
+          // eslint-disable-next-line no-unreachable
           break
       }
     }
@@ -197,11 +210,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        this.$message.error('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
       this.dialogTitle = '修改'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        this.$message.error('请选择待删除的记录')
+        return
+      }
       const parmas = {}
       const eIds = []
       this.selectData.forEach(v => {
@@ -227,7 +248,7 @@ export default {
       this.$refs.equipmentTable.toggleRowSelection(row)
     },
     formatTime(row) {
-      return parseTime(row.eDate)
+      return parseTime(row.eDate, '{y}-{m}-{d}')
     }
   }
 }
