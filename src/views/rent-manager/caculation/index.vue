@@ -15,29 +15,31 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
 
     </el-row>
+    <el-row class="btn-group">
 
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
+
+    </el-row>
     <el-table
       ref="caculationTable"
       :data="caculationList"
@@ -48,9 +50,8 @@
       @row-click="rowClick">
       <el-table-column type="selection"/>
       <el-table-column label="计费编号" prop="cmNo"/>
-
+      <el-table-column label="计费名称" prop="cmName"/>
       <el-table-column :formatter="formatCmType" label="计费方式" prop="cmType"/>
-
       <el-table-column label="单价" prop="cmPrice"/>
       <el-table-column label="计量单位" prop="cmUnit"/>
 
@@ -58,17 +59,18 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCaculationList"/>
 
-    <form-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getCaculationList"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getCaculationList"/>
   </div>
 </template>
 
 <script>
 import { getCaculationList, deleteCaculation } from '@/api/rentmanager/caculation'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
+import EditForm from './components/edit-form'
 export default {
   name: '',
-  components: { Pagination, formDialog },
+  components: { Pagination, EditForm },
   data() {
     return {
       caculationList: [],
@@ -118,11 +120,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const caculationParmas = {}
       const cmNos = []
       this.selectData.forEach(v => {
@@ -136,7 +146,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteCaculation(caculationParmas).then(() => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
         })
       })
     },

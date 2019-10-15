@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { notifySuccess } from '@/utils/notify.js'
 import { addEq, updateEq } from '@/api/equitment-manager/message'
 export default {
   name: 'FormDialog',
@@ -129,11 +130,11 @@ export default {
       const parmas = Object.assign({}, this.dialogFormData)
       if (this.submitStatus === 'add') {
         addEq(parmas).then((res) => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
         })
       } else {
         updateEq(parmas).then((res) => {
-          this.$message.success('修改成功')
+          notifySuccess('修改成功')
         })
       }
       this.dialogVisible = false

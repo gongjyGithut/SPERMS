@@ -4,7 +4,8 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false"
+      width="400px">
       <el-form ref="dialogForm" :model="dialogFormData" label-width="80px" label-position="left">
         <el-form-item label="计费编号" prop="cmNo">
 
@@ -15,9 +16,10 @@
 
         </el-form-item>
 
-        <el-form-item label="单价" prop="cmFee">
+        <el-form-item label="计费名称" prop="cmName">
+
           <el-input
-            v-model="dialogFormData.cmFee"
+            v-model="dialogFormData.cmName"
             placeholder=""/>
         </el-form-item>
 
@@ -29,6 +31,12 @@
             <el-radio :label="3" >其他</el-radio>
           </el-radio-group>
 
+        </el-form-item>
+
+        <el-form-item label="单价" prop="cmFee">
+          <el-input
+            v-model="dialogFormData.cmFee"
+            placeholder=""/>
         </el-form-item>
 
         <el-form-item label="计量单位" prop="cmUnit">
@@ -48,6 +56,7 @@
 </template>
 
 <script>
+import { notifySuccess } from '@/utils/notify.js'
 import { addCaculation, updateCaculation } from '@/api/rentmanager/caculation'
 export default {
   name: 'FormDialog',
@@ -94,11 +103,11 @@ export default {
 
       if (this.submitStatus === 'add') {
         addCaculation(caculationParmas).then(() => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
         })
       } else {
         updateCaculation(caculationParmas).then((res) => {
-          this.$message.success('修改成功')
+          notifySuccess('修改成功')
         })
       }
       this.dialogVisible = false

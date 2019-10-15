@@ -98,19 +98,19 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCustomerList"/>
 
-    <customer-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
 import { getCustomerList, deleteCustomer, deleteUserRelation } from '@/api/rentmanager/customer'
 import Pagination from '@/components/Pagination'
-import CustomerForm from './components/customer-form'
+import EditForm from './components/edit-form'
 import { parseTime } from '@/utils/index'
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
-  components: { Pagination, CustomerForm },
+  components: { Pagination, EditForm },
   data() {
     return {
       customerList: [],
@@ -186,7 +186,7 @@ export default {
         return
       }
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {

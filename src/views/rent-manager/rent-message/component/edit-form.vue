@@ -4,9 +4,10 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
-      <el-form ref="dialogForm" :model="dialogFormData" :rules="rules" label-width="110px" label-position="left">
-        <el-form-item label="交易编号" prop="tradeNo">
+      :close-on-click-modal="false"
+      width="700px">
+      <el-form ref="dialogForm" :model="dialogFormData" :rules="rules" label-width="110px" label-position="right">
+        <el-form-item label="交易编号" prop="tradeNo" >
 
           <el-input
             v-model="dialogFormData.tradeNo"
@@ -15,57 +16,67 @@
 
         </el-form-item>
 
-        <el-form-item label="设备名称" prop="eName">
-          <el-input
-            :disabled="true"
-            v-model="dialogFormData.eName"
-            placeholder="请选择设备"/>
-          <el-button @click="handleSelete(0)">
-            选择
-          </el-button>
-        </el-form-item>
+        <el-row >
+          <el-col :span="12">
+            <el-form-item label="设备名称" prop="eName">
+              <el-input
+                :disabled="true"
+                v-model="dialogFormData.eName"
+                placeholder="请选择设备">
+                <el-button slot="append" @click="handleSelete(0)">
+                  选择
+                </el-button>
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
 
-        <el-form-item label="计费编号" prop="cmNo">
+            <el-form-item label="计费编号" prop="cmNo">
 
-          <el-input
-            :disabled="true"
-            v-model="dialogFormData.cmNo"
-            placeholder="请选择计费方式"/>
-          <el-button @click="handleSelete(1)">
-            选择
-          </el-button>
+              <el-input
+                :disabled="true"
+                v-model="dialogFormData.cmNo"
+                placeholder="请选择计费方式">
 
-        </el-form-item>
+                <el-button slot="append" @click="handleSelete(1)">
+                  选择
+                </el-button>
+              </el-input>
 
-        <el-form-item label="客户名称" prop="customerName">
-          <el-input
-            :disabled="true"
-            v-model="dialogFormData.customerName"
-            placeholder="请选择客户"/>
-          <el-button @click="handleSelete(2)">
-            选择
-          </el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-        </el-form-item>
+        <el-row >
+          <el-col :span="12">
+            <el-form-item label="客户名称" prop="customerName">
+              <el-input
+                :disabled="true"
+                v-model="dialogFormData.customerName"
+                placeholder="请选择客户">
 
-        <el-form-item label="产量总额" prop="lrMount" >
-          <el-input
-            v-model="dialogFormData.lrMount"
-            placeholder=""/>
-          <el-link :underline="false" type="danger" icon="el-icon-warning">0为无限量</el-link>
-        </el-form-item>
+                <el-button slot="append" @click="handleSelete(2)">
+                  选择
+                </el-button>
+              </el-input>
+            </el-form-item>
 
-        <el-form-item label="租借开始时间" prop="rentBeginDate">
+          </el-col>
 
-          <el-date-picker v-model="dialogFormData.rentBeginDate" placeholder="" type="date" value-format="yyyy-MM-dd HH:mm:ss"/>
+          <el-col :span="12">
 
-        </el-form-item>
+            <el-form-item label="产量总额" prop="lrMount" >
+              <el-input
+                v-model="dialogFormData.lrMount"
+                placeholder="">
 
-        <el-form-item label="租借结束时间" prop="rentEndDate">
-
-          <el-date-picker v-model="dialogFormData.rentEndDate" placeholder="" type="date" value-format="yyyy-MM-dd HH:mm:ss"/>
-
-        </el-form-item>
+                <template slot="append">
+                  <el-link :underline="false" type="primary" icon="el-icon-warning">0为无限量</el-link>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item label="使用地点" prop="rentPlace ">
 
@@ -74,6 +85,26 @@
             placeholder=""/>
 
         </el-form-item>
+
+        <el-row>
+          <el-col :span="12">
+
+            <el-form-item label="租借开始时间" prop="rentBeginDate">
+
+              <el-date-picker v-model="dialogFormData.rentBeginDate" placeholder="" type="date" value-format="yyyy-MM-dd HH:mm:ss"/>
+
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+
+            <el-form-item label="租借结束时间" prop="rentEndDate">
+
+              <el-date-picker v-model="dialogFormData.rentEndDate" placeholder="" type="date" value-format="yyyy-MM-dd HH:mm:ss"/>
+
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item label="自动锁机策略" prop="autoLock">
 
@@ -91,16 +122,16 @@
       </div>
     </el-dialog>
 
-    <rent-msg-table v-if="tableVisible" :table-visible.sync="tableVisible" :title-type="titleType" @cancel="handleTabelCancel" @select="getSelect"/>
+    <select-table v-if="tableVisible" :table-visible.sync="tableVisible" :title-type="titleType" @cancel="handleTabelCancel" @select="getSelect"/>
   </div>
 </template>
 
 <script>
 import { addRentMessage, updateRentMessage } from '@/api/rentmanager/rent-message'
-import RentMsgTable from './Table'
+import SelectTable from './select-table'
 export default {
-  name: 'RentMsgEdit',
-  components: { RentMsgTable },
+  name: 'EditForm',
+  components: { SelectTable },
   props: {
     isdialogShow: {
       default: false,

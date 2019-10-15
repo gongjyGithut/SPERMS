@@ -109,19 +109,19 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="_getRentmessageList"/>
 
-    <rent-msg-Edit :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
 import { getRentMessageList, deleteRentMessage } from '@/api/rentmanager/rent-message'
 import Pagination from '@/components/Pagination'
-import RentMsgEdit from './component/Edit'
+import EditForm from './component/edit-form'
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, RentMsgEdit },
+  components: { Pagination, EditForm },
   filters: {
     formatDate(val) {
       const date = val ? parseTime(val, '{y}-{m}-{d}') : ''
@@ -199,7 +199,7 @@ export default {
         return
       }
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
