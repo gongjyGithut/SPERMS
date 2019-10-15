@@ -33,27 +33,29 @@
             type="primary"
             icon="el-icon-search"
             @click="handleSearch"/>
-
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
+
+    </el-row>
+    <el-row class="btn-group">
+
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
 
     </el-row>
 
@@ -72,7 +74,7 @@
 
       <el-table-column label="维修厂家" prop="rManufacturer"/>
 
-      <el-table-column label="维修费用/万" prop="rCost"/>
+      <el-table-column label="维修费用" prop="rCost"/>
 
       <el-table-column label="维修厂家" prop="rPerson"/>
 
@@ -97,18 +99,19 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRepairList"/>
 
-    <operate-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getRepairList"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getRepairList"/>
   </div>
 </template>
 
 <script>
 import { getRepairList, deleteRepair } from '@/api/equitment-manager/repair'
 import Pagination from '@/components/Pagination'
-import operateDialog from './operateDialog'
+import EditForm from './components/edit-form'
 import { parseTime } from '@/utils/index'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
-  components: { Pagination, operateDialog },
+  components: { Pagination, EditForm },
   data() {
     return {
       equipmentList: [],
@@ -150,13 +153,13 @@ export default {
   methods: {
     getRepairList() {
       const parmas = Object.assign({}, this.page)
-
+      this.selectData = []
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = parseTime(this.startTime)
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -177,11 +180,20 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
+
       this.isdialogShow = true
       this.dialogTitle = '修改'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const parmas = {}
       const eIds = []
       this.selectData.forEach(v => {
@@ -195,7 +207,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteRepair(parmas).then((res) => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
           this.getRepairList()
         })
       })
@@ -205,7 +217,6 @@ export default {
       this.selectData = row
     },
     rowClick(row) {
-      console.log(row)
       this.$refs.repairTable.clearSelection()
       this.$refs.repairTable.toggleRowSelection(row)
     },

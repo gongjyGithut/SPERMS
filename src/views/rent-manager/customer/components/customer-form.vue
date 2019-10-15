@@ -111,13 +111,13 @@
         </el-form-item>
 
         <el-row>
-          <el-col :span="24">
-            <el-form-item label="单位" prop="customerCompany">
-              <el-input
-                v-model="dialogFormData.customerCompany"
-                placeholder=""/>
-            </el-form-item>
-          </el-col>
+
+          <el-form-item label="单位" prop="customerCompany">
+            <el-input
+              v-model="dialogFormData.customerCompany"
+              placeholder=""/>
+          </el-form-item>
+
         </el-row>
       </el-form>
 

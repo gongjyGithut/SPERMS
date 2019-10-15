@@ -11,7 +11,7 @@
           :data="listData"
           highlight-current-row
           border
-          height="400px"
+          height="380px"
           tooltip-effect="light"
           @select="selChange"
           @row-click="rowClick">
@@ -25,7 +25,7 @@
       </div>
 
       <div slot="footer">
-        <el-button @click="handleBack">取消</el-button>
+        <el-button @click="handleCancel">取消</el-button>
         <el-button type="primary" @click.stop="handleSubmit">确定</el-button>
       </div>
     </el-dialog>
@@ -35,7 +35,7 @@
 import { getEqList } from '@/api/equitment-manager/message'
 import Pagination from '@/components/Pagination'
 export default {
-  name: 'DevListDialog',
+  name: 'SelectEquitment',
   components: { Pagination },
   props: {
     devListDialogShow: {
@@ -82,9 +82,11 @@ export default {
         return false
       }
       this.$emit('select', this.selectData)
+      this.selectData = []
     },
-    handleBack() {
-      this.$emit('back')
+    handleCancel() {
+      this.selectData = []
+      this.$emit('cancel')
     },
     selChange(row) {
       if (row.length > 1) {

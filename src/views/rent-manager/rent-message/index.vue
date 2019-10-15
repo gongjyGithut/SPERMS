@@ -47,26 +47,30 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
+    </el-row>
+
+    <el-row class="btn-group">
+
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
+
     </el-row>
 
     <el-table
@@ -113,6 +117,7 @@
 import { getRentMessageList, deleteRentMessage } from '@/api/rentmanager/rent-message'
 import Pagination from '@/components/Pagination'
 import RentMsgEdit from './component/Edit'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
@@ -189,11 +194,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
       this.dialogTitle = '修改'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const rentmanagerParmas = {}
       const tradeNos = []
       this.selectData.forEach(v => {
@@ -207,7 +220,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteRentMessage(rentmanagerParmas).then(() => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
 
           this._getRentmessageList()
         })

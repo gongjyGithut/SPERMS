@@ -33,7 +33,8 @@
           <el-button
             type="primary"
             icon="el-icon-search"
-            @click="handleSearch"/>
+            @click="handleSearch">搜索
+          </el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -41,13 +42,13 @@
     <el-row class="btn-group">
 
       <el-button
-        type="success"
+        type="primary"
         icon="el-icon-circle-plus"
         @click.stop="handleAdd">添加
       </el-button>
 
       <el-button
-        type="warning"
+        type="primary"
         icon="el-icon-edit"
         @click.stop="handleUpdate">编辑
       </el-button>
@@ -77,8 +78,8 @@
       <el-table-column label="年龄" prop="customerAge"/>
 
       <el-table-column label="性别" prop="customerSex">
-        <template slot-scope="scope">
-          {{ scope.row.customerSex == 0?'女':'男' }}
+        <template slot-scope="{row}">
+          {{ row.customerSex == 0?'女':'男' }}
         </template>
       </el-table-column>
 
@@ -106,6 +107,7 @@ import { getCustomerList, deleteCustomer, deleteUserRelation } from '@/api/rentm
 import Pagination from '@/components/Pagination'
 import CustomerForm from './components/customer-form'
 import { parseTime } from '@/utils/index'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
   components: { Pagination, CustomerForm },
@@ -157,7 +159,7 @@ export default {
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -180,7 +182,7 @@ export default {
     },
     handleUpdate() {
       if (this.selectData.length !== 1) {
-        this.$message.error('请选择一条记录')
+        notifyWarning('请选择一条记录')
         return
       }
       this.isdialogShow = true
@@ -189,7 +191,7 @@ export default {
     },
     handleDelete() {
       if (this.selectData.length === 0) {
-        this.$message.error('请选择待删除记录')
+        notifyWarning('请选择待删除记录')
         return
       }
       const customerParmas = {}
@@ -208,7 +210,7 @@ export default {
         type: 'warning'
       }).then(() => {
         Promise.all([deleteCustomer(customerParmas), deleteUserRelation(relationParmas)]).then(() => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
           this.getCustomerList()
         })
       })
