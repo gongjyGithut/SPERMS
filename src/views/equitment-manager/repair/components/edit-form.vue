@@ -173,7 +173,7 @@ export default {
         })
       } else {
         updateRepair(parmas).then((res) => {
-          notifySuccess('修改成功')
+          notifySuccess('编辑成功')
         })
       }
       this.$emit('reload')

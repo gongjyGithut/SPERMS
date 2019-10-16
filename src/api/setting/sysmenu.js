@@ -62,7 +62,7 @@ export function deleteSysmenu(data) { // 删除菜单
   })
 }
 
-export function updataSysmenu(data) { // 修改菜单
+export function updataSysmenu(data) { // 编辑菜单
   return request({
     url: '/sysmenu/update',
     method: 'POST',

@@ -35,28 +35,30 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
     </el-row>
+    <el-row class="btn-group">
 
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
+
+    </el-row>
     <el-table
       ref="usersTable"
       :data="userList"
@@ -84,18 +86,19 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getUsersList"/>
 
-    <form-dialog :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
 import { getUsersList, deleteUsers } from '@/api/setting/users'
 import Pagination from '@/components/Pagination'
-import formDialog from './dialog'
+import EditForm from './components/edit-form'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog },
+  components: { Pagination, EditForm },
   data() {
     return {
       userList: [],
@@ -141,7 +144,7 @@ export default {
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -162,11 +165,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const userParmas = {}
       const uIds = []
       this.selectData.forEach(v => {
@@ -180,20 +191,20 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUsers(userParmas).then((res) => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
+          this.selectData = []
           this.getUsersList()
         })
       })
     },
     reload() {
       this.getUsersList()
+      this.selectData = []
     },
     selChange(row) {
-      console.log(row)
       this.selectData = row
     },
     rowClick(row) {
-      console.log(row)
       this.$refs.usersTable.clearSelection()
       this.$refs.usersTable.toggleRowSelection(row)
     },

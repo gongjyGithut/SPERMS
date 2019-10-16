@@ -20,7 +20,7 @@ export function addRentMessage(data) { // 添加租赁信息
   })
 }
 
-export function updateRentMessage(data) { // 修改租赁信息
+export function updateRentMessage(data) { // 编辑租赁信息
   return request({
     url: '/rentmanager/update',
     method: 'POST',

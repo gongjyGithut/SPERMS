@@ -40,9 +40,10 @@
   </div>
 </template>
 <script>
+import { notifySuccess } from '@/utils/notify.js'
 import { addStoreMessage, updateStoreMessage } from '@/api/rentmanager/store-message'
 export default {
-  name: 'StoreMsgEdit',
+  name: 'EditForm',
   components: {},
   props: {
     editShow: {
@@ -62,7 +63,7 @@ export default {
   },
   data() {
     return {
-      titleMap: ['添加', '修改'],
+      titleMap: ['添加', '编辑'],
       rules: {
         storeId: [{ required: true, message: '请输入仓库编号', trigger: 'blur' }],
         storeName: [{ required: true, message: '请输入仓库名称', trigger: 'blur' }],
@@ -93,7 +94,6 @@ export default {
         if (valid) {
           this._handleSubmit()
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -102,14 +102,14 @@ export default {
       const parmas = Object.assign({}, this.dialogFormData)
       if (this.titleType === 0) {
         addStoreMessage(parmas).then(res => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
           this.$emit('reload')
         })
       }
 
       if (this.titleType === 1) {
         updateStoreMessage(parmas).then(res => {
-          this.$message.success('修改成功')
+          notifySuccess('编辑成功')
           this.$emit('reload')
         })
       }

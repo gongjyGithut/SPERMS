@@ -29,11 +29,11 @@
   </div>
 </template>
 <script>
-import { getRoleList, getRoleListById } from '@/api/setting/sysrole'
+import { getRoleList } from '@/api/setting/sysrole'
 import Pagination from '@/components/Pagination'
 // import RoleContainer from './sysrole'
 export default {
-  name: 'RoleDialog',
+  name: 'SelectRole',
   components: { Pagination },
   props: {
     roleDialogShow: {
@@ -47,7 +47,7 @@ export default {
       total: 0,
       page: {
         pageNo: 1,
-        pageSize: 50
+        pageSize: 10
       },
       selectData: []
     }

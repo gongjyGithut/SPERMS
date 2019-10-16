@@ -11,7 +11,7 @@
           <el-col :span="12">
             <el-form-item label="设备编号" prop="eId">
               <el-input
-                :disabled="dialogTitle === '修改'"
+                :disabled="dialogTitle === '编辑'"
                 v-model="dialogFormData.eId"
                 placeholder=""/>
             </el-form-item>
@@ -134,7 +134,7 @@ export default {
         })
       } else {
         updateEq(parmas).then((res) => {
-          notifySuccess('修改成功')
+          notifySuccess('编辑成功')
         })
       }
       this.dialogVisible = false

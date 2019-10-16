@@ -36,28 +36,33 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group >
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
 
     </el-row>
+
+    <el-row class="btn-group">
+
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
+
+    </el-row>
+
     <el-table
       ref="menuTable"
       :data="roleList"
@@ -87,23 +92,24 @@
     </el-table>
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRoleList"/>
 
-    <form-dialog :isdialog-show.sync="formDialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <edit-form :isdialog-show.sync="formDialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
 
-    <menu-dialog :isdialog-show.sync="menuDialogShow"/>
+    <permission-form :isdialog-show.sync="menuDialogShow"/>
 
   </div>
 </template>
 
 <script>
-import { getRoleList, getRoleListById, deleteRelationByRoleId, deleteRole } from '@/api/setting/sysrole'
+import { getRoleList, deleteRelationByRoleId, deleteRole } from '@/api/setting/sysrole'
 import { getSysmenuListByRoleid } from '@/api/setting/sysmenu'
 import Pagination from '@/components/Pagination'
-import formDialog from './formDialog'
-import menuDialog from './menuDialog'
+import EditForm from './components/edit-form'
+import PermissionForm from './components/permission-form'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog, menuDialog },
+  components: { Pagination, EditForm, PermissionForm },
   data() {
     return {
       roleList: [],
@@ -148,7 +154,7 @@ export default {
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -169,11 +175,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
       this.formDialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const roleParmas = {}
       const roleIds = []
       this.selectData.forEach(v => {
@@ -190,8 +204,8 @@ export default {
         type: 'warning'
       }).then(() => {
         Promise.all([deleteRole(roleParmas), deleteRelationByRoleId(relationParmas)]).then(() => {
-          this.$message.success('删除成功')
-
+          notifySuccess('删除成功')
+          this.selectData = []
           this.getRoleList()
         })
       })
@@ -209,6 +223,7 @@ export default {
       })
     },
     reload() {
+      this.selectData = []
       this.getRoleList()
     },
     selChange(row) {

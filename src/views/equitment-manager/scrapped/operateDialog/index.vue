@@ -117,7 +117,7 @@ export default {
         })
       } else {
         updateScrapped(parmas).then((res) => {
-          this.$message.success('修改成功')
+          this.$message.success('编辑成功')
         })
       }
       this.$emit('reload')

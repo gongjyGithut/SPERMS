@@ -99,7 +99,7 @@ export default {
     handleUpdate(row) {
       this.isOperateShow = true
       this.isListShow = false
-      this.operateFormTitle = '修改'
+      this.operateFormTitle = '编辑'
       this.operateFormData = Object.assign({}, row)
     },
     handleDelete(row) {

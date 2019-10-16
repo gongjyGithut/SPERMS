@@ -47,7 +47,7 @@
 
         <el-table-column min-width="120px">
           <template slot-scope="scope">
-            <el-link icon="el-icon-edit" type="warning" @click="handleUpdate(scope.row)">修改</el-link>
+            <el-link icon="el-icon-edit" type="warning" @click="handleUpdate(scope.row)">编辑</el-link>
             <el-link icon="el-icon-delete" type="danger" @click="handleDelete(scope.row)">删除</el-link>
           </template>
         </el-table-column>

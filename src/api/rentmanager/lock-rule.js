@@ -20,7 +20,7 @@ export function addLockRule(data) { // 添加锁机策略
   })
 }
 
-export function updateLockRule(data) { // 修改锁机策略
+export function updateLockRule(data) { // 编辑锁机策略
   return request({
     url: '/lockrule/update',
     method: 'POST',

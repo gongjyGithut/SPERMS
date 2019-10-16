@@ -39,7 +39,7 @@ export function deleteScrapped(data) { // 删除报废设备信息
   })
 }
 
-export function updateScrapped(data) { // 修改报废设备信息
+export function updateScrapped(data) { // 编辑报废设备信息
   return request({
     url: '/scrapp/update',
     method: 'POST',

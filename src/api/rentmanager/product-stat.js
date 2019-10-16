@@ -20,7 +20,7 @@ export function addProductStat(data) { // 添加生产统计
   })
 }
 
-export function updateProductStat(data) { // 修改生产统计
+export function updateProductStat(data) { // 编辑生产统计
   return request({
     url: '/production_stat/update',
     method: 'POST',

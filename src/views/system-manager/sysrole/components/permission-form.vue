@@ -17,7 +17,7 @@
 <script>
 import MenuContainer from '@/components/MenuContainer'
 export default {
-  name: 'FormDialog',
+  name: 'PermissionForm',
   components: { MenuContainer },
   props: {
     isdialogShow: {

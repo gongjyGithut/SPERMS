@@ -4,7 +4,8 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false"
+      width="400px">
       <el-form ref="dialogForm" :model="dialogFormData" label-width="80px" label-position="left">
         <el-form-item label="角色名称" prop="roleName">
 
@@ -27,6 +28,7 @@
 
           <el-input
             v-model="dialogFormData.roleRemark"
+            type="textarea"
             placeholder=""/>
 
         </el-form-item>
@@ -41,9 +43,10 @@
 </template>
 
 <script>
+import { notifySuccess } from '@/utils/notify.js'
 import { addRole, updateRole } from '@/api/setting/sysrole'
 export default {
-  name: 'FormDialog',
+  name: 'EditForm',
   props: {
     isdialogShow: {
       default: false,
@@ -94,20 +97,19 @@ export default {
 
       if (this.submitStatus === 'add') {
         addRole(roleParmas).then(() => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
           this.dialogVisible = false
           this.$emit('reload')
         })
       } else {
         updateRole(roleParmas).then(() => {
-          this.$message.success('修改成功')
+          notifySuccess('编辑成功')
           this.dialogVisible = false
           this.$emit('reload')
         })
       }
     },
     handleReset() {
-      console.log(this.$refs.dialogForm)
       this.$refs.dialogForm.resetFields()
     }
   }

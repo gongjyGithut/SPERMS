@@ -81,7 +81,7 @@ export default {
   },
   data() {
     return {
-      titleMap: ['添加', '修改'],
+      titleMap: ['添加', '编辑'],
       rules: {
         lrNo: [{ required: true, message: '请输入锁机策略', trigger: 'blur' }],
         lrName: [{ required: true, message: '请输入锁机名称', trigger: 'blur' }],
@@ -128,7 +128,7 @@ export default {
 
       if (this.titleType === 1) {
         updateLockRule(parmas).then(res => {
-          notifySuccess('修改成功')
+          notifySuccess('编辑成功')
           this.$emit('reload')
         })
       }

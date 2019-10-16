@@ -227,6 +227,7 @@ export default {
       })
     },
     reload() {
+      this.selectData = []
       this._getRentmessageList()
     },
     selChange(row) {

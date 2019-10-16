@@ -186,7 +186,7 @@ export default {
       }
 
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {

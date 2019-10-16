@@ -89,7 +89,7 @@ export default {
   },
   data() {
     return {
-      titleMap: ['添加', '修改'],
+      titleMap: ['添加', '编辑'],
       tableVisible: false,
       rules: {
         eId: [{ required: true, message: '请选择设备', trigger: 'blur' }],
@@ -149,7 +149,7 @@ export default {
 
       if (this.titleType === 1) {
         updateProductStat(parmas).then(res => {
-          notifySuccess('修改成功')
+          notifySuccess('编辑成功')
           this.$emit('reload')
         })
       }

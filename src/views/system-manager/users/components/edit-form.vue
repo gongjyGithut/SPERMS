@@ -4,14 +4,14 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false"
+      width="400px">
       <el-form ref="dialogForm" :model="dialogFormData" label-width="80px" label-position="left">
         <el-form-item label="用户账号" prop="uId">
 
           <el-input
             v-model="dialogFormData.uId"
             :disabled="submitStatus == 'update'"
-            style="max-width:300px"
             placeholder=""/>
 
         </el-form-item>
@@ -50,17 +50,17 @@
         <el-button @click="handleReset">重置</el-button>
       </div>
     </el-dialog>
-    <role-dialog v-if="roleDialogShow" :role-dialog-show.sync="roleDialogShow" @back="handleBack" @selectRole="handleSelectRole"/>
+    <select-role v-if="roleDialogShow" :role-dialog-show.sync="roleDialogShow" @back="handleBack" @selectRole="handleSelectRole"/>
   </div>
 </template>
 
 <script>
-import { addUsers, addUserRelation, updateUsers } from '@/api/setting/users'
+import { addUsers, updateUsers } from '@/api/setting/users'
 // import { getRoleList, getRoleListById } from '@/api/setting/sysrole'
-import roleDialog from './roleDialog'
+import SelectRole from './select-role'
 export default {
-  name: 'FormDialog',
-  components: { roleDialog },
+  name: 'EditForm',
+  components: { SelectRole },
   props: {
     isdialogShow: {
       default: false,
@@ -124,7 +124,7 @@ export default {
         })
       } else {
         updateUsers(usersParmas).then((res) => {
-          this.$message.success('修改成功')
+          this.$message.success('编辑成功')
           this.$emit('reload')
         })
       }

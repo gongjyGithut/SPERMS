@@ -36,26 +36,29 @@
             icon="el-icon-search"
             @click="handleSearch"/>
 
-          <el-button-group>
-            <el-button
-              type="success"
-              icon="el-icon-circle-plus"
-              @click.stop="handleAdd"/>
-
-            <el-button
-              :disabled="selectData.length !== 1"
-              type="warning"
-              icon="el-icon-edit"
-              @click.stop="handleUpdate"/>
-
-            <el-button
-              :disabled="selectData.length <= 0"
-              type="danger"
-              icon="el-icon-delete"
-              @click.stop="handleDelete"/>
-          </el-button-group>
         </el-form-item>
       </el-form>
+
+    </el-row>
+    <el-row class="btn-group">
+
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus"
+        @click.stop="handleAdd">添加
+      </el-button>
+
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        @click.stop="handleUpdate">编辑
+      </el-button>
+
+      <el-button
+        type="danger"
+        icon="el-icon-delete"
+        @click.stop="handleDelete">删除
+      </el-button>
 
     </el-row>
     <el-table
@@ -104,7 +107,7 @@
       :limit.sync="page.pageSize"
       @pagination="getMenuList" />
 
-    <form-dialog
+    <edit-form
       v-if="isdialogShow"
       :isdialog-show.sync="isdialogShow"
       :dialog-title="dialogTitle"
@@ -115,14 +118,15 @@
 </template>
 
 <script>
-import { getSysmenuList, getSysmenuListById, addSysmenu, deleteSysmenu } from '@/api/setting/sysmenu'
+import { getSysmenuList, deleteSysmenu } from '@/api/setting/sysmenu'
 import Pagination from '@/components/Pagination'
 import MenuContainer from '@/components/MenuContainer'
-import formDialog from './dialog'
+import EditForm from './components/edit-form'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, formDialog, MenuContainer },
+  components: { Pagination, EditForm, MenuContainer },
   data() {
     // const me = this
     return {
@@ -166,7 +170,7 @@ export default {
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -187,11 +191,19 @@ export default {
       this.dialogFormData = Object.assign({}, this.dialogForm)
     },
     handleUpdate() {
+      if (this.selectData.length !== 1) {
+        notifyWarning('请选择一条记录')
+        return
+      }
       this.isdialogShow = true
-      this.dialogTitle = '修改'
+      this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
     },
     handleDelete() {
+      if (this.selectData.length === 0) {
+        notifyWarning('请选择待删除记录')
+        return
+      }
       const parmas = {}
       const menuIds = []
       this.selectData.forEach(v => {
@@ -205,13 +217,14 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteSysmenu(parmas).then(res => {
-          this.$message.success('删除成功')
-
+          notifySuccess('删除成功')
+          this.selectData = []
           this.getMenuList()
         })
       })
     },
     reload() {
+      this.selectData = []
       this.getMenuList()
     },
     selChange(row) {

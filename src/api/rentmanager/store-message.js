@@ -20,7 +20,7 @@ export function addStoreMessage(data) { // 添加仓库信息
   })
 }
 
-export function updateStoreMessage(data) { // 修改仓库信息
+export function updateStoreMessage(data) { // 编辑仓库信息
   return request({
     url: '/store/update',
     method: 'POST',

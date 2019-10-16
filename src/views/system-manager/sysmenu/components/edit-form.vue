@@ -4,7 +4,8 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false"
+      width="500px">
       <el-form ref="dialogForm" :model="dialogFormData" label-width="80px" label-position="left">
         <el-form-item label="菜单名" prop="menuName">
 
@@ -71,6 +72,7 @@
 
 <script>
 import { addSysmenu, updataSysmenu } from '@/api/setting/sysmenu'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { getSysmenuAllList } from '@/api/setting/sysmenu'
 export default {
   name: 'FormDialog',
@@ -138,16 +140,16 @@ export default {
       delete Parmas.parentId
       Parmas.parentId = this.$refs.cascaderTree.getCheckedNodes(true)[0].value
       if (Parmas.parentId === Parmas.menuId) {
-        this.$message.error('不能选择自己作为父节点菜单')
+        notifyWarning('不能选择自己作为父节点菜单')
         return false
       }
       if (this.submitStatus === 'add') {
         addSysmenu(Parmas).then(res => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
         })
       } else {
         updataSysmenu(Parmas).then((res) => {
-          this.$message.success('修改成功')
+          notifySuccess('编辑成功')
         })
       }
       this.dialogVisible = false

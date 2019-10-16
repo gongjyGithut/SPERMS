@@ -59,7 +59,7 @@ export function deleteRelationByRoleIdAndMenuId(data) { // 根据角色和菜单
   })
 }
 
-export function updateRole(data) { // 修改角色信息
+export function updateRole(data) { // 编辑角色信息
   return request({
     url: '/sysrole/update',
     method: 'POST',
