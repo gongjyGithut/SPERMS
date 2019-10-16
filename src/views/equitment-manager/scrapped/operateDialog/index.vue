@@ -39,7 +39,7 @@
           <el-date-picker
             v-model="dialogFormData.scTime"
             :picker-options="pickerOptions"
-            type="datetime"
+            type="date"
             value-format="yyyy-MM-dd HH:mm:ss"/>
 
         </el-form-item>

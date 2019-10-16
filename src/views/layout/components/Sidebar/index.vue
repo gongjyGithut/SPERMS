@@ -3,9 +3,6 @@
     <el-menu
       :default-active="$route.path"
       :collapse="isCollapse"
-      :background-color="variables.menuBg"
-      :text-color="variables.menuText"
-      :active-text-color="variables.menuActiveText"
       :collapse-transition="false"
       mode="vertical"
     >
@@ -37,3 +34,6 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+
+</style>

@@ -5,12 +5,13 @@
     transition: margin-left .28s;
     margin-left: $sideBarWidth;
     position: relative;
+    background-color: #EEF5F9
   }
 
   .sidebar-container {
     transition: width 0.28s;
     width: $sideBarWidth !important;
-    background-color: $menuBg;
+    background-image: linear-gradient(0deg, #29bdd9 0%, #276ace 100%);
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -19,7 +20,6 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-
     // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
@@ -54,36 +54,67 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
+      font-size: 20px;
     }
 
     .el-menu {
       border: none;
       height: 100%;
       width: 100% !important;
-    }
+      background-color: rgba(0,0,0,0);
+      .menu-wrapper{
 
-    // menu hover
-    .submenu-title-noDropdown,
-    .el-submenu__title {
-      &:hover {
-        background-color: $menuHover !important;
+        // menu hover
+        .submenu-title-noDropdown,
+        .el-submenu__title {
+          font-size:16px;
+          font-family:PingFang SC;
+          color:#fff;
+          font-weight:600;
+          text-decoration:none;
+          transition: all 0.5s ;
+          &:hover {
+            background-color: rgb(164, 152, 255) !important;
+            color: #fff;
+          }
+          
+          &.is-active{
+            background-color: #fff !important;
+            font-weight:bold;
+            border-right:5px solid #88ffb6;
+            color: #276ace;
+          }
+        }
       }
     }
 
-    .is-active>.el-submenu__title {
-      color: $subMenuActiveText !important;
-    }
+
+    // .is-active>.el-submenu__title {
+    //   // background-color: #796AEE !important;
+    //   // color: #fff;
+    // }
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
-
+      font-weight:400;
+      font-size:14px;
+      font-family:PingFang SC;
+      color:#fff;
+      transition: all 0.5s ;
       &:hover {
-        background-color: $subMenuHover !important;
+        background-color: rgb(164, 152, 255) !important;
+        color: #fff;
+      }
+      &.is-active{
+        background-color: #fff !important;
+        border-right:5px solid #88ffb6;
+        font-weight:bold;
+        color: #276ace;
       }
     }
+    // .is-active > 
   }
 
   .hideSidebar {

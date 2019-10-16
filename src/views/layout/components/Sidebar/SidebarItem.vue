@@ -30,7 +30,6 @@ import path from 'path'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
-
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
@@ -92,13 +91,6 @@ export default {
 
 <style lang="scss" scoped>
 .menu-wrapper{
-
-  /deep/.svg-icon {
-    width: 18px;
-    height: 18px;
-    vertical-align: -0.15em;
-    fill: #fff;
-    overflow: hidden;
-  }
+  
 }
 </style>

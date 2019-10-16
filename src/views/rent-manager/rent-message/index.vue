@@ -6,7 +6,7 @@
           <el-date-picker
             v-model="startTime"
             :picker-options="pickerOptions"
-            type="datetime"
+            type="date"
             placeholder="开始时间"
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
@@ -15,7 +15,7 @@
           <el-date-picker
             v-model="endTime"
             :picker-options="pickerOptions"
-            type="datetime"
+            type="date"
             placeholder="结束时间"
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>

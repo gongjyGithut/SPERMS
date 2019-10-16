@@ -18,18 +18,21 @@ export default {
     const vnodes = []
 
     if (icon) {
-      vnodes.push(<svg-icon icon-class={icon}/>)
+      vnodes.push(<span class='icon-class'><svg-icon icon-class={icon} class-name='menu-icon'/></span>)
     }
 
     if (title) {
-      vnodes.push(<span slot='title' class="menu-title">{(title)}</span>)
+      vnodes.push(<span slot='title' class='menu-title'>{(title)}</span>)
     }
     return vnodes
   }
 }
 </script>
 <style lang="scss" scoped>
-// .menu-title{
-//   color: yellowgreen
-// }
+.menu-title{
+  // font-size:16px;
+  // font-family:PingFang SC;
+  // color:#f0efef;
+}
+
 </style>

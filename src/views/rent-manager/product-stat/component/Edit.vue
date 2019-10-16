@@ -11,31 +11,39 @@
           <el-input
             v-model="dialogFormData.eId"
             :disabled="true"
-            placeholder=""/>
-          <el-button @click="handleSelect">选择</el-button>
+            placeholder="">
+
+            <el-button slot="append" @click="handleSelect">选择</el-button>
+          </el-input>
         </el-form-item>
 
-        <el-form-item label="开始日期" prop="psDate">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="开始日期" prop="psDate">
 
-          <el-date-picker
-            v-model="dialogFormData.psDate"
-            :picker-options="pickerOptions"
-            type="datetime"
-            placeholder=""
-            value-format="yyyy-MM-dd HH:mm:ss"/>
+              <el-date-picker
+                v-model="dialogFormData.psDate"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder=""
+                value-format="yyyy-MM-dd HH:mm:ss"/>
 
-        </el-form-item>
+            </el-form-item>
+          </el-col>
 
-        <el-form-item label="结束日期" prop="psEndDate">
+          <el-col :span="12">
+            <el-form-item label="结束日期" prop="psEndDate">
 
-          <el-date-picker
-            v-model="dialogFormData.psEndDate"
-            :picker-options="pickerOptions"
-            type="datetime"
-            placeholder=""
-            value-format="yyyy-MM-dd HH:mm:ss"/>
+              <el-date-picker
+                v-model="dialogFormData.psEndDate"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder=""
+                value-format="yyyy-MM-dd HH:mm:ss"/>
 
-        </el-form-item>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
         <el-form-item label="产量" prop="psMount">
 
@@ -56,6 +64,7 @@
   </div>
 </template>
 <script>
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { addProductStat, updateProductStat } from '@/api/rentmanager/product-stat'
 import SelectEqDialog from './SelectEqDialog'
 import { validNumber } from '@/utils/validate'
@@ -116,11 +125,11 @@ export default {
       this.$refs.dialogForm.validate((valid) => {
         if (valid) {
           if (this.dialogFormData.psDate > this.dialogFormData.psEndDate) {
-            this.$message.error('开始时间不能大于结束时间')
+            notifyWarning('开始时间不能大于结束时间')
             return false
           }
           if (!validNumber(this.dialogFormData.psMount)) {
-            this.$message.error('产量为数值')
+            notifyWarning('产量为数值')
             return false
           }
           this._handleSubmit()
@@ -133,14 +142,14 @@ export default {
       const parmas = Object.assign({}, this.dialogFormData)
       if (this.titleType === 0) {
         addProductStat(parmas).then(res => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
           this.$emit('reload')
         })
       }
 
       if (this.titleType === 1) {
         updateProductStat(parmas).then(res => {
-          this.$message.success('修改成功')
+          notifySuccess('修改成功')
           this.$emit('reload')
         })
       }

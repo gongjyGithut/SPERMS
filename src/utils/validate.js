@@ -40,7 +40,19 @@ export function validEmail(email) {
   return re.test(email)
 }
 
+// 校验数字
 export function validNumber(str) {
   const re = /^[0-9]+$/
   return re.test(str)
+}
+
+// 验证手机号
+export function isPhone(value) {
+  const reg = /^1[34578]\d{9}$/
+  return reg.test(value)
+}
+// 验证固定电话
+export function isTelPhone(value) {
+  const reg = /0\d{2,3}-\d{7,8}$/
+  return reg.test(value)
 }

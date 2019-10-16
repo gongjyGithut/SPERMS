@@ -58,6 +58,7 @@
   </div>
 </template>
 <script>
+import { notifySuccess } from '@/utils/notify.js'
 import { addLockRule, updateLockRule } from '@/api/rentmanager/lock-rule'
 export default {
   name: 'LockRuleEdit',
@@ -120,14 +121,14 @@ export default {
       const parmas = Object.assign({}, this.dialogFormData)
       if (this.titleType === 0) {
         addLockRule(parmas).then(res => {
-          this.$message.success('添加成功')
+          notifySuccess('添加成功')
           this.$emit('reload')
         })
       }
 
       if (this.titleType === 1) {
         updateLockRule(parmas).then(res => {
-          this.$message.success('修改成功')
+          notifySuccess('修改成功')
           this.$emit('reload')
         })
       }

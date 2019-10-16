@@ -84,7 +84,6 @@ export default {
     padding: 0 10px;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
-    
     &:hover {
       background: rgba(0, 0, 0, .025)
     }
@@ -95,7 +94,6 @@ export default {
     top: 16px;
     color: red;
   }
-  
     .right-menu {
       float: right;
       height: 100%;
@@ -121,7 +119,6 @@ export default {
           }
          }
       }
-      
     }
 
     .avatar-container {

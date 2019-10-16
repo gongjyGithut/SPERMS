@@ -42,13 +42,13 @@
     <el-row class="btn-group">
 
       <el-button
-        type="success"
+        type="primary"
         icon="el-icon-circle-plus"
         @click.stop="handleAdd">添加
       </el-button>
 
       <el-button
-        type="warning"
+        type="primary"
         icon="el-icon-edit"
         @click.stop="handleUpdate">编辑
       </el-button>
@@ -104,18 +104,19 @@
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getEqList"/>
 
-    <equitment-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getEqList"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getEqList"/>
   </div>
 </template>
 
 <script>
 import { getEqList, deleteEq } from '@/api/equitment-manager/message'
 import Pagination from '@/components/Pagination'
-import EquitmentForm from './components/equitment-form'
+import EditForm from './components/edit-form'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: '',
-  components: { Pagination, EquitmentForm },
+  components: { Pagination, EditForm },
   filters: {
     filterState(val) {
       switch (+val) {
@@ -188,7 +189,7 @@ export default {
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
@@ -211,7 +212,7 @@ export default {
     },
     handleUpdate() {
       if (this.selectData.length !== 1) {
-        this.$message.error('请选择一条记录')
+        notifyWarning('请选择一条记录')
         return
       }
       this.isdialogShow = true
@@ -220,7 +221,7 @@ export default {
     },
     handleDelete() {
       if (this.selectData.length === 0) {
-        this.$message.error('请选择待删除的记录')
+        notifyWarning('请选择待删除的记录')
         return
       }
       const parmas = {}
@@ -235,7 +236,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteEq(parmas).then((res) => {
-          this.$message.success('删除成功')
+          notifySuccess('删除成功')
           this.getEqList()
         })
       })
