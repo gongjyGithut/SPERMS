@@ -4,12 +4,11 @@
         transition: margin-left .28s;
         margin-left: $sideBarWidth;
         position: relative;
-        background-color: #EEF5F9
     }
     .sidebar-container {
         transition: width 0.28s;
         width: $sideBarWidth !important;
-        background-image: linear-gradient(0deg, #47c8e2 0%, #4b89e6 100%);
+        background: #304156;
         height: 100%;
         position: fixed;
         font-size: 0px;
@@ -59,28 +58,28 @@
                 .el-submenu__title {
                     font-size: 16px;
                     font-family: PingFang SC;
-                    color: #fff;
+                    color: #bfcbd9;
                     font-weight: 500;
                     text-decoration: none;
                     transition: all 0.5s;
                     i {
-                        color: #fff;
-                        font-size: 18px;
+                        color: #bfcbd9;
+                        font-size: 16px;
                     }
                     .icon-class {
                         display: inline-block;
-                        margin-right: 10px;
+                        margin-right: 15px;
                         font-size: 22px;
                     }
                     &:hover {
-                        background-color: rgb(164, 152, 255) !important;
-                        color: #fff;
+                        background-color: #001528 !important;
+                        color: #409EFF;
                     }
                     &.is-active {
-                        background-color: #fff !important;
+                        background-color: #304156 !important;
                         font-weight: bold;
                         border-right: 5px solid #88ffb6;
-                        color: #276ace;
+                        color: #409EFF;
                         .icon-class {
                           font-size: 26px;
                       }
@@ -99,18 +98,18 @@
             font-weight: 400;
             font-size: 14px;
             font-family: PingFang SC;
-            color: #fff;
+            color: #bfcbd9;
             transition: all 0.5s;
-            background-color: #4198bb;
+            background-color: #1f2d3d;
             &:hover {
-                background-color: rgb(164, 152, 255) !important;
-                color: #fff;
+                background-color: #001528 !important;
+                color: #409EFF;
             }
             &.is-active {
-                background-color: #fff !important;
+                // background-color: #fff !important;
                 border-right: 5px solid #88ffb6;
                 font-weight: bold;
-                color: #276ace;
+                color: #409EFF;
             }
         }
         // .is-active > 
@@ -197,7 +196,8 @@
     .el-menu-item {
         &:hover {
             // you can use $subMenuHover
-            background-color: rgb(164, 152, 255) !important;
+            // background-color: #001528 !important;
+            color: #409EFF;
           }
         &.is-active {
           background-color: #fff !important;
