@@ -2,8 +2,7 @@
   <div class="dashboard-editor-container">
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
     <el-row class="chart-wrapper">
-      <status-chart
-        v-if="showType === 'equitmentStat'"/>
+      <status-chart v-if="showType === 'equitmentStat'"/>
       <!-- <line-chart v-if="showType === 'productStat'"/> -->
       <sale-chart v-if="showType === 'saleStat'" />
     </el-row>
@@ -14,11 +13,10 @@
 import PanelGroup from './components/PanelGroup'
 import SaleChart from './components/SaleChart'
 import StatusChart from './components/StatusChart'
-import PieChart from './components/PieChart'
 import { getEquitmentStat, getProductStat, getSaleStat } from '@/api/data-stat'
 export default {
   name: 'Chart',
-  components: { PanelGroup, SaleChart, StatusChart},
+  components: { PanelGroup, SaleChart, StatusChart },
   data() {
     return {
       showType: 'equitmentStat',
@@ -85,7 +83,6 @@ export default {
 .dashboard-editor-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);
-  height: calc(100vh - 50px);
   .chart-wrapper {
     background: #fff;
     padding: 16px 16px 0;

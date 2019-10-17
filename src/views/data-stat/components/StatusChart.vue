@@ -10,20 +10,19 @@
         end-placeholder="结束日期"
         value-format="yyyy-MM-dd HH:mm:ss"/>
 
-      <el-button class="search-btn" icon="el-icon-search" type="primary" @click.stop="handleSearch"/>
-
-    </div>
-    <div class="select">
       <el-select v-model="value" placeholder="请选择" @change="selectChange">
         <el-option
           v-for="item in options"
           :key="item.value"
           :label="item.label"
-          :value="item.value">
-        </el-option>
+          :value="item.value"/>
       </el-select>
+
+      <el-button class="search-btn" icon="el-icon-search" type="primary" @click.stop="handleSearch"/>
+
     </div>
-    
+    <div class="select"/>
+    <status-group/>
     <div id="stuste-stat" :class="className" :style="{height:height,width:width}"/>
   </div>
 </template>
@@ -32,8 +31,10 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import { getEquitmentStat } from '@/api/data-stat'
+import StatusGroup from './status-group'
 // import { debounce } from '@/utils'
 export default {
+  components: { StatusGroup },
   props: {
     className: {
       type: String,
@@ -53,19 +54,18 @@ export default {
       chart: null,
       dateArr: '',
       dataList: [],
-      value:'all',
-      options:[{
+      value: 'all',
+      options: [{
         value: 'all',
         label: '所有'
       }],
-      chartData:[]
+      chartData: []
     }
   },
   computed: {
-    data(){
-      if(!!this.dataList){
+    data() {
+      if (this.dataList) {
         return this.dataList[this.value]
-
       }
     }
   },
@@ -73,12 +73,12 @@ export default {
     chartData: {
       deep: true,
       handler(val) {
-        const dataObj ={
-          data:val
+        const dataObj = {
+          data: val
         }
         this.setOptions(dataObj)
       }
-    },
+    }
   },
   created() {
     this.getStateData()
@@ -101,15 +101,15 @@ export default {
       let allRepairCount = 0
       let allScrappCount = 0
       await getEquitmentStat(params).then(res => {
-        res.records.forEach(item =>{
+        res.records.forEach(item => {
           const { customerName, normalCount, repairCount, scrappCount } = item
-          let ary = [].concat([normalCount, repairCount, scrappCount])
+          const ary = [].concat([normalCount, repairCount, scrappCount])
           allNormalCount += normalCount
           allRepairCount += repairCount
           allScrappCount += scrappCount
           this.dataList[customerName] = ary
           this.options.push({
-            value:customerName,
+            value: customerName,
             label: customerName
           })
         })
@@ -117,10 +117,10 @@ export default {
         this.chartData = this.dataList['all']
       })
     },
-    selectChange(val){
+    selectChange(val) {
       this.chartData = this.dataList[val]
     },
-    handleSearch(){
+    handleSearch() {
       this.dataList = {}
       this.options = [{
         value: 'all',
@@ -128,17 +128,17 @@ export default {
       }]
       this.getStateData()
     },
-    setOptions({data} = {}) {
-      if(!data){
+    setOptions({ data } = {}) {
+      if (!data) {
         return
       }
       this.chart.setOption({
-        title: {
-          text: `在线${data[0]?data[0]:'0'}台,离线${data[1]?data[1]:'0'}台,停机${data[2]?data[2]:'0'}台,故障${data[3]?data[3]:'0'}台`,
-          subtext: '',
-          top: '0',
-          left:'center'
-        },
+        // title: {
+        //   text: `在线${data[0] ? data[0] : '0'}台,离线${data[1] ? data[1] : '0'}台,停机${data[2] ? data[2] : '0'}台,故障${data[3] ? data[3] : '0'}台`,
+        //   subtext: '',
+        //   top: '0',
+        //   left: 'center'
+        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -156,7 +156,7 @@ export default {
           containLabel: true
         },
         xAxis: [{
-          data: ['在线','离线','停机','故障'],
+          data: ['在线', '离线', '停机', '故障'],
           axisTick: {
             show: false
           }
@@ -171,12 +171,12 @@ export default {
           type: 'bar',
           barWidth: 30,
           data: data,
-          color:function(params) { 
-            var colorList = ['#3888fa','#CD5B45','#ABABAB','#EE9201'];
-            return colorList[params.dataIndex] 
-            } 
-          }]
-        
+          color: function(params) {
+            var colorList = ['#3888fa', '#CD5B45', '#ABABAB', '#EE9201']
+            return colorList[params.dataIndex]
+          }
+        }]
+
       })
     },
     initChart() {

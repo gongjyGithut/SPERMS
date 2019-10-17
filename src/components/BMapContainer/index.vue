@@ -44,8 +44,13 @@ export default {
             
                 listData.forEach(item =>{
                 let point = new BMap.Point(item.eeLongitude,item.eeLatitude)
-                console.log(point)
-                let marker = new BMap.Marker(point)
+                let icon = new BMap.Symbol(BMap_Symbol_SHAPE_POINT, {
+                                            scale:1.5,
+                                            fillColor: "#1296db",//填充颜色
+                                            fillOpacity: 1,//填充透明度
+                                            strokeColor:'rgba(0,0,0,0)',
+                                        })
+                let marker = new BMap.Marker(point,{icon})
 
                 this.map.addOverlay(marker)
                 this.openInfoWin(marker,item)
