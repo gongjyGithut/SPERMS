@@ -28,6 +28,24 @@
 
         <el-row :gutter="27">
           <el-col :span="12">
+            <el-form-item label="GPS经度" prop="eLongitude">
+              <el-input
+                v-model="dialogFormData.eLongitude"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="GPS纬度" prop="eLatitude">
+              <el-input
+                v-model="dialogFormData.eLatitude"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="27">
+          <el-col :span="12">
             <el-form-item label="生产厂家" prop="eManufacturer">
               <el-input
                 v-model="dialogFormData.eManufacturer"
@@ -47,7 +65,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="27">
           <el-col :span="12">
             <el-form-item label="规格" prop="eStandard">
@@ -66,6 +83,13 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-form-item label="应用授权" prop="eEnable">
+          <el-radio-group v-model="dialogFormData.eEnable">
+            <el-radio :label="0">关停</el-radio>
+            <el-radio :label="1">正常使用</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
 
       <div slot="footer">

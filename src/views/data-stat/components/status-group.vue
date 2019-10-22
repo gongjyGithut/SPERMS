@@ -61,7 +61,8 @@ div {display: inline-block;}
         line-height: 70px;
         text-align: center;
         cursor: pointer;
-        border:1px solid red;
+        text-decoration: none;
+        border:1px solid rgba(8, 50, 105, 0.459);
         .group-icon{
             font-size:24px;
             margin-right: 10px;

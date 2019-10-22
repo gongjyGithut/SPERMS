@@ -35,3 +35,19 @@ export function updateEq(data) { // 编辑设备
         data
     })
 }
+
+export function controlSet(data) { // 编辑设备
+    return request({
+        url: '/equipment/control_set',
+        method: 'POST',
+        data
+    })
+}
+
+export function takePic(data) { // 编辑设备
+    return request({
+        url: '/equipment/take_picture',
+        method: 'POST',
+        data
+    })
+}

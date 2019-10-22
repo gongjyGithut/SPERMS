@@ -87,17 +87,23 @@
 
       <el-table-column label="纬度" prop="eLatitude"/>
 
+      <el-table-column label="应用授权" prop="eEnable">
+        <template slot-scope="{row}">
+          {{ row.eEnable === 1?'正常使用' : '关停' }}
+        </template>
+      </el-table-column>
       <el-table-column label="状态" prop="eState">
         <template slot-scope="{row}">
           {{ row.eState | filterState }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
       <el-table-column label="操作">
         <template slot-scope="{row}">
-          <el-button v-if="row.state === 1" type="text" size="mini">关闭</el-button>
-          <el-button v-if="row.state === 2 || row.state === 3" type="text" size="mini">开启</el-button>
-          <el-button type="text" size="mini">拍摄</el-button>
+          <!-- <el-button v-if="row.state === 1" type="text" size="mini">关闭</el-button> -->
+          <el-button v-if="+row.eState === 1 || +row.eState === 2" type="text" size="mini" @click="handleStartUp(row)">开机</el-button>
+          <el-button v-if="+row.eState === 0 " type="text" size="mini" @click="handleShutUp(row)">关机</el-button>
+          <el-button type="text" size="mini" @click="handleTakePic(row)">拍摄</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -109,7 +115,7 @@
 </template>
 
 <script>
-import { getEqList, deleteEq } from '@/api/equitment-manager/message'
+import { getEqList, deleteEq, controlSet, takePic } from '@/api/equitment-manager/message'
 import Pagination from '@/components/Pagination'
 import EditForm from './components/edit-form'
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
@@ -129,10 +135,14 @@ export default {
           // eslint-disable-next-line no-unreachable
           break
         case 2:
-          return '故障'
+          return '停机'
           // eslint-disable-next-line no-unreachable
           break
         case 3:
+          return '故障'
+          // eslint-disable-next-line no-unreachable
+          break
+        case 4:
           return '报废'
           // eslint-disable-next-line no-unreachable
           break
@@ -239,6 +249,34 @@ export default {
           notifySuccess('删除成功')
           this.getEqList()
         })
+      })
+    },
+    // 开机
+    handleStartUp({ eId }) {
+      const parmas = {}
+      parmas.eIds = [].concat([eId])
+      parmas.eEnable = 1
+      controlSet(parmas).then(res => {
+        notifySuccess('开机成功')
+        this.getEqList()
+      })
+    },
+    // 关机
+    handleShutUp({ eId }) {
+      const parmas = {}
+      parmas.eIds = [].concat([eId])
+      parmas.eEnable = 0
+      controlSet(parmas).then(res => {
+        notifySuccess('关机成功')
+        this.getEqList()
+      })
+    },
+    handleTakePic({ eId }) {
+      const parmas = {}
+      parmas.eIds = [].concat([eId])
+      takePic(parmas).then(res => {
+        notifySuccess('拍摄成功')
+        this.getEqList()
       })
     },
     selChange(row) {
