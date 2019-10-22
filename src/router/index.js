@@ -60,16 +60,35 @@ export const constantRouterMap = [{
   }]
 },
 {
-  path: '/data-stat',
+  path: '/data-statistics',
   component: Layout,
-  redirect: '/data-stat',
+  redirect: '/data-statistics/index',
+  meta: { title: '统计分析', icon: 'charts' },
   // hidden: true,
   children: [{
-    path: 'dashboard',
+    path: 'equitment-status',
+    name: '设备状态统计',
     component: () =>
-                import('@/views/data-stat/index'),
-    meta: { title: '统计分析', icon: 'charts' }
-  }]
+                import('@/views/data-statistics/equitment-status/index'),
+    meta: { title: '设备状态统计' }
+  }, {
+    path: 'prod-mount',
+    name: '产量统计',
+    component: () =>
+    import('@/views/data-statistics/prod-mount/index'),
+    meta: { title: '产量统计' }
+  }, {
+    path: 'sales-account',
+    name: '营业额统计',
+    component: () =>
+                import('@/views/data-statistics/sales-account/index'),
+    meta: { title: '营业额统计' }
+  }
+  // , {
+  //   name: '设备生产查询',
+  //   meta: { title: '设备生产查询' }
+  // }
+  ]
 },
 {
   path: '/equitment-manager',
@@ -85,21 +104,22 @@ export const constantRouterMap = [{
   },
   {
     path: 'deploy',
-    name: '设备应用信息',
+    name: '地图预览',
     component: () =>
                     import('@/views/equitment-manager/deploy/index'),
-    meta: { title: '设备应用信息' }
+    meta: { title: '地图预览' }
   },
   {
     path: 'repair',
-    name: '设备维修',
+    name: '设备维护',
     component: () =>
                     import('@/views/equitment-manager/repair/index'),
-    meta: { title: '设备维修' }
+    meta: { title: '设备维护' }
   },
   {
     path: 'scrapped',
     name: '设备报废',
+    hidden: true,
     component: () =>
                     import('@/views/equitment-manager/scrapped/index'),
     meta: { title: '设备报废' }
