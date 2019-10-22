@@ -25,7 +25,7 @@
 
       </el-row>
 
-      <el-table :data="tableData">
+      <el-table :data="tableData" border >
         <el-table-column label="客户名称" prop="customerName"/>
         <el-table-column label="设备数量"/>
         <el-table-column label="在线" prop="normalCount"/>

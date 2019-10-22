@@ -12,7 +12,7 @@
         </el-form-item>
 
         <el-form-item label="">
-          <el-input placeholder=" 客户编号或名称"/>
+          <el-input v-model="keyword" placeholder=" 客户编号或名称"/>
         </el-form-item>
 
         <el-form-item label="">
@@ -22,40 +22,113 @@
 
     </el-row>
 
-    <el-row :gutter="10" class="table-container">
-      <el-col :span="6">
-        <el-table :data="tableData" border >
+    <el-row  class="table-container">
+      <el-col :span="6" class="left">
+        <el-table :data="tableData" border height="500px">
           <el-table-column label="客户名称" prop="customerName"/>
           <el-table-column label="设备数量"/>
-          <el-table-column label="销售总额" />
+          <el-table-column label="销售总额" prop="salesAccount"/>
 
           <empty-container slot="empty" class="empty"/>
         </el-table>
 
       </el-col>
 
-      <el-col :span="12"/>
+      <el-col :span="17" class="right">
+        <div class="sale-text">营业额</div>
+
+        <div class="sale-chart">
+          <div class="text">营业总额：{{saleCount}}</div>          
+          <sale-chart :chart-data="chartData"/>
+        </div>
+      </el-col>
     </el-row>
 
   </div>
 </template>
 <script>
 import EmptyContainer from '@/components/EmptyContainer'
+import { getSaleStat } from '@/api/data-stat'
+import SaleChart from './components/SaleChart'
 export default {
   name: '',
-  components: { EmptyContainer }
+  components: { EmptyContainer,SaleChart },
+  data() {
+    return {
+      chartData:{
+        saleList:[],
+        customerList:[]
+      },
+      tableData:[],
+      startTime:'',
+      endTime:'',
+      keyword:'',
+      saleCount:0,
+    }
+  },
+  created() {
+    this.getStateData()
+  },
+  methods: {
+     async getStateData() {
+       const parmas = {}
+       if(!!this.startTime&&!!this.endTime){
+         if(this.startTime > this.endTime){
+           return
+         }
+         parmas.startTime = this.startTime
+         parmas.endTime = this.endTime
+       }
+       await getSaleStat(parmas).then(res =>{
+         let {records} = res
+         records.forEach(item =>{
+          const { customerName, salesAccount} = item
+          this.saleCount += salesAccount
+          this.chartData.saleList.push(salesAccount)
+          this.chartData.customerList.push(customerName)
+         })
+         this.tableData = records
+         console.log(this.chartData)
+       })
+     },
+     handleSearch(){
+       this.tableData = []
+       this.saleCount = 0
+       this.chartData={
+        saleList:[],
+        customerList:[]
+      }
+       this.getStateData()
+     }
+  },
 }
 </script>
 <style lang="scss" scoped>
-.app-container{
-  background-color: #f5f4f4;
-}
-.table-container{
-  background-color: #fff;
-  height: 500px;
 
-  .empty{
-    text-align: center;
+.table-container{
+  .right{
+    height: 500px;
+    border: 1px solid #d8d8d8;
+    margin-top: 20px;
+    margin-left: 10px;
+    .sale-text{
+      width: 100%;
+      height: 44px;
+      background-color: #d8d8d8;
+      color: #425464;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 15px;
+    }
+
+    .sale-chart{
+      margin-top: 30px;
+      text-align: center;
+      color:#3888fa;
+      font-size: 20px;
+      font-weight: 550;
+    }
   }
+  
 }
 </style>

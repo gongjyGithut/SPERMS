@@ -1,12 +1,25 @@
 <template>
   <div class="app-container">
-    <status-group/>
   </div>
 </template>
 <script>
-import StatusGroup from './components/StatusGroup'
+import { getSaleStat } from '@/api/data-stat'
 export default {
   name: '',
-  components: { StatusGroup }
+  components: {  },
+  data() {
+    return {
+      
+    }
+  },
+  created() {
+    
+  },
+  methods: {
+    async getStateData() {
+      
+    }
+
+  },
 }
 </script>
