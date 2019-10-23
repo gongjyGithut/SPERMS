@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: '400px'
+      default: '350px'
     },
     chartData: {
       type: Object,
@@ -61,13 +61,13 @@ export default {
         legend: {
           // data: ['expected', 'actual'],
         },
-        grid: {
-          top: 50,
-          left: '2%',
-          right: '2%',
-          bottom: '3%',
-          containLabel: true
-        },
+        // grid: {
+        //   top: 50,
+        //   left: '2%',
+        //   right: '2%',
+        //   bottom: '3%',
+        //   containLabel: true
+        // },
         xAxis: [{
           data: customerList,
           axisTick: {
