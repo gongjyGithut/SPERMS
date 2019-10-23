@@ -48,8 +48,8 @@
 <script>
 export default {
   name: 'StatusGroup',
-  props:{
-    
+  props: {
+
   },
   data() {
     return {
@@ -70,7 +70,7 @@ div {display: inline-block;}
     width: calc(100% / 4);
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #c2c2c2;
+    border-bottom: 1px solid #EBEEF5;
     .group-icon{
       width: 100%;
       font-size: 24px;
@@ -97,7 +97,7 @@ div {display: inline-block;}
       margin-top: 10px;
     }
     &:not(:last-child) {
-      border-right: 1px solid #c2c2c2;
+      border-right: 1px solid #EBEEF5;
     }
   }
 }

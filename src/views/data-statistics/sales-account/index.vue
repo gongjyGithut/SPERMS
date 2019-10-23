@@ -29,7 +29,7 @@
           <el-table-column label="设备数量"/>
           <el-table-column label="销售总额" prop="salesAccount"/>
 
-          <empty-container slot="empty" class="empty"/>
+          <empty-container slot="empty"/>
         </el-table>
 
       </el-col>
