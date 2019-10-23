@@ -1,25 +1,22 @@
 <template>
-  <div class="app-container">
-  </div>
+  <div class="app-container"/>
 </template>
 <script>
-import { getSaleStat } from '@/api/data-stat'
 export default {
   name: '',
-  components: {  },
+  components: { },
   data() {
     return {
-      
+
     }
   },
   created() {
-    
+
   },
   methods: {
     async getStateData() {
-      
     }
 
-  },
+  }
 }
 </script>

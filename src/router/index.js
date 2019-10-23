@@ -117,6 +117,13 @@ export const constantRouterMap = [{
     meta: { title: '设备维护' }
   },
   {
+    path: 'picture',
+    name: '设备生产查询',
+    component: () =>
+                    import('@/views/equitment-manager/picture/index'),
+    meta: { title: '设备生产查询' }
+  },
+  {
     path: 'scrapped',
     name: '设备报废',
     hidden: true,

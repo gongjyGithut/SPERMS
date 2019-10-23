@@ -243,29 +243,36 @@
     }
 }
 
-.el-input-group__append {
-    .el-button {
-        &:hover,
-        &:focus {
-            color: #084E8A !important;
-        }
-    }
-    .el-button.is-disabled {
-        &:hover {
-            cursor: not-allowed;
-            // background-color: none !important;
-            background: none;
-            color: #C0C4CC !important;
-        }
-    }
-}
 
 //输入框重写
 .el-input__inner {
     height: 36px;
 }
+.el-input-group__append {
+    .el-button {
+        color: #084E8A !important;
+    }
+    .el-button.is-disabled {
+        cursor: not-allowed;
+        background: none;
+        color: #C0C4CC !important;
+    }
+}
+.el-input-group__prepend{
+    .el-select{
+        width:110px;
+    }
+}
 
-// ********* 消息提示相关重置 *********
+.el-form-item__content{
+    .el-input-group{
+        vertical-align: baseline !important;
+    }
+}
+    
+
+
+//  消息提示相关重置
 .el-message {
     border-radius: 4px;
     width: 400px;
