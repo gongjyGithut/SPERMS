@@ -43,20 +43,30 @@
     </el-row>
 
     <el-row>
-      <picture-card/>
+      <picture-card :picture-data="pictureData"/>
+      <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="_getPictureList"/>
+
     </el-row>
   </div>
 </template>
 <script>
 import PictureCard from './components/PictureCard'
+import Pagination from '@/components/Pagination'
+import { notifyWarning } from '@/utils/notify.js'
+import { getPictureList } from '@/api/equitment-manager/picture.js'
 export default {
   name: '',
-  components: { PictureCard },
+  components: { PictureCard, Pagination },
   data() {
     return {
       startTime: '',
       endTime: '',
       keywords: '',
+      total: 0,
+      page: {
+        pageNo: 1,
+        pageSize: 50
+      },
       options: [{
         label: '设备名称',
         value: 'eName'
@@ -69,10 +79,37 @@ export default {
         disabledDate(time) {
           return time.getTime() > Date.now()
         }
-      }
+      },
+      pictureData: []
     }
   },
+  created() {
+    this._getPictureList()
+  },
   methods: {
+    _getPictureList() {
+      const parmas = Object.assign({}, this.page)
+      if (!!this.startTime && !!this.endTime) {
+        parmas.startTime = this.startTime
+        parmas.endTime = this.endTime
+
+        if (parmas.startTime > parmas.endTime) {
+          notifyWarning('开始时间不能大于结束时间')
+          return
+        }
+      }
+      this.pictureData = []
+      getPictureList(parmas).then(res => {
+        const { records } = res
+        this.total = res.totalCount
+        records.forEach(item => {
+          // const obj = {}
+          item.picPath = process.env.BASE_API + item.picPath
+          const { picFilename, picId, ...obj } = item
+          this.pictureData.push(obj)
+        })
+      })
+    },
     handleSearch() {
 
     }

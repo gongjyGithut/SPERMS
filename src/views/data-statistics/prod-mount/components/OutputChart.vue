@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="stuste-stat" :class="className" :style="{height:height,width:width}"/>
+    <div id="output-chart" :class="className" :style="{height:height,width:width}"/>
   </div>
 </template>
 
@@ -61,13 +61,13 @@ export default {
         legend: {
           // data: ['expected', 'actual'],
         },
-        // grid: {
-        //   top: 50,
-        //   left: '2%',
-        //   right: '2%',
-        //   bottom: '3%',
-        //   containLabel: true
-        // },
+        grid: {
+          top: 50,
+          left: '2%',
+          right: '2%',
+          bottom: '3%',
+          containLabel: true
+        },
         xAxis: [{
           data: customerList,
           axisTick: {
@@ -90,7 +90,7 @@ export default {
       })
     },
     initChart() {
-      this.chart = echarts.init(document.getElementById('stuste-stat'), 'macarons')
+      this.chart = echarts.init(document.getElementById('output-chart'), 'macarons')
       this.setOptions(this.chartData)
     }
   }

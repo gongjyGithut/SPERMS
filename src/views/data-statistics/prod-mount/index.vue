@@ -34,40 +34,34 @@
 
     </el-row>
 
-    <el-row class="container-item">
-      <div class="container-text">
-        <span>图表</span>
+    <el-row class="chart-container">
+      <div class="chart-item">
+        <div class="chart-text">
+          型号数量统计
+        </div>
+
+        <model-chart :chart-data="chartData" class="chart"/>
       </div>
 
-      <div class="chart-container">
-        <div class="chart-item">
-          <p>型号数量统计</p>
-          <model-chart :chart-data="chartData"/>
+      <div class="chart-item">
+        <div class="chart-text">
+          设备产量统计
         </div>
-        <div class="chart-item">
-          <p>设备产量统计</p>
-          <output-chart :chart-data="chartData"/>
-        </div>
+        <output-chart :chart-data="chartData"/>
       </div>
+
     </el-row>
 
-    <el-row class="container-item">
-      <div class="container-text">
-        <span>表格</span>
-      </div>
+    <el-row >
+      <el-table :data="tableData" border >
+        <el-table-column label="设备编号"/>
+        <el-table-column label="设备名称"/>
+        <el-table-column label="开始时间"/>
+        <el-table-column label="结束时间"/>
+        <el-table-column label="产量"/>
 
-      <div class="table-container">
-        <el-table :data="tableData" border >
-          <el-table-column label="设备编号"/>
-          <el-table-column label="设备名称"/>
-          <el-table-column label="开始时间"/>
-          <el-table-column label="结束时间"/>
-          <el-table-column label="产量"/>
-
-          <empty-container slot="empty"/>
-
-        </el-table>
-      </div>
+        <empty-container slot="empty"/>
+      </el-table>
     </el-row>
   </div>
 </template>
@@ -111,42 +105,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .app-container{
-  background-color: #F2F6FC;
-  .container-item{
-    height: 500px;
-    border:1px solid rgb(224, 227, 235);
-    margin-bottom: 20px;
-    background-color: #fff;
-    .container-text{
-      letter-spacing:15px;
-      background-color: #d8d8d8;
-      height: 50px;
-      padding: 10px;
-      font-size: 20px;
-      font-weight: 600;
-      color: #425464;
-    }
-    .table-container{
-      padding: 20px;
-    }
-    .chart-container{
-      display: flex;
-      display:-webkit-flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      width: 100%;
-      .chart-item{
-        flex: 1;
-        height: 450px;
-        text-align: center;
-        >p{
-          color:#3888fa;
-          font-size: 20px;
-          font-weight: 550;
-        }
+  // background-color: #F2F6FC;
+  .chart-container{
+    display: flex;
+    display: -webkit-flex;
+    justify-content: space-between;
+    .chart-item{
+      flex: 1;
+      border:1px solid #EBEEF5;
+      .chart-text{
+        background-color: whitesmoke;
+        height: 50px;
+        line-height: 50px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #425464;
+        padding-left: 20px;
+
       }
-      :not(:last-child){
-        border-right: 1px solid #E4E7ED;
+      &:not(:last-child){
+        margin-right: 40px;
       }
     }
   }

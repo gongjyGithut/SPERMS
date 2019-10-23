@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="stuste-stat" :class="className" :style="{height:height,width:width}"/>
+    <div id="model-chart" :class="className" :style="{height:height,width:width}"/>
   </div>
 </template>
 
@@ -90,7 +90,7 @@ export default {
       })
     },
     initChart() {
-      this.chart = echarts.init(document.getElementById('stuste-stat'), 'macarons')
+      this.chart = echarts.init(document.getElementById('model-chart'), 'macarons')
       this.setOptions(this.chartData)
     }
   }
