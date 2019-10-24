@@ -13,7 +13,7 @@
         <el-form-item label="">
           <el-input
             v-model="keywords"
-            placeholder="设备编号或设备名称">
+            placeholder="设备编号或客户编号">
             <el-select slot="prepend" v-model="selectOption">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
@@ -40,14 +40,14 @@
           型号数量统计
         </div>
 
-        <model-chart :chart-data="chartData" class="chart"/>
+        <model-chart :chart-data="outputData" class="chart"/>
       </div>
 
       <div class="chart-item">
         <div class="chart-text">
           设备产量统计
         </div>
-        <output-chart :chart-data="chartData"/>
+        <output-chart :chart-data="outputData"/>
       </div>
 
     </el-row>
@@ -69,6 +69,8 @@
 import EmptyContainer from '@/components/EmptyContainer'
 import OutputChart from './components/OutputChart'
 import ModelChart from './components/ModelChart'
+import { notifyWarning } from '@/utils/notify.js'
+import { getOutputStatistics } from '@/api/data-statistics/prod-mount.js'
 export default {
   name: '',
   components: { EmptyContainer, OutputChart, ModelChart },
@@ -90,15 +92,49 @@ export default {
       chartData: {
         saleList: [],
         customerList: []
+      },
+      outputData: {
+        series: [],
+        xAxis: []
       }
     }
   },
   created() {
-
+    this.getChartData()
   },
   methods: {
-    handleSearch() {
+    getChartData() {
+      const parmas = {}
+      if (!!this.startTime && !!this.endTime) {
+        parmas.startTime = this.startTime
+        parmas.endTime = this.endTime
 
+        if (this.startTime > this.endTime) {
+          notifyWarning('开始时间不能大于结束时间')
+          return
+        }
+      }
+      parmas[this.selectOption] = this.keywords
+      parmas['statType'] = this.statType
+      this.total = 0
+      this.tableData = []
+      this._getOutputStatistics(parmas)
+    },
+    _getOutputStatistics(parmas) {
+      getOutputStatistics(parmas).then(res => {
+        const { records } = res
+        records.forEach(item => {
+          this.outputData.series.push(item.psMount)
+          this.outputData.xAxis.push(item.dataTime)
+        })
+      })
+    },
+    handleSearch() {
+      this.outputData = {
+        series: [],
+        xAxis: []
+      }
+      this.getChartData()
     }
   }
 }

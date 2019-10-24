@@ -50,7 +50,7 @@ export default {
     this.chart = null
   },
   methods: {
-    setOptions({ saleList, customerList } = {}) {
+    setOptions({ series, xAxis } = {}) {
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -69,9 +69,16 @@ export default {
           containLabel: true
         },
         xAxis: [{
-          data: customerList,
+          data: xAxis,
           axisTick: {
-            show: false
+            show: true
+          },
+          axisLabel: {
+            interval: 0,
+            rotate: 30
+            // textStyle: {
+            //   color: '#fff'// x轴刻度数值颜色
+            // }
           }
         }],
         yAxis: [{
@@ -83,7 +90,7 @@ export default {
         series: [{
           type: 'bar',
           barWidth: 30,
-          data: saleList,
+          data: series,
           color: ['#3888fa']
         }]
 

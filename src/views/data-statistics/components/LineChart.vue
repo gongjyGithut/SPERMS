@@ -102,7 +102,6 @@ export default {
         temp.data = data
         yData.push(temp)
       }
-      console.log(yData)
       this.chart.setOption({
         xAxis: {
           data: xData,

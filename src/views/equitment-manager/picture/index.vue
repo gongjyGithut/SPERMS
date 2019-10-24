@@ -74,7 +74,7 @@ export default {
         label: '设备编号',
         value: 'eId'
       }],
-      selectOption: '',
+      selectOption: 'eId',
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
@@ -93,11 +93,13 @@ export default {
         parmas.startTime = this.startTime
         parmas.endTime = this.endTime
 
-        if (parmas.startTime > parmas.endTime) {
+        if (this.startTime > this.endTime) {
           notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
+      parmas[this.selectOption] = this.keywords
+      this.total = 0
       this.pictureData = []
       getPictureList(parmas).then(res => {
         const { records } = res
@@ -111,7 +113,7 @@ export default {
       })
     },
     handleSearch() {
-
+      this._getPictureList()
     }
   }
 }
