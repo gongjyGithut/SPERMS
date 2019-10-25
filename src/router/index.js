@@ -60,76 +60,36 @@ export const constantRouterMap = [{
   }]
 },
 {
-  path: '/data-statistics',
+  path: '/operational-analysis',
   component: Layout,
-  redirect: '/data-statistics/index',
-  meta: { title: '统计分析', icon: 'charts' },
+  redirect: '/operational-analysis/index',
+  meta: { title: '运营分析', icon: 'charts' },
   // hidden: true,
   children: [{
     path: 'equitment-status',
     name: '设备状态统计',
     component: () =>
-                import('@/views/data-statistics/equitment-status/index'),
+                import('@/views/operational-analysis/equitment-status/index'),
     meta: { title: '设备状态统计' }
   }, {
     path: 'prod-mount',
     name: '产量统计',
     component: () =>
-    import('@/views/data-statistics/prod-mount/index'),
+    import('@/views/operational-analysis/prod-mount/index'),
     meta: { title: '产量统计' }
   }, {
     path: 'sales-account',
     name: '营业额统计',
     component: () =>
-                import('@/views/data-statistics/sales-account/index'),
+                import('@/views/operational-analysis/sales-account/index'),
     meta: { title: '营业额统计' }
-  }
-  // , {
-  //   name: '设备生产查询',
-  //   meta: { title: '设备生产查询' }
-  // }
-  ]
-},
-{
-  path: '/equitment-manager',
-  component: Layout,
-  redirect: '/equitment-manager/index',
-  meta: { title: '设备管理', icon: 'equitment-manager' },
-  children: [{
-    path: 'message',
-    name: '设备信息',
-    component: () =>
-                    import('@/views/equitment-manager/message/index'),
-    meta: { title: '设备信息' }
-  },
-  {
-    path: 'deploy',
-    name: '地图预览',
-    component: () =>
-                    import('@/views/equitment-manager/deploy/index'),
-    meta: { title: '地图预览' }
-  },
-  {
-    path: 'repair',
-    name: '设备维护',
-    component: () =>
-                    import('@/views/equitment-manager/repair/index'),
-    meta: { title: '设备维护' }
   },
   {
     path: 'picture',
     name: '设备生产查询',
     component: () =>
-                    import('@/views/equitment-manager/picture/index'),
+                    import('@/views/operational-analysis/picture/index'),
     meta: { title: '设备生产查询' }
-  },
-  {
-    path: 'scrapped',
-    name: '设备报废',
-    hidden: true,
-    component: () =>
-                    import('@/views/equitment-manager/scrapped/index'),
-    meta: { title: '设备报废' }
   }
   ]
 },
@@ -139,40 +99,77 @@ export const constantRouterMap = [{
   component: Layout,
   meta: { title: '租赁管理', icon: 'rentmanager' },
   children: [{
-    path: 'customer',
-    name: '客户信息',
-    component: () =>
-                import('@/views/rent-manager/customer/index'),
-    meta: { title: '客户信息' }
-  }, {
-    path: 'caculation',
-    name: '计费方式',
-    component: () =>
-                import('@/views/rent-manager/caculation/index'),
-    meta: { title: '计费方式' }
-  }, {
     path: 'rent-message',
     name: '租赁信息',
     component: () =>
                 import('@/views/rent-manager/rent-message/index'),
     meta: { title: '租赁信息' }
+  },
+  {
+    path: 'deploy',
+    name: '地图预览',
+    component: () =>
+                    import('@/views/rent-manager/map-preview/index'),
+    meta: { title: '地图预览' }
   }, {
     path: 'store-message',
     name: '仓库信息',
+    hidden: true,
     component: () =>
                 import('@/views/rent-manager/store-message/index'),
     meta: { title: '仓库信息' }
   }, {
     path: 'lock-rule',
     name: '锁机策略',
+    hidden: true,
     component: () =>
                 import('@/views/rent-manager/lock-rule/index'),
     meta: { title: '锁机策略' }
+  }]
+},
+{
+  path: '/message-information',
+  component: Layout,
+  redirect: '/message-information/index',
+  meta: { title: '信息与资料', icon: 'equitment-manager' },
+  children: [{
+    path: 'equitment-message',
+    name: '设备信息',
+    component: () =>
+                    import('@/views/message-information/equitment-message/index'),
+    meta: { title: '设备信息' }
+  }, {
+    path: 'customer-message',
+    name: '客户信息',
+    component: () =>
+                import('@/views/message-information/customer-message/index'),
+    meta: { title: '客户信息' }
+  }, {
+    path: 'cacula-methods',
+    name: '计费方式',
+    component: () =>
+                import('@/views/message-information/cacula-methods/index'),
+    meta: { title: '计费方式' }
+  },
+  {
+    path: 'equitment-repair',
+    name: '设备维修信息',
+    component: () =>
+                    import('@/views/message-information/equitment-repair/index'),
+    meta: { title: '设备维修信息' }
+  },
+  {
+    path: 'equitment-scrapped',
+    name: '设备报废',
+    hidden: true,
+    component: () =>
+                    import('@/views/message-information/equitment-scrapped/index'),
+    meta: { title: '设备报废' }
   }, {
     path: 'product-stat',
     name: '生产计划信息',
     component: () =>
-                import('@/views/rent-manager/product-stat/index'),
+                import('@/views/message-information/product-stat/index'),
     meta: { title: '生产计划信息' }
   }]
 },

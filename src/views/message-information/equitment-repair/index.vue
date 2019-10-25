@@ -11,7 +11,7 @@
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-date-picker
             v-model="endTime"
             :picker-options="pickerOptions"
@@ -20,37 +20,23 @@
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-input
-            v-model="tradeNo"
-
-            placeholder="交易编号" />
+            v-model="keywords"
+            style="min-width:220px"
+            placeholder="关键字查询"
+            prefix-icon="el-icon-search"/>
         </el-form-item>
 
-        <el-form-item label="">
-          <el-input
-            v-model="customerName"
-
-            placeholder="客户名称" />
-        </el-form-item>
-
-        <el-form-item label="">
-          <el-input
-            v-model="equipmentName"
-
-            placeholder="设备名称" />
-        </el-form-item>
-
-        <el-form-item label="">
+        <el-form-item>
           <el-button
             type="primary"
             icon="el-icon-search"
             @click="handleSearch"/>
-
         </el-form-item>
       </el-form>
-    </el-row>
 
+    </el-row>
     <el-row class="btn-group">
 
       <el-button
@@ -74,69 +60,64 @@
     </el-row>
 
     <el-table
-      ref="rentmanagerTable"
-      :data="rentmanagerList"
-      border
+      ref="repairTable"
+      :data="equipmentList"
       highlight-current-row
-      style="width:100%"
+      border
       tooltip-effect="light"
+      style="width:100%"
       @selection-change="selChange"
       @row-click="rowClick">
       <el-table-column type="selection"/>
-      <el-table-column label="交易编号" prop="tradeNo"/>
 
-      <el-table-column label="计费编号" prop="cmNo"/>
+      <el-table-column :show-overflow-tooltip="true" label="设备编号" prop="eId"/>
 
-      <el-table-column label="客户名称" prop="customerName"/>
+      <el-table-column label="维修厂家" prop="rManufacturer"/>
 
-      <el-table-column label="设备名称" prop="eName"/>
+      <el-table-column label="维修费用" prop="rCost"/>
 
-      <el-table-column label="租借开始时间" show-overflow-tooltip >
-        <template slot-scope="{row}">
-          {{ row.rentBeginDate | formatDate }}
+      <el-table-column label="维修厂家" prop="rPerson"/>
+
+      <el-table-column :formatter="formatTime" label="维修日期" prop="rTime"/>
+
+      <el-table-column label="状态" prop="rState">
+        <template slot-scope="scope">
+          <span :class="scope.row.state == 1?'successText':'warningText'">
+            {{ scope.row.state == 1?'维修完成':'未维修' }}
+          </span>
         </template>
       </el-table-column>
 
-      <el-table-column label="租借结束时间" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          {{ row.rentEndDate | formatDate }}
-        </template>
-      </el-table-column>
+      <!-- <el-table-column label="操作">
+                <template slot-scope="scope">
+                   <el-button v-if="scope.row.state == 1" type="warning" size="mini">关闭</el-button>
+                   <el-button v-else type="success" size="mini">开启</el-button>
+                </template>
 
-      <el-table-column label="使用地点" prop="rentPlace"/>
-
+            </el-table-column> -->
     </el-table>
 
-    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="_getRentmessageList"/>
+    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRepairList"/>
 
-    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
+    <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="getRepairList"/>
   </div>
 </template>
 
 <script>
-import { getRentMessageList, deleteRentMessage } from '@/api/rent-manager/rent-message'
+import { getRepairList, deleteRepair } from '@/api/message-information/equitment-repair'
 import Pagination from '@/components/Pagination'
-import EditForm from './component/edit-form'
-import { notifySuccess, notifyWarning } from '@/utils/notify.js'
+import EditForm from './components/edit-form'
 import { parseTime } from '@/utils/index'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
   components: { Pagination, EditForm },
-  filters: {
-    formatDate(val) {
-      const date = val ? parseTime(val, '{y}-{m}-{d}') : ''
-      return date
-      // return parseTime(val, '{y}-{m}-{d}') || ''
-    }
-  },
   data() {
     return {
-      rentmanagerList: [],
+      equipmentList: [],
       startTime: '',
       endTime: '',
-      tradeNo: '',
-      customerName: '',
-      equipmentName: '',
+      keywords: '',
       total: 0,
       page: {
         pageNo: 1,
@@ -146,6 +127,13 @@ export default {
       isdialogShow: false,
       dialogTitle: '',
       dialogForm: {
+        rCost: '',
+        eId: '',
+        rManufacturer: '',
+        eName: '',
+        rState: '',
+        rPerson: '',
+        rTime: ''
       },
       dialogFormData: {},
       pickerOptions: {
@@ -158,35 +146,33 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this._getRentmessageList()
+      this.getRepairList()
       this.dialogFormData = Object.assign({}, this.dialogForm)
     })
   },
   methods: {
-    _getRentmessageList() {
+    getRepairList() {
       const parmas = Object.assign({}, this.page)
-
-      parmas.tradeNo = this.tradeNo
-      parmas.customerName = this.customerName
-      parmas.equipmentName = this.equipmentName
-
+      this.selectData = []
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = parseTime(this.startTime)
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
-      getRentMessageList(parmas).then((res) => {
-        this.rentmanagerList = res.records
+
+      parmas.keywords = this.keywords
+      getRepairList(parmas).then((res) => {
+        this.equipmentList = res.records
         this.total = res.totalCount
       })
     },
     handleSearch() {
       this.page.pageNo = 1
-      this._getRentmessageList()
+      this.getRepairList()
     },
     handleAdd() {
       this.isdialogShow = true
@@ -198,6 +184,7 @@ export default {
         notifyWarning('请选择一条记录')
         return
       }
+
       this.isdialogShow = true
       this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])
@@ -207,41 +194,40 @@ export default {
         notifyWarning('请选择待删除记录')
         return
       }
-      const rentmanagerParmas = {}
-      const tradeNos = []
+      const parmas = {}
+      const eIds = []
       this.selectData.forEach(v => {
-        tradeNos.push(v.tradeNo)
+        eIds.push(v.eId)
       })
-      rentmanagerParmas.tradeNos = tradeNos
-
-      this.$confirm('将删除选中信息, 是否继续?', '提示', {
+      parmas.eIds = eIds
+      console.log(parmas)
+      this.$confirm('将删除选中设备, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteRentMessage(rentmanagerParmas).then(() => {
+        deleteRepair(parmas).then((res) => {
           notifySuccess('删除成功')
-
-          this._getRentmessageList()
+          this.getRepairList()
         })
       })
-    },
-    reload() {
-      this.selectData = []
-      this._getRentmessageList()
     },
     selChange(row) {
       console.log(row)
       this.selectData = row
     },
     rowClick(row) {
-      console.log(row)
-      this.$refs.rentmanagerTable.clearSelection()
-      this.$refs.rentmanagerTable.toggleRowSelection(row)
+      this.$refs.repairTable.clearSelection()
+      this.$refs.repairTable.toggleRowSelection(row)
+    },
+    formatTime(row) {
+      return parseTime(row.rTime)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-
+// .test{
+//     background-color:
+// }
 </style>

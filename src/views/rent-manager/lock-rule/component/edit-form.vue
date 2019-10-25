@@ -59,7 +59,7 @@
 </template>
 <script>
 import { notifySuccess } from '@/utils/notify.js'
-import { addLockRule, updateLockRule } from '@/api/rentmanager/lock-rule'
+import { addLockRule, updateLockRule } from '@/api/rent-manager/lock-rule'
 export default {
   name: 'LockRuleEdit',
   components: {},

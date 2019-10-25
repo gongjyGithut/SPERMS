@@ -79,7 +79,7 @@
 </template>
 <script>
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
-import { getStoreMessageList, deleteStoreMessage } from '@/api/rentmanager/store-message'
+import { getStoreMessageList, deleteStoreMessage } from '@/api/rent-manager/store-message'
 import EditForm from './component/edit-form'
 import Pagination from '@/components/Pagination'
 export default {

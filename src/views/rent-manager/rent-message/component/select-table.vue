@@ -55,9 +55,9 @@
   </div>
 </template>
 <script>
-import { getEqList } from '@/api/equitment-manager/message' // 获取设备列表
-import { getCaculationList } from '@/api/rentmanager/caculation' // 获取计费列表
-import { getCustomerList } from '@/api/rentmanager/customer' // 获取客户列表
+import { getEqList } from '@/api/message-information/equitment-message' // 获取设备列表
+import { getCaculationList } from '@/api/message-information/cacula-methods' // 获取计费列表
+import { getCustomerList } from '@/api/message-information/customer-message' // 获取客户列表
 import Pagination from '@/components/Pagination'
 export default {
   name: 'RentMsgTable',

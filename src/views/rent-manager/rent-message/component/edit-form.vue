@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { addRentMessage, updateRentMessage } from '@/api/rentmanager/rent-message'
+import { addRentMessage, updateRentMessage } from '@/api/rent-manager/rent-message'
 import SelectTable from './select-table'
 export default {
   name: 'EditForm',

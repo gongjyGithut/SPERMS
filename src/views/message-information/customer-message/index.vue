@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row class="toolbar">
       <el-form :inline="true">
-        <el-form-item label="">
+        <el-form-item>
           <el-date-picker
             v-model="startTime"
             :picker-options="pickerOptions"
@@ -11,7 +11,7 @@
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-date-picker
             v-model="endTime"
             :picker-options="pickerOptions"
@@ -20,33 +20,21 @@
             value-format="yyyy-MM-dd HH:mm:ss"/>
         </el-form-item>
 
-        <el-form-item label="">
+        <el-form-item>
           <el-input
-            v-model="tradeNo"
-
-            placeholder="交易编号" />
+            v-model="keywords"
+            style="min-width:220px"
+            placeholder="关键字查询"
+            prefix-icon="el-icon-search"/>
         </el-form-item>
 
-        <el-form-item label="">
-          <el-input
-            v-model="customerName"
+        <el-form-item>
 
-            placeholder="客户名称" />
-        </el-form-item>
-
-        <el-form-item label="">
-          <el-input
-            v-model="equipmentName"
-
-            placeholder="设备名称" />
-        </el-form-item>
-
-        <el-form-item label="">
           <el-button
             type="primary"
             icon="el-icon-search"
-            @click="handleSearch"/>
-
+            @click="handleSearch">搜索
+          </el-button>
         </el-form-item>
       </el-form>
     </el-row>
@@ -74,8 +62,8 @@
     </el-row>
 
     <el-table
-      ref="rentmanagerTable"
-      :data="rentmanagerList"
+      ref="customerTable"
+      :data="customerList"
       border
       highlight-current-row
       style="width:100%"
@@ -83,60 +71,52 @@
       @selection-change="selChange"
       @row-click="rowClick">
       <el-table-column type="selection"/>
-      <el-table-column label="交易编号" prop="tradeNo"/>
+      <el-table-column label="客户编号" prop="customerNo"/>
 
-      <el-table-column label="计费编号" prop="cmNo"/>
+      <el-table-column label="姓名" prop="customerName"/>
 
-      <el-table-column label="客户名称" prop="customerName"/>
+      <el-table-column label="年龄" prop="customerAge"/>
 
-      <el-table-column label="设备名称" prop="eName"/>
-
-      <el-table-column label="租借开始时间" show-overflow-tooltip >
+      <el-table-column label="性别" prop="customerSex">
         <template slot-scope="{row}">
-          {{ row.rentBeginDate | formatDate }}
+          {{ row.customerSex == 0?'女':'男' }}
         </template>
       </el-table-column>
 
-      <el-table-column label="租借结束时间" show-overflow-tooltip>
-        <template slot-scope="{row}">
-          {{ row.rentEndDate | formatDate }}
-        </template>
-      </el-table-column>
+      <el-table-column label="手机号" prop="customerPhone"/>
 
-      <el-table-column label="使用地点" prop="rentPlace"/>
+      <el-table-column label="QQ" prop="customerQq"/>
 
+      <el-table-column label="微信" prop="customerWx"/>
+
+      <el-table-column label="邮箱" prop="customerEmail" show-overflow-tooltip />
+
+      <el-table-column label="单位" prop="customerCompany"/>
+
+      <el-table-column label="地址" prop="customerAddr" show-overflow-tooltip/>
     </el-table>
 
-    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="_getRentmessageList"/>
+    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCustomerList"/>
 
     <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
-import { getRentMessageList, deleteRentMessage } from '@/api/rent-manager/rent-message'
+import { getCustomerList, deleteCustomer, deleteUserRelation } from '@/api/message-information/customer-message'
 import Pagination from '@/components/Pagination'
-import EditForm from './component/edit-form'
-import { notifySuccess, notifyWarning } from '@/utils/notify.js'
+import EditForm from './components/edit-form'
 import { parseTime } from '@/utils/index'
+import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
   components: { Pagination, EditForm },
-  filters: {
-    formatDate(val) {
-      const date = val ? parseTime(val, '{y}-{m}-{d}') : ''
-      return date
-      // return parseTime(val, '{y}-{m}-{d}') || ''
-    }
-  },
   data() {
     return {
-      rentmanagerList: [],
+      customerList: [],
       startTime: '',
       endTime: '',
-      tradeNo: '',
-      customerName: '',
-      equipmentName: '',
+      keywords: '',
       total: 0,
       page: {
         pageNo: 1,
@@ -146,6 +126,14 @@ export default {
       isdialogShow: false,
       dialogTitle: '',
       dialogForm: {
+        customerNo: '',
+        customerName: '',
+        customerSex: '0',
+        customerAge: '',
+        customerPhone: '',
+        customerEmail: '',
+        customerAddr: '',
+        customerCompany: ''
       },
       dialogFormData: {},
       pickerOptions: {
@@ -158,35 +146,34 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this._getRentmessageList()
+      this.getCustomerList()
       this.dialogFormData = Object.assign({}, this.dialogForm)
     })
   },
   methods: {
-    _getRentmessageList() {
+    getCustomerList() {
       const parmas = Object.assign({}, this.page)
-
-      parmas.tradeNo = this.tradeNo
-      parmas.customerName = this.customerName
-      parmas.equipmentName = this.equipmentName
 
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = parseTime(this.startTime)
         parmas.endTime = parseTime(this.endTime)
 
         if (parmas.startTime > parmas.endTime) {
-          this.$message.error('开始时间不能大于结束时间')
+          notifyWarning('开始时间不能大于结束时间')
           return
         }
       }
-      getRentMessageList(parmas).then((res) => {
-        this.rentmanagerList = res.records
+
+      parmas.keywords = this.keywords
+
+      getCustomerList(parmas).then((res) => {
+        this.customerList = res.records
         this.total = res.totalCount
       })
     },
     handleSearch() {
       this.page.pageNo = 1
-      this._getRentmessageList()
+      this.getCustomerList()
     },
     handleAdd() {
       this.isdialogShow = true
@@ -207,28 +194,30 @@ export default {
         notifyWarning('请选择待删除记录')
         return
       }
-      const rentmanagerParmas = {}
-      const tradeNos = []
+      const customerParmas = {}
+      const customerNos = []
       this.selectData.forEach(v => {
-        tradeNos.push(v.tradeNo)
+        customerNos.push(v.customerNo)
       })
-      rentmanagerParmas.tradeNos = tradeNos
+      customerParmas.customerNos = customerNos
+
+      const relationParmas = {}
+      relationParmas.customerNos = customerNos.join(',')
 
       this.$confirm('将删除选中信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteRentMessage(rentmanagerParmas).then(() => {
+        Promise.all([deleteCustomer(customerParmas), deleteUserRelation(relationParmas)]).then(() => {
           notifySuccess('删除成功')
-
-          this._getRentmessageList()
+          this.getCustomerList()
         })
       })
     },
     reload() {
+      this.getCustomerList()
       this.selectData = []
-      this._getRentmessageList()
     },
     selChange(row) {
       console.log(row)
@@ -236,8 +225,11 @@ export default {
     },
     rowClick(row) {
       console.log(row)
-      this.$refs.rentmanagerTable.clearSelection()
-      this.$refs.rentmanagerTable.toggleRowSelection(row)
+      this.$refs.customerTable.clearSelection()
+      this.$refs.customerTable.toggleRowSelection(row)
+    },
+    formatTime(row) {
+      return parseTime(row.eDate)
     }
   }
 }

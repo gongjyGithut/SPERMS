@@ -41,7 +41,7 @@
 </template>
 <script>
 import { notifySuccess } from '@/utils/notify.js'
-import { addStoreMessage, updateStoreMessage } from '@/api/rentmanager/store-message'
+import { addStoreMessage, updateStoreMessage } from '@/api/rent-manager/store-message'
 export default {
   name: 'EditForm',
   components: {},
