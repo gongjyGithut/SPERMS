@@ -24,8 +24,7 @@
           <el-input
             v-model="keywords"
             style="min-width:220px"
-            placeholder="关键字查询"
-            prefix-icon="el-icon-search"/>
+            placeholder="关键字查询"/>
         </el-form-item>
 
         <el-form-item>

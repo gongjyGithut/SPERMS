@@ -171,6 +171,12 @@ export const constantRouterMap = [{
     component: () =>
                 import('@/views/message-information/product-stat/index'),
     meta: { title: '生产计划信息' }
+  }, {
+    path: 'product-type',
+    name: '产品类型',
+    component: () =>
+                import('@/views/message-information/product-type/index'),
+    meta: { title: '产品类型' }
   }]
 },
 {

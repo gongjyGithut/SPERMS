@@ -6,7 +6,7 @@
           <el-input
             v-model="cmNo"
             placeholder="计费编号"
-            prefix-icon="el-icon-search"/>
+            />
         </el-form-item>
 
         <el-form-item>

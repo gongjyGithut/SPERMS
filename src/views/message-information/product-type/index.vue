@@ -22,10 +22,8 @@
 
         <el-form-item>
           <el-input
-            v-model="keywords"
-            style="min-width:220px"
-            placeholder="关键字查询"
-            />
+            v-model="proName"
+            placeholder="产品类型名称"/>
         </el-form-item>
 
         <el-form-item>
@@ -71,39 +69,31 @@
       @selection-change="selChange"
       @row-click="rowClick">
       <el-table-column type="selection"/>
-      <el-table-column label="客户编号" prop="customerNo"/>
+      <el-table-column label="编号" prop="proId"/>
 
-      <el-table-column label="姓名" prop="customerName"/>
+      <el-table-column label="名称" prop="proName"/>
 
-      <el-table-column label="年龄" prop="customerAge"/>
+      <el-table-column label="规格" prop="proSize"/>
 
-      <el-table-column label="性别" prop="customerSex">
-        <template slot-scope="{row}">
-          {{ row.customerSex == 0?'女':'男' }}
-        </template>
-      </el-table-column>
+      <el-table-column label="型号" prop="proType"/>
 
-      <el-table-column label="手机号" prop="customerPhone"/>
+      <el-table-column label="材质" prop="proMaterial"/>
 
-      <el-table-column label="QQ" prop="customerQq"/>
+      <el-table-column label="长度" prop="proLength"/>
 
-      <el-table-column label="微信" prop="customerWx"/>
+      <el-table-column label="理论重量" prop="proWeightStd"/>
 
-      <el-table-column label="邮箱" prop="customerEmail" show-overflow-tooltip />
-
-      <el-table-column label="单位" prop="customerCompany"/>
-
-      <el-table-column label="地址" prop="customerAddr" show-overflow-tooltip/>
+      <el-table-column label="实际重量" prop="proWeightActual"/>
     </el-table>
 
-    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getCustomerList"/>
+    <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getProductTypeList"/>
 
     <edit-form :isdialog-show.sync="isdialogShow" :dialog-title="dialogTitle" :dialog-form-data="dialogFormData" @reload="reload"/>
   </div>
 </template>
 
 <script>
-import { getCustomerList, deleteCustomer, deleteUserRelation } from '@/api/message-information/customer-message'
+import { getProductTypeList, deleteProductType } from '@/api/message-information/product-type'
 import Pagination from '@/components/Pagination'
 import EditForm from './components/edit-form'
 import { parseTime } from '@/utils/index'
@@ -116,7 +106,7 @@ export default {
       customerList: [],
       startTime: '',
       endTime: '',
-      keywords: '',
+      proName: '',
       total: 0,
       page: {
         pageNo: 1,
@@ -126,14 +116,14 @@ export default {
       isdialogShow: false,
       dialogTitle: '',
       dialogForm: {
-        customerNo: '',
-        customerName: '',
-        customerSex: '0',
-        customerAge: '',
-        customerPhone: '',
-        customerEmail: '',
-        customerAddr: '',
-        customerCompany: ''
+        proId: '',
+        proName: '',
+        proSize: '',
+        proType: '',
+        proMaterial: '',
+        proLength: '',
+        proWeightStd: '',
+        proWeightActual: ''
       },
       dialogFormData: {},
       pickerOptions: {
@@ -146,14 +136,15 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.getCustomerList()
+      this.getProductTypeList()
       this.dialogFormData = Object.assign({}, this.dialogForm)
     })
   },
   methods: {
-    getCustomerList() {
+    getProductTypeList() {
+      this.page.pageNo = 1
+      this.selectData = []
       const parmas = Object.assign({}, this.page)
-
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = parseTime(this.startTime)
         parmas.endTime = parseTime(this.endTime)
@@ -163,17 +154,14 @@ export default {
           return
         }
       }
-
-      parmas.keywords = this.keywords
-
-      getCustomerList(parmas).then((res) => {
+      parmas.proName = this.proName
+      getProductTypeList(parmas).then((res) => {
         this.customerList = res.records
         this.total = res.totalCount
       })
     },
     handleSearch() {
-      this.page.pageNo = 1
-      this.getCustomerList()
+      this.getProductTypeList()
     },
     handleAdd() {
       this.isdialogShow = true
@@ -194,37 +182,31 @@ export default {
         notifyWarning('请选择待删除记录')
         return
       }
-      const customerParmas = {}
-      const customerNos = []
+      const parmas = {}
+      const proIds = []
       this.selectData.forEach(v => {
-        customerNos.push(v.customerNo)
+        proIds.push(v.proId)
       })
-      customerParmas.customerNos = customerNos
-
-      const relationParmas = {}
-      relationParmas.customerNos = customerNos.join(',')
+      parmas.proIds = proIds
 
       this.$confirm('将删除选中信息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        Promise.all([deleteCustomer(customerParmas), deleteUserRelation(relationParmas)]).then(() => {
+        deleteProductType(parmas).then(() => {
           notifySuccess('删除成功')
-          this.getCustomerList()
+          this.getProductTypeList()
         })
       })
     },
     reload() {
-      this.getCustomerList()
-      this.selectData = []
+      this.getProductTypeList()
     },
     selChange(row) {
-      console.log(row)
       this.selectData = row
     },
     rowClick(row) {
-      console.log(row)
       this.$refs.customerTable.clearSelection()
       this.$refs.customerTable.toggleRowSelection(row)
     },
