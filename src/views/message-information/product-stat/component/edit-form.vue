@@ -4,7 +4,8 @@
       :title="title"
       :visible.sync="dialogVisible"
       :fullscreen="device === 'mobile'"
-      :close-on-click-modal="false">
+      :close-on-click-modal="false"
+      width="400px">
       <el-form ref="dialogForm" :model="dialogFormData" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="设备编号" prop="eId">
 
@@ -13,37 +14,44 @@
             :disabled="true"
             placeholder="">
 
-            <el-button slot="append" @click="handleSelect">选择</el-button>
+            <el-button slot="append" :disabled="title === '编辑'" @click="handleSelect(0)">选择</el-button>
           </el-input>
         </el-form-item>
 
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="开始日期" prop="psDate">
+        <el-form-item label="类型" prop="proId">
 
-              <el-date-picker
-                v-model="dialogFormData.psDate"
-                :picker-options="pickerOptions"
-                type="date"
-                placeholder=""
-                value-format="yyyy-MM-dd HH:mm:ss"/>
+          <el-input
+            v-model="dialogFormData.proId"
+            :disabled="true"
+            placeholder="">
 
-            </el-form-item>
-          </el-col>
+            <el-button slot="append" :disabled="title === '编辑'" @click="handleSelect(1)">选择</el-button>
+          </el-input>
+        </el-form-item>
 
-          <el-col :span="12">
-            <el-form-item label="结束日期" prop="psEndDate">
+        <el-form-item label="开始日期" prop="psDate">
 
-              <el-date-picker
-                v-model="dialogFormData.psEndDate"
-                :picker-options="pickerOptions"
-                type="date"
-                placeholder=""
-                value-format="yyyy-MM-dd HH:mm:ss"/>
+          <el-date-picker
+            v-model="dialogFormData.psDate"
+            :picker-options="pickerOptions"
+            type="date"
+            placeholder=""
+            style="width:100%"
+            value-format="yyyy-MM-dd HH:mm:ss"/>
 
-            </el-form-item>
-          </el-col>
-        </el-row>
+        </el-form-item>
+
+        <el-form-item label="结束日期" prop="psEndDate">
+
+          <el-date-picker
+            v-model="dialogFormData.psEndDate"
+            :picker-options="pickerOptions"
+            type="date"
+            style="width:100%"
+            placeholder=""
+            value-format="yyyy-MM-dd HH:mm:ss"/>
+
+        </el-form-item>
 
         <el-form-item label="产量" prop="psMount">
 
@@ -60,17 +68,19 @@
       </div>
     </el-dialog>
 
-    <select-eq-dialog :table-visible.sync="tableVisible" @cancel="handleCancel" @select="handleSelectEq"/>
+    <select-equitment :table-visible.sync="tableVisible" @cancel="handleCancel" @select="handleSelectEq"/>
+    <select-type :type-visible.sync="typeVisible" @cancel="handleTypeCancel" @select="handleSelectType"/>
   </div>
 </template>
 <script>
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { addProductStat, updateProductStat } from '@/api/message-information/product-stat'
-import SelectEqDialog from './SelectEqDialog'
+import SelectEquitment from './select-equitment'
+import SelectType from './select-type'
 import { validNumber } from '@/utils/validate'
 export default {
   name: 'ProductStatEdit',
-  components: { SelectEqDialog },
+  components: { SelectEquitment, SelectType },
   props: {
     editShow: {
       type: Boolean,
@@ -93,6 +103,7 @@ export default {
       tableVisible: false,
       rules: {
         eId: [{ required: true, message: '请选择设备', trigger: 'blur' }],
+        proId: [{ required: true, message: '请选择类型', trigger: 'blur' }],
         psDate: [{ required: true, message: '请选择日期', trigger: 'blur' }],
         psEndDate: [{ required: true, message: '请选择日期', trigger: 'blur' }],
         psMount: [{ required: true, message: '请输入产量数', trigger: 'blur' }]
@@ -101,7 +112,8 @@ export default {
         disabledDate(time) {
           return time.getTime() > Date.now()
         }
-      }
+      },
+      typeVisible: false
     }
   },
   computed: {
@@ -158,12 +170,24 @@ export default {
       this.dialogFormData.eId = data.eId
       this.handleCancel()
     },
-    handleSelect() {
-      this.tableVisible = true
+    handleSelect(type) {
+      if (+type === 1) {
+        this.typeVisible = true
+      } else {
+        this.tableVisible = true
+      }
       this.dialogVisible = false
     },
     handleCancel() {
       this.tableVisible = false
+      this.dialogVisible = true
+    },
+    handleSelectType(data) {
+      this.dialogFormData.proId = data.proId
+      this.handleTypeCancel()
+    },
+    handleTypeCancel() {
+      this.typeVisible = false
       this.dialogVisible = true
     }
   }

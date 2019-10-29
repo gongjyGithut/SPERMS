@@ -58,14 +58,11 @@ export default {
             type: 'line' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
-        legend: {
-          // data: ['expected', 'actual'],
-        },
         grid: {
           top: 50,
           left: '2%',
           right: '2%',
-          bottom: '3%',
+          // bottom: '3%',
           containLabel: true
         },
         xAxis: [{

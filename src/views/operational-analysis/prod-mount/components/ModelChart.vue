@@ -50,22 +50,24 @@ export default {
     this.chart = null
   },
   methods: {
-    setOptions({ series, xAxis } = {}) {
+    setOptions({ series, xAxis, legend } = {}) {
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'line' // 默认为直线，可选为：'line' | 'shadow'
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
         legend: {
-          // data: ['expected', 'actual'],
+          data: legend,
+          // width: 200,
+          bottom: '0'
         },
         grid: {
-          top: 50,
+          // top: 50,
           left: '2%',
           right: '2%',
-          bottom: '3%',
+          // bottom: '20',
           containLabel: true
         },
         xAxis: [{
@@ -76,9 +78,7 @@ export default {
           axisLabel: {
             interval: 0,
             rotate: 30
-            // textStyle: {
-            //   color: '#fff'// x轴刻度数值颜色
-            // }
+
           }
         }],
         yAxis: [{
@@ -87,12 +87,7 @@ export default {
             show: false
           }
         }],
-        series: [{
-          type: 'bar',
-          barWidth: 30,
-          data: series,
-          color: ['#3888fa']
-        }]
+        series: series
 
       })
     },

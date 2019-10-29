@@ -61,7 +61,7 @@
 
     <el-table
       ref="customerTable"
-      :data="customerList"
+      :data="typeList"
       border
       highlight-current-row
       style="width:100%"
@@ -103,7 +103,7 @@ export default {
   components: { Pagination, EditForm },
   data() {
     return {
-      customerList: [],
+      typeList: [],
       startTime: '',
       endTime: '',
       proName: '',
@@ -156,7 +156,7 @@ export default {
       }
       parmas.proName = this.proName
       getProductTypeList(parmas).then((res) => {
-        this.customerList = res.records
+        this.typeList = res.records
         this.total = res.totalCount
       })
     },

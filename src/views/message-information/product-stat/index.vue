@@ -24,7 +24,7 @@
           <el-input
             v-model="keywords"
 
-            placeholder="关键字查询" />
+            placeholder="设备名称" />
         </el-form-item>
 
         <el-form-item label="">
@@ -68,6 +68,7 @@
       @row-click="rowClick">
       <el-table-column type="selection"/>
       <el-table-column label="设备编号" prop="eId"/>
+      <el-table-column label="设备名称" prop="eName"/>
       <el-table-column label="开始日期" prop="psDate">
         <template slot-scope="{row}">
           {{ row.psDate | formatTime }}
@@ -78,29 +79,31 @@
           {{ row.psDate | formatTime }}
         </template>
       </el-table-column>
+      <el-table-column label="类型" prop="proName"/>
+      <el-table-column label="型号" prop="proType"/>
       <el-table-column label="产量" prop="psMount"/>
     </el-table>
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getTableData"/>
 
-    <product-stat-edit :edit-show.sync="editShow" :dialog-form-data="dialogFormData" :title-type="titleType" @reload="handleReload"/>
+    <edit-form :edit-show.sync="editShow" :dialog-form-data="dialogFormData" :title-type="titleType" @reload="handleReload"/>
   </div>
 </template>
 <script>
 import { getProductStatList, deleteProductStat } from '@/api/message-information/product-stat'
-import ProductStatEdit from './component/Edit'
+import EditForm from './component/edit-form'
 import Pagination from '@/components/Pagination'
 import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 import { parseTime } from '@/utils/index'
 export default {
   name: 'ProductStat',
-  components: { Pagination, ProductStatEdit },
+  components: { Pagination, EditForm },
   filters: {
     formatTime(val) {
       if (!val) {
         return '--'
       }
-      return parseTime(val)
+      return parseTime(val, '{y}-{m}-{d}')
     }
   },
   data() {
