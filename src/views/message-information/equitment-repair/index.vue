@@ -25,7 +25,7 @@
             v-model="keywords"
             style="min-width:220px"
             placeholder="关键字查询"
-            />
+          />
         </el-form-item>
 
         <el-form-item>
@@ -69,32 +69,38 @@
       @selection-change="selChange"
       @row-click="rowClick">
       <el-table-column type="selection"/>
+      <el-table-column label="维修流水号" prop="id" width="100" align="center"/>
 
       <el-table-column :show-overflow-tooltip="true" label="设备编号" prop="eId"/>
 
+      <el-table-column :show-overflow-tooltip="true" label="设备名称" prop="eName"/>
+
       <el-table-column label="维修厂家" prop="rManufacturer"/>
 
-      <el-table-column label="维修费用" prop="rCost"/>
-
-      <el-table-column label="维修厂家" prop="rPerson"/>
-
-      <el-table-column :formatter="formatTime" label="维修日期" prop="rTime"/>
-
-      <el-table-column label="状态" prop="rState">
-        <template slot-scope="scope">
-          <span :class="scope.row.state == 1?'successText':'warningText'">
-            {{ scope.row.state == 1?'维修完成':'未维修' }}
-          </span>
+      <el-table-column label="故障日期">
+        <template slot-scope="{row}">
+          {{ row.rTime | filterTime }}
         </template>
       </el-table-column>
 
-      <!-- <el-table-column label="操作">
-                <template slot-scope="scope">
-                   <el-button v-if="scope.row.state == 1" type="warning" size="mini">关闭</el-button>
-                   <el-button v-else type="success" size="mini">开启</el-button>
-                </template>
+      <el-table-column label="维修日期">
+        <template slot-scope="{row}">
+          {{ row.downTime | filterTime }}
+        </template>
+      </el-table-column>
 
-            </el-table-column> -->
+      <el-table-column label="维修费用" prop="rCost"/>
+
+      <el-table-column label="故障代码" prop="errCode"/>
+
+      <el-table-column label="维修负责人" prop="rPerson"/>
+
+      <el-table-column label="状态" prop="rState">
+        <template slot-scope="scope">
+          {{ scope.row.rState == 1?'维修完成':'未维修' }}
+        </template>
+      </el-table-column>
+
     </el-table>
 
     <pagination :total="total" :current-page.sync="page.pageNo" :limit.sync="page.pageSize" @pagination="getRepairList"/>
@@ -112,6 +118,11 @@ import { notifySuccess, notifyWarning } from '@/utils/notify.js'
 export default {
   name: '',
   components: { Pagination, EditForm },
+  filters: {
+    filterTime(val) {
+      return parseTime(val, '{y}-{m}-{d}')
+    }
+  },
   data() {
     return {
       equipmentList: [],
@@ -184,7 +195,8 @@ export default {
         notifyWarning('请选择一条记录')
         return
       }
-
+      console.log(typeof (this.selectData[0].rState))
+      this.selectData[0].rState = +this.selectData[0].rState
       this.isdialogShow = true
       this.dialogTitle = '编辑'
       this.dialogFormData = Object.assign({}, this.selectData[0])

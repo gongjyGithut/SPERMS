@@ -71,8 +71,8 @@
         <el-form-item label="维修状态">
 
           <el-radio-group v-model="dialogFormData.rState">
-            <el-radio :label="0" >维修完成</el-radio>
-            <el-radio :label="1" >未维修</el-radio>
+            <el-radio :label="1" >维修完成</el-radio>
+            <el-radio :label="0" >未维修</el-radio>
           </el-radio-group>
 
         </el-form-item>

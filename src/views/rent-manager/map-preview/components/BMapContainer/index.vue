@@ -19,17 +19,19 @@ export default {
   },
   watch: {
     mapData: {
-      deep: true,
-      handler(newVal) {
-        this.map.clearOverlays()
-        this.addMarker(newVal)
-      }
+      // deep: true,
+      // handler(newVal) {
+      //   this.map.clearOverlays()
+      //   this.addMarker(newVal)
+      // }
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.initBMap()
-      this.addMarker(this.mapData)
+      console.log('map')
+
+      // this.addMarker(this.mapData)
     })
   },
   beforeDestroy() {
@@ -38,7 +40,6 @@ export default {
   methods: {
     addMarker(mapData) {
       console.log(mapData)
-      
       mapData.forEach(item => {
         const point = new BMap.Point(item.eeLongitude, item.eeLatitude)
         const icon = new BMap.Symbol(BMap_Symbol_SHAPE_POINT, {

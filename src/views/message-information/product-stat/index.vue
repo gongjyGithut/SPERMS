@@ -76,7 +76,7 @@
       </el-table-column>
       <el-table-column label="结束日期" prop="psEndDate">
         <template slot-scope="{row}">
-          {{ row.psDate | formatTime }}
+          {{ row.psEndDate | formatTime }}
         </template>
       </el-table-column>
       <el-table-column label="类型" prop="proName"/>

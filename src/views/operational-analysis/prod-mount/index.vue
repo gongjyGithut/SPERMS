@@ -103,7 +103,7 @@ export default {
   data() {
     return {
       keywords: '',
-      startTime: new Date(new Date() - 7 * 24 * 3600 * 1000),
+      startTime: new Date(new Date().getTime() - 3600 * 1000 * 24 * 30),
       endTime: new Date(),
       tableData: [],
       options: [{
@@ -115,16 +115,16 @@ export default {
       }],
       selectOption: '',
       statType: 1,
-      outputData: {
-        series: [],
-        xAxis: []
-      },
       typeList: [],
       page: {
         pageNo: 1,
         pageSize: 50
       },
       total: 0,
+      outputData: {
+        series: [],
+        xAxis: []
+      },
       modelData: {
         series: [],
         xAxis: [],
@@ -145,20 +145,27 @@ export default {
     }
   },
   created() {
-    this._getProductTypeList()
-    this.getTableList()
-    this.getChartData()
+    this.getData()
   },
   methods: {
+    getData() {
+      if (!!this.startTime && !!this.endTime) {
+        if (this.startTime > this.endTime) {
+          notifyWarning('开始时间不能大于结束时间')
+          return
+        }
+      }
+      this.startTime = parseTime(this.startTime)
+      this.endTime = parseTime(this.endTime)
+      this._getProductTypeList()
+      this.getTableList()
+      this.getChartData()
+    },
     getTableList() {
       const parmas = Object.assign({}, this.page)
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = this.startTime
         parmas.endTime = this.endTime
-
-        if (this.startTime > this.endTime) {
-          return
-        }
       }
       getProductStatList(parmas).then(res => {
         const { records, totalCount } = res
@@ -185,11 +192,6 @@ export default {
       if (!!this.startTime && !!this.endTime) {
         parmas.startTime = this.startTime
         parmas.endTime = this.endTime
-
-        if (this.startTime > this.endTime) {
-          notifyWarning('开始时间不能大于结束时间')
-          return
-        }
       }
       parmas[this.selectOption] = this.keywords
       parmas['statType'] = this.statType
@@ -281,8 +283,19 @@ export default {
         legend: []
       }
       this.tableData = []
-      this.getChartData()
+      if (!!this.startTime && !!this.endTime) {
+        console.log(this.startTime, this.endTime)
+
+        if (this.startTime > this.endTime) {
+          notifyWarning('开始时间不能大于结束时间')
+          return
+        }
+      }
+      this.startTime = parseTime(this.startTime)
+      this.endTime = parseTime(this.endTime)
       this.getTableList()
+      this.getChartData()
+      // this.getData()
     }
   }
 }

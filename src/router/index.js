@@ -47,22 +47,22 @@ export const constantRouterMap = [{
             meta: { title: '个人中心' }
         }]
     },
+    // {
+    //     path: '/',
+    //     component: Layout,
+    //     redirect: '/dashboard',
+    //     hidden: true,
+    //     children: [{
+    //         path: 'dashboard',
+    //         component: () =>
+    //             import ('@/views/dashboard/index'),
+    //         meta: { title: '工作台', icon: 'workplace' }
+    //     }]
+    // },
     {
         path: '/',
         component: Layout,
-        redirect: '/dashboard',
-        hidden: true,
-        children: [{
-            path: 'dashboard',
-            component: () =>
-                import ('@/views/dashboard/index'),
-            meta: { title: '工作台', icon: 'workplace' }
-        }]
-    },
-    {
-        path: '/operational-analysis',
-        component: Layout,
-        redirect: '/operational-analysis/index',
+        redirect: '/equitment-status',
         meta: { title: '运营分析', icon: 'charts' },
         // hidden: true,
         children: [{
