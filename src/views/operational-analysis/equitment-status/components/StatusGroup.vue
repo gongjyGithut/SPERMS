@@ -63,6 +63,8 @@ div {display: inline-block;}
 .status-group{
   width: 100%;
   font-size:0px;//解决inline-block增加的间距
+  // border-bottom: 1px solid #EBEEF5;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
   .status-group-wrapper{
     padding-top: 30px;
     height: 100px;
@@ -70,7 +72,6 @@ div {display: inline-block;}
     width: calc(100% / 4);
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #EBEEF5;
     .group-icon{
       width: 100%;
       font-size: 24px;

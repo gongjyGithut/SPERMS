@@ -123,12 +123,11 @@ export default {
       total: 0,
       outputData: {
         series: [],
-        xAxis: []
+        categories: []
       },
       modelData: {
         series: [],
-        xAxis: [],
-        legend: []
+        categories: []
       },
       seriesOptions: {
         type: 'bar'
@@ -206,7 +205,7 @@ export default {
         if (records) {
           records.forEach(item => {
             this.outputData.series.push(item.psMount)
-            this.outputData.xAxis.push(item.dataTime)
+            this.outputData.categories.push(item.dataTime)
           })
         }
       })
@@ -253,13 +252,12 @@ export default {
           }
           arr[i].list = typeList
         }
-        this.modelData.xAxis.push(arr[i].dataTime)
+        this.modelData.categories.push(arr[i].dataTime)
       }
       const list = arr[0].list
       const series = []
       series.length = length
       for (const o in list) {
-        this.modelData.legend.push(list[o].proName)
         const obj = Object.assign({}, this.seriesOptions)
         obj.data = []
         obj.name = list[o].proName
@@ -275,12 +273,11 @@ export default {
     handleSearch() {
       this.outputData = {
         series: [],
-        xAxis: []
+        categories: []
       }
       this.modelData = {
         series: [],
-        xAxis: [],
-        legend: []
+        categories: []
       }
       this.tableData = []
       if (!!this.startTime && !!this.endTime) {
@@ -305,11 +302,10 @@ export default {
   // background-color: #F2F6FC;
   .chart-container{
     display: flex;
-    display: -webkit-flex;
     justify-content: space-between;
     .chart-item{
       flex: 1;
-      border:1px solid #EBEEF5;
+      box-shadow: 0 2px 10px 0 rgba(0,0,0,.1);
       .chart-text{
         background-color: whitesmoke;
         height: 50px;
@@ -327,6 +323,13 @@ export default {
         text-align: center
       }
     }
+  }
+}
+.mobile .chart-container{
+  display: block;
+  & >*{
+  display: block;
+  width: 100%;
   }
 }
 

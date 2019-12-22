@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
-// import { debounce } from '@/utils'
+import Highcharts from 'highcharts'
 export default {
   props: {
     className: {
@@ -36,64 +34,70 @@ export default {
   },
   watch: {
     chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
+      handler() {
+        this.setChartsData()
+      },
+      deep: true
+      // immediate: true
     }
   },
   mounted() {
-    this.initChart()
+    this.createChart()
+    this.setChartsData()
   },
   beforeDestroy() {
-    this.chart.dispose()
+    this.chart.destroy()
     this.chart = null
   },
   methods: {
-    setOptions({ series, xAxis, legend } = {}) {
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-          }
+    createChart() {
+      Highcharts.setOptions({
+        lang: {
+          noData: '暂无数据'
+        }
+      })
+      this.chart = Highcharts.chart('model-chart', {
+        title: {
+          text: null
         },
-        legend: {
-          data: legend,
-          // width: 200,
-          bottom: '0'
+        credits: {
+          enabled: false // 禁用版权信息
         },
-        grid: {
-          // top: 50,
-          left: '2%',
-          right: '2%',
-          // bottom: '20',
-          containLabel: true
+        xAxis: {
+          categories: [],
+          tickWidth: 1,
+          min: 0
         },
-        xAxis: [{
-          data: xAxis,
-          axisTick: {
-            show: true
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: 30
-
-          }
-        }],
         yAxis: [{
-          type: 'value',
-          axisTick: {
-            show: false
-          }
-        }],
-        series: series
+          title: {
+            text: null // 隐藏默认的title
+          },
+          min: 0
 
+        }],
+        tooltip: {
+          shared: true,
+          followPointer: true
+        },
+        // legend: { // 设置图例位置
+        //   verticalAlign: 'middle',
+        //   align: 'right',
+        //   layout: 'vertical'
+        // },
+        series: []
       })
     },
-    initChart() {
-      this.chart = echarts.init(document.getElementById('model-chart'), 'macarons')
-      this.setOptions(this.chartData)
+    setChartsData() {
+      if (this.chart.series.length > 0) {
+        this.chart.series.forEach((item, index) => {
+          this.chart.series[index].remove(true)
+        })
+      }
+      this.chartData.series.forEach((item, index) => {
+        this.chart.addSeries(item)
+      })
+
+      this.chart.xAxis[0].setCategories(this.chartData.categories)
     }
   }
 }

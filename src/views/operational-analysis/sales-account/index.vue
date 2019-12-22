@@ -57,8 +57,8 @@ export default {
   data() {
     return {
       chartData: {
-        saleList: [],
-        customerList: []
+        series: [],
+        categories: []
       },
       tableData: [],
       startTime: '',
@@ -86,19 +86,18 @@ export default {
         records.forEach(item => {
           const { customerName, salesAccount } = item
           this.saleCount += salesAccount
-          this.chartData.saleList.push(salesAccount)
-          this.chartData.customerList.push(customerName)
+          this.chartData.series.push(salesAccount)
+          this.chartData.categories.push(customerName)
         })
         this.tableData = records
-        console.log(this.chartData)
       })
     },
     handleSearch() {
       this.tableData = []
       this.saleCount = 0
       this.chartData = {
-        saleList: [],
-        customerList: []
+        series: [],
+        categories: []
       }
       this.getStateData()
     }
@@ -110,7 +109,7 @@ export default {
 .table-container{
   .right{
     height: 500px;
-    border: 1px solid #d8d8d8;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
     margin-top: 20px;
     margin-left: 10px;
     .sale-text{

@@ -25,7 +25,7 @@
             v-model="keywords"
             style="min-width:220px"
             placeholder="关键字查询"
-            />
+          />
         </el-form-item>
 
         <el-form-item>
@@ -173,7 +173,11 @@ export default {
         eManufacturer: '',
         eName: '',
         eStandard: '',
-        eType: ''
+        eType: '',
+        androidAddress: '',
+        androidPwd: '',
+        androidSlaveAddress: '',
+        androidType: ''
       },
       dialogFormData: {},
       pickerOptions: {

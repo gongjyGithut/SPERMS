@@ -58,7 +58,7 @@
               <el-date-picker
                 v-model="dialogFormData.eDate"
                 :picker-options="pickerOptions"
-                style="width:250px;"
+                style="width:100%"
                 type="date"
                 placeholder="选择日期"
                 value-format="yyyy-MM-dd HH:mm:ss"/>
@@ -83,13 +83,54 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-form-item label="应用授权" prop="eEnable">
           <el-radio-group v-model="dialogFormData.eEnable">
             <el-radio :label="0">关停</el-radio>
             <el-radio :label="1">正常使用</el-radio>
           </el-radio-group>
         </el-form-item>
+
+        <el-divider >安卓端</el-divider>
+
+        <el-row :gutter="27">
+          <el-col :span="12">
+            <el-form-item label="数据类型" prop="androidAddress">
+              <el-input
+                v-model="dialogFormData.androidAddress"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="密钥" prop="androidPwd">
+              <el-input
+                v-model="dialogFormData.androidPwd"
+                style="width:100%"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="27">
+          <el-col :span="12">
+            <el-form-item label="从站地址" prop="androidSlaveAddress">
+              <el-input
+                v-model="dialogFormData.androidSlaveAddress"
+                placeholder=""/>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="信号类型" prop="androidType">
+
+              <el-select v-model="dialogFormData.androidType" placeholder="请选择" style="width:100%">
+                <el-option :value="1" label="只有0/1信号类型"/>
+                <el-option :value="2" label="传输一个Byte类型"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
       </el-form>
 
       <div slot="footer">

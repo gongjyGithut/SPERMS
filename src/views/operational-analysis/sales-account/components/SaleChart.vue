@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div id="stuste-stat" :class="className" :style="{height:height,width:width}"/>
+    <div id="sales-chart" :class="className" :style="{height:height,width:width}"/>
   </div>
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
-// import { debounce } from '@/utils'
+import Highcharts from 'highcharts'
 export default {
   props: {
     className: {
@@ -38,60 +36,63 @@ export default {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val)
+        this.setChartsData()
       }
     }
   },
   mounted() {
-    this.initChart()
+    this.createChart()
+    this.setChartsData()
   },
   beforeDestroy() {
-    this.chart.dispose()
+    this.chart.destroy()
     this.chart = null
   },
   methods: {
-    setOptions({ saleList, customerList } = {}) {
-      this.chart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'line' // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        legend: {
-          // data: ['expected', 'actual'],
-        },
-        grid: {
-          top: 50,
-          left: '2%',
-          right: '2%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [{
-          data: customerList,
-          axisTick: {
-            show: false
-          }
-        }],
-        yAxis: [{
-          type: 'value',
-          axisTick: {
-            show: false
-          }
-        }],
-        series: [{
-          type: 'bar',
-          barWidth: 30,
-          data: saleList,
-          color: ['#3888fa']
-        }]
+    createChart() {
+      Highcharts.setOptions({
+        lang: {
+          noData: '暂无数据'
+        }
+      })
+      this.chart = Highcharts.chart('sales-chart', {
 
+        legend: {
+          enabled: false
+        },
+        title: {
+          text: null
+        },
+        credits: {
+          enabled: false // 禁用版权信息
+        },
+        xAxis: {
+          categories: [],
+          tickWidth: 1,
+          min: 0
+        },
+        yAxis: [{
+          title: {
+            text: null // 隐藏默认的title
+          },
+          min: 0
+
+        }],
+        tooltip: {
+          shared: true,
+          followPointer: true
+        },
+        series: [{
+          name: '营业总额',
+          data: [],
+          color: '#3888fa'
+        }]
       })
     },
-    initChart() {
-      this.chart = echarts.init(document.getElementById('stuste-stat'), 'macarons')
-      this.setOptions(this.chartData)
+    setChartsData() {
+      const serie = this.chart.series[0]
+      serie.setData(this.chartData.series)
+      this.chart.xAxis[0].setCategories(this.chartData.categories)
     }
   }
 }
